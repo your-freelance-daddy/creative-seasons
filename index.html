@@ -1,17 +1,12 @@
 <!DOCTYPE html>
-<!-- Version 1.0 -->
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Creative Seasons - EKOLITIKA</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, #2d5016 0%, #6ba547 100%);
@@ -21,385 +16,347 @@
       align-items: center;
       padding: 20px;
     }
-
+    
+    .wrapper {
+      width: 100%;
+      max-width: 700px;
+    }
+    
     .container {
       background: white;
-      border-radius: 20px;
-      padding: 40px;
-      max-width: 600px;
+      border-radius: 16px;
+      padding: 40px 30px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     }
-
+    
     .header {
       text-align: center;
       margin-bottom: 30px;
     }
-
-    .logo {
-      font-size: 13px;
-      color: #6ba547;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    h1 {
-      color: #2d5016;
-      font-size: 32px;
-      margin-bottom: 8px;
-    }
-
-    .tagline {
-      color: #888;
-      font-size: 14px;
-    }
-
+    
+    .logo { color: #6ba547; font-size: 12px; font-weight: bold; margin-bottom: 10px; }
+    h1 { color: #2d5016; font-size: 28px; margin-bottom: 8px; }
+    .tagline { color: #888; font-size: 14px; }
+    
     .season-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 30px;
+      gap: 10px;
+      margin-bottom: 25px;
     }
-
-    .season-card {
+    
+    .season-btn {
+      padding: 15px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
       background: #f9f9f9;
-      border: 3px solid #ddd;
-      border-radius: 12px;
-      padding: 20px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-align: center;
+      color: #2d5016;
+      font-size: 14px;
       font-weight: bold;
-      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
     }
-
-    .season-card:hover {
-      transform: translateY(-5px);
+    
+    .season-btn:hover {
+      transform: translateY(-2px);
       border-color: #6ba547;
     }
-
-    .season-card.active {
+    
+    .season-btn.active {
       background: linear-gradient(135deg, #6ba547 0%, #2d5016 100%);
       color: white;
       border-color: #2d5016;
-      transform: scale(1.05);
+      transform: scale(1.02);
     }
-
-    .content-box {
-      display: none;
-      animation: fadeIn 0.4s ease;
-    }
-
-    .content-box.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-
+    
+    .content { display: none; }
+    .content.show { display: block; animation: fadeIn 0.4s; }
+    
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    
     .season-title {
-      font-size: 24px;
+      font-size: 22px;
       color: #2d5016;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+      font-weight: bold;
     }
-
+    
     .season-subtitle {
       font-size: 13px;
       color: #888;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       font-style: italic;
     }
-
+    
     .prompt-box {
       background: linear-gradient(135deg, #f0f8f0 0%, #e8f5e9 100%);
-      border-left: 6px solid #6ba547;
-      padding: 20px;
+      border-left: 5px solid #6ba547;
+      padding: 15px;
       border-radius: 8px;
       margin-bottom: 20px;
-      font-size: 16px;
+      font-size: 15px;
       color: #2d5016;
-      line-height: 1.6;
+      line-height: 1.5;
     }
-
+    
     .energy-section {
       background: #f5f5f5;
       padding: 15px;
       border-radius: 8px;
       margin-bottom: 20px;
     }
-
+    
     .energy-label {
-      font-size: 12px;
+      font-size: 11px;
       color: #666;
       font-weight: bold;
       margin-bottom: 10px;
+      text-transform: uppercase;
     }
-
+    
     .energy-buttons {
       display: flex;
-      gap: 10px;
+      gap: 8px;
     }
-
+    
     .energy-btn {
       flex: 1;
-      padding: 10px;
+      padding: 8px;
       border: 2px solid #ddd;
-      border-radius: 8px;
+      border-radius: 6px;
       background: white;
       cursor: pointer;
       font-weight: bold;
+      font-size: 12px;
       transition: all 0.2s;
     }
-
-    .energy-btn:hover {
-      transform: scale(1.05);
-    }
-
-    .energy-btn.active {
-      border-color: #6ba547;
-      background: #f0f8f0;
-    }
-
-    .reflection-area {
-      margin-bottom: 20px;
-    }
-
+    
+    .energy-btn:hover { transform: scale(1.05); }
+    .energy-btn.active { border-color: #6ba547; background: #f0f8f0; color: #6ba547; }
+    
     label {
       display: block;
       font-weight: bold;
       color: #2d5016;
       margin-bottom: 8px;
-      font-size: 14px;
+      font-size: 13px;
     }
-
+    
     textarea {
       width: 100%;
-      height: 100px;
-      padding: 12px;
+      height: 80px;
+      padding: 10px;
       border: 2px solid #ddd;
-      border-radius: 8px;
+      border-radius: 6px;
       font-family: inherit;
-      font-size: 14px;
+      font-size: 13px;
       resize: vertical;
+      margin-bottom: 15px;
     }
-
+    
     textarea:focus {
       outline: none;
       border-color: #6ba547;
-      background: #f9fff9;
+      background: #fafff9;
     }
-
+    
     .button-group {
       display: flex;
       gap: 10px;
     }
-
-    button {
+    
+    button.btn-save, button.btn-next {
       flex: 1;
-      padding: 12px 20px;
+      padding: 12px;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       font-weight: bold;
       cursor: pointer;
       transition: all 0.3s;
-      font-size: 14px;
+      font-size: 13px;
     }
-
+    
     .btn-save {
       background: #6ba547;
       color: white;
     }
-
-    .btn-save:hover {
-      background: #2d5016;
-    }
-
+    
+    .btn-save:hover { background: #2d5016; }
+    
     .btn-next {
-      background: #f0f8f0;
+      background: white;
       color: #2d5016;
       border: 2px solid #6ba547;
     }
-
+    
     .btn-next:hover {
       background: #6ba547;
       color: white;
     }
-
-    .success-message {
+    
+    .success {
       display: none;
       background: #d4edda;
       color: #155724;
-      padding: 12px;
-      border-radius: 8px;
+      padding: 10px;
+      border-radius: 6px;
       margin-bottom: 15px;
       text-align: center;
+      font-size: 13px;
       font-weight: bold;
     }
-
-    .success-message.show {
+    
+    .success.show {
       display: block;
-      animation: slideDown 0.3s ease;
+      animation: slideDown 0.3s;
     }
-
+    
     @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <div class="logo">EKOLITIKA</div>
-      <h1>Creative Seasons</h1>
-      <p class="tagline">Discover nature-inspired creativity for each season</p>
-    </div>
-
-    <div class="season-grid">
-      <div class="season-card active" onclick="showSeason('spring')">🌱 Spring</div>
-      <div class="season-card" onclick="showSeason('summer')">☀️ Summer</div>
-      <div class="season-card" onclick="showSeason('autumn')">🍂 Autumn</div>
-      <div class="season-card" onclick="showSeason('winter')">❄️ Winter</div>
-    </div>
-
-    <div id="success-message" class="success-message">✓ Reflection saved!</div>
-
-    <div id="spring" class="content-box active">
-      <div class="season-title">Spring Renewal</div>
-      <p class="season-subtitle">Rebirth & Fresh Starts</p>
-      <div class="prompt-box">How are you planting seeds for growth this season?</div>
-      <div class="energy-section">
-        <div class="energy-label">Current Energy Level</div>
-        <div class="energy-buttons">
-          <button class="energy-btn" onclick="setEnergy('low')">Low</button>
-          <button class="energy-btn active" onclick="setEnergy('medium')">Medium</button>
-          <button class="energy-btn" onclick="setEnergy('high')">High</button>
+  <div class="wrapper">
+    <div class="container">
+      <div class="header">
+        <div class="logo">🌱 EKOLITIKA</div>
+        <h1>Creative Seasons</h1>
+        <p class="tagline">Discover your seasonal rhythm</p>
+      </div>
+      
+      <div class="season-grid">
+        <button class="season-btn active" onclick="switchSeason('spring')">🌱 Spring</button>
+        <button class="season-btn" onclick="switchSeason('summer')">☀️ Summer</button>
+        <button class="season-btn" onclick="switchSeason('autumn')">🍂 Autumn</button>
+        <button class="season-btn" onclick="switchSeason('winter')">❄️ Winter</button>
+      </div>
+      
+      <div id="success" class="success">✓ Reflection saved!</div>
+      
+      <div id="spring" class="content show">
+        <div class="season-title">Spring Renewal</div>
+        <div class="season-subtitle">Rebirth & Fresh Starts</div>
+        <div class="prompt-box">How are you planting seeds for growth this season?</div>
+        
+        <div class="energy-section">
+          <div class="energy-label">Current Energy</div>
+          <div class="energy-buttons">
+            <button class="energy-btn active" onclick="setEnergy('spring', 'low')">Low</button>
+            <button class="energy-btn active" onclick="setEnergy('spring', 'med')">Medium</button>
+            <button class="energy-btn" onclick="setEnergy('spring', 'high')">High</button>
+          </div>
         </div>
+        
+        <label>Your reflection:</label>
+        <textarea id="spring-text" placeholder="Write your thoughts about spring growth..."></textarea>
       </div>
-      <div class="reflection-area">
-        <label for="spring-text">Your reflection:</label>
-        <textarea id="spring-text" placeholder="Write your thoughts..."></textarea>
-      </div>
-    </div>
-
-    <div id="summer" class="content-box">
-      <div class="season-title">Summer Abundance</div>
-      <p class="season-subtitle">Growth & Abundance</p>
-      <div class="prompt-box">What projects are flourishing in your life?</div>
-      <div class="energy-section">
-        <div class="energy-label">Current Energy Level</div>
-        <div class="energy-buttons">
-          <button class="energy-btn" onclick="setEnergy('low')">Low</button>
-          <button class="energy-btn" onclick="setEnergy('medium')">Medium</button>
-          <button class="energy-btn active" onclick="setEnergy('high')">High</button>
+      
+      <div id="summer" class="content">
+        <div class="season-title">Summer Abundance</div>
+        <div class="season-subtitle">Growth & Flourishing</div>
+        <div class="prompt-box">What projects are thriving in your life right now?</div>
+        
+        <div class="energy-section">
+          <div class="energy-label">Current Energy</div>
+          <div class="energy-buttons">
+            <button class="energy-btn" onclick="setEnergy('summer', 'low')">Low</button>
+            <button class="energy-btn" onclick="setEnergy('summer', 'med')">Medium</button>
+            <button class="energy-btn active" onclick="setEnergy('summer', 'high')">High</button>
+          </div>
         </div>
+        
+        <label>Your reflection:</label>
+        <textarea id="summer-text" placeholder="Write your thoughts about summer abundance..."></textarea>
       </div>
-      <div class="reflection-area">
-        <label for="summer-text">Your reflection:</label>
-        <textarea id="summer-text" placeholder="Write your thoughts..."></textarea>
-      </div>
-    </div>
-
-    <div id="autumn" class="content-box">
-      <div class="season-title">Autumn Release</div>
-      <p class="season-subtitle">Letting Go & Gratitude</p>
-      <div class="prompt-box">What are you ready to release and transform?</div>
-      <div class="energy-section">
-        <div class="energy-label">Current Energy Level</div>
-        <div class="energy-buttons">
-          <button class="energy-btn active" onclick="setEnergy('low')">Low</button>
-          <button class="energy-btn" onclick="setEnergy('medium')">Medium</button>
-          <button class="energy-btn" onclick="setEnergy('high')">High</button>
+      
+      <div id="autumn" class="content">
+        <div class="season-title">Autumn Release</div>
+        <div class="season-subtitle">Letting Go & Transformation</div>
+        <div class="prompt-box">What are you ready to release and transform?</div>
+        
+        <div class="energy-section">
+          <div class="energy-label">Current Energy</div>
+          <div class="energy-buttons">
+            <button class="energy-btn active" onclick="setEnergy('autumn', 'low')">Low</button>
+            <button class="energy-btn" onclick="setEnergy('autumn', 'med')">Medium</button>
+            <button class="energy-btn" onclick="setEnergy('autumn', 'high')">High</button>
+          </div>
         </div>
+        
+        <label>Your reflection:</label>
+        <textarea id="autumn-text" placeholder="Write your thoughts about autumn release..."></textarea>
       </div>
-      <div class="reflection-area">
-        <label for="autumn-text">Your reflection:</label>
-        <textarea id="autumn-text" placeholder="Write your thoughts..."></textarea>
-      </div>
-    </div>
-
-    <div id="winter" class="content-box">
-      <div class="season-title">Winter Rest</div>
-      <p class="season-subtitle">Reflection & Renewal</p>
-      <div class="prompt-box">What wisdom are you gaining in this quiet season?</div>
-      <div class="energy-section">
-        <div class="energy-label">Current Energy Level</div>
-        <div class="energy-buttons">
-          <button class="energy-btn active" onclick="setEnergy('low')">Low</button>
-          <button class="energy-btn" onclick="setEnergy('medium')">Medium</button>
-          <button class="energy-btn" onclick="setEnergy('high')">High</button>
+      
+      <div id="winter" class="content">
+        <div class="season-title">Winter Rest</div>
+        <div class="season-subtitle">Reflection & Restoration</div>
+        <div class="prompt-box">What wisdom are you gathering in this quiet season?</div>
+        
+        <div class="energy-section">
+          <div class="energy-label">Current Energy</div>
+          <div class="energy-buttons">
+            <button class="energy-btn active" onclick="setEnergy('winter', 'low')">Low</button>
+            <button class="energy-btn" onclick="setEnergy('winter', 'med')">Medium</button>
+            <button class="energy-btn" onclick="setEnergy('winter', 'high')">High</button>
+          </div>
         </div>
+        
+        <label>Your reflection:</label>
+        <textarea id="winter-text" placeholder="Write your thoughts about winter restoration..."></textarea>
       </div>
-      <div class="reflection-area">
-        <label for="winter-text">Your reflection:</label>
-        <textarea id="winter-text" placeholder="Write your thoughts..."></textarea>
+      
+      <div class="button-group">
+        <button class="btn-save" onclick="saveReflection()">Save</button>
+        <button class="btn-next" onclick="nextSeason()">Next Season →</button>
       </div>
-    </div>
-
-    <div class="button-group" style="margin-top: 30px;">
-      <button class="btn-save" onclick="saveReflection()">Save Reflection</button>
-      <button class="btn-next" onclick="nextSeason()">Next Season</button>
     </div>
   </div>
-
+  
   <script>
     let currentSeason = 'spring';
-
-    function showSeason(season) {
-      document.querySelectorAll('.content-box').forEach(box => box.classList.remove('active'));
-      document.querySelectorAll('.season-card').forEach(card => card.classList.remove('active'));
+    const seasons = ['spring', 'summer', 'autumn', 'winter'];
+    
+    function switchSeason(season) {
+      document.querySelectorAll('.content').forEach(el => el.classList.remove('show'));
+      document.querySelectorAll('.season-btn').forEach(el => el.classList.remove('active'));
       
-      document.getElementById(season).classList.add('active');
+      document.getElementById(season).classList.add('show');
       event.target.classList.add('active');
       currentSeason = season;
     }
-
-    function setEnergy(level) {
-      event.target.parentElement.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+    
+    function setEnergy(season, level) {
+      const buttons = event.target.parentElement.querySelectorAll('.energy-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
       event.target.classList.add('active');
-      localStorage.setItem(currentSeason + '_energy', level);
+      localStorage.setItem(`${season}_energy`, level);
     }
-
+    
     function saveReflection() {
-      const textarea = document.querySelector('.content-box.active textarea');
-      const text = textarea.value;
-      
-      if (text.trim()) {
-        localStorage.setItem(currentSeason + '_reflection', text);
-        document.getElementById('success-message').classList.add('show');
+      const textarea = document.querySelector('.content.show textarea');
+      if (textarea && textarea.value.trim()) {
+        localStorage.setItem(`${currentSeason}_text`, textarea.value);
         
-        setTimeout(() => {
-          document.getElementById('success-message').classList.remove('show');
-        }, 2000);
+        const successEl = document.getElementById('success');
+        successEl.classList.add('show');
+        setTimeout(() => successEl.classList.remove('show'), 2500);
       }
     }
-
+    
     function nextSeason() {
-      const seasons = ['spring', 'summer', 'autumn', 'winter'];
-      const currentIndex = seasons.indexOf(currentSeason);
-      const nextIndex = (currentIndex + 1) % seasons.length;
-      showSeason(seasons[nextIndex]);
+      const idx = seasons.indexOf(currentSeason);
+      const next = seasons[(idx + 1) % 4];
+      const btn = document.querySelectorAll('.season-btn')[(idx + 1) % 4];
+      switchSeason(next);
     }
-
-    // Load saved data on page load
+    
     window.addEventListener('load', () => {
-      document.querySelectorAll('.content-box').forEach(box => {
-        const seasonId = box.id;
-        const saved = localStorage.getItem(seasonId + '_reflection');
-        if (saved && box.querySelector('textarea')) {
-          box.querySelector('textarea').value = saved;
-        }
+      seasons.forEach(season => {
+        const saved = localStorage.getItem(`${season}_text`);
+        if (saved) document.getElementById(`${season}-text`).value = saved;
       });
     });
   </script>
