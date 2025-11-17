@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -185,7 +185,6 @@
       font-family: inherit;
       font-size: 14px;
       resize: vertical;
-      font-family: 'Segoe UI', sans-serif;
     }
 
     textarea:focus {
@@ -251,3 +250,157 @@
         opacity: 0;
         transform: translateY(-10px);
       }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">EKOLITIKA</div>
+      <h1>Creative Seasons</h1>
+      <p class="tagline">Discover nature-inspired creativity for each season</p>
+    </div>
+
+    <div class="season-grid">
+      <div class="season-card active" onclick="showSeason('spring')">🌱 Spring</div>
+      <div class="season-card" onclick="showSeason('summer')">☀️ Summer</div>
+      <div class="season-card" onclick="showSeason('autumn')">🍂 Autumn</div>
+      <div class="season-card" onclick="showSeason('winter')">❄️ Winter</div>
+    </div>
+
+    <div id="success-message" class="success-message">✓ Reflection saved!</div>
+
+    <div id="spring" class="content-box active">
+      <div class="season-title">Spring Renewal</div>
+      <p class="season-subtitle">Rebirth & Fresh Starts</p>
+      <div class="prompt-box">How are you planting seeds for growth this season?</div>
+      <div class="energy-section">
+        <div class="energy-label">Current Energy Level</div>
+        <div class="energy-buttons">
+          <button class="energy-btn" onclick="setEnergy('low')">Low</button>
+          <button class="energy-btn active" onclick="setEnergy('medium')">Medium</button>
+          <button class="energy-btn" onclick="setEnergy('high')">High</button>
+        </div>
+      </div>
+      <div class="reflection-area">
+        <label for="spring-text">Your reflection:</label>
+        <textarea id="spring-text" placeholder="Write your thoughts..."></textarea>
+      </div>
+    </div>
+
+    <div id="summer" class="content-box">
+      <div class="season-title">Summer Abundance</div>
+      <p class="season-subtitle">Growth & Abundance</p>
+      <div class="prompt-box">What projects are flourishing in your life?</div>
+      <div class="energy-section">
+        <div class="energy-label">Current Energy Level</div>
+        <div class="energy-buttons">
+          <button class="energy-btn" onclick="setEnergy('low')">Low</button>
+          <button class="energy-btn" onclick="setEnergy('medium')">Medium</button>
+          <button class="energy-btn active" onclick="setEnergy('high')">High</button>
+        </div>
+      </div>
+      <div class="reflection-area">
+        <label for="summer-text">Your reflection:</label>
+        <textarea id="summer-text" placeholder="Write your thoughts..."></textarea>
+      </div>
+    </div>
+
+    <div id="autumn" class="content-box">
+      <div class="season-title">Autumn Release</div>
+      <p class="season-subtitle">Letting Go & Gratitude</p>
+      <div class="prompt-box">What are you ready to release and transform?</div>
+      <div class="energy-section">
+        <div class="energy-label">Current Energy Level</div>
+        <div class="energy-buttons">
+          <button class="energy-btn active" onclick="setEnergy('low')">Low</button>
+          <button class="energy-btn" onclick="setEnergy('medium')">Medium</button>
+          <button class="energy-btn" onclick="setEnergy('high')">High</button>
+        </div>
+      </div>
+      <div class="reflection-area">
+        <label for="autumn-text">Your reflection:</label>
+        <textarea id="autumn-text" placeholder="Write your thoughts..."></textarea>
+      </div>
+    </div>
+
+    <div id="winter" class="content-box">
+      <div class="season-title">Winter Rest</div>
+      <p class="season-subtitle">Reflection & Renewal</p>
+      <div class="prompt-box">What wisdom are you gaining in this quiet season?</div>
+      <div class="energy-section">
+        <div class="energy-label">Current Energy Level</div>
+        <div class="energy-buttons">
+          <button class="energy-btn active" onclick="setEnergy('low')">Low</button>
+          <button class="energy-btn" onclick="setEnergy('medium')">Medium</button>
+          <button class="energy-btn" onclick="setEnergy('high')">High</button>
+        </div>
+      </div>
+      <div class="reflection-area">
+        <label for="winter-text">Your reflection:</label>
+        <textarea id="winter-text" placeholder="Write your thoughts..."></textarea>
+      </div>
+    </div>
+
+    <div class="button-group" style="margin-top: 30px;">
+      <button class="btn-save" onclick="saveReflection()">Save Reflection</button>
+      <button class="btn-next" onclick="nextSeason()">Next Season</button>
+    </div>
+  </div>
+
+  <script>
+    let currentSeason = 'spring';
+
+    function showSeason(season) {
+      document.querySelectorAll('.content-box').forEach(box => box.classList.remove('active'));
+      document.querySelectorAll('.season-card').forEach(card => card.classList.remove('active'));
+      
+      document.getElementById(season).classList.add('active');
+      event.target.classList.add('active');
+      currentSeason = season;
+    }
+
+    function setEnergy(level) {
+      event.target.parentElement.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      localStorage.setItem(currentSeason + '_energy', level);
+    }
+
+    function saveReflection() {
+      const textarea = document.querySelector('.content-box.active textarea');
+      const text = textarea.value;
+      
+      if (text.trim()) {
+        localStorage.setItem(currentSeason + '_reflection', text);
+        document.getElementById('success-message').classList.add('show');
+        
+        setTimeout(() => {
+          document.getElementById('success-message').classList.remove('show');
+        }, 2000);
+      }
+    }
+
+    function nextSeason() {
+      const seasons = ['spring', 'summer', 'autumn', 'winter'];
+      const currentIndex = seasons.indexOf(currentSeason);
+      const nextIndex = (currentIndex + 1) % seasons.length;
+      showSeason(seasons[nextIndex]);
+    }
+
+    // Load saved data on page load
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.content-box').forEach(box => {
+        const seasonId = box.id;
+        const saved = localStorage.getItem(seasonId + '_reflection');
+        if (saved && box.querySelector('textarea')) {
+          box.querySelector('textarea').value = saved;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
