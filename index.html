@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Creative Seasons - EKOLITIKA</title>
+  <title>Eco-Impact Tracker - EKOLITIKA</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
@@ -11,354 +11,255 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, #2d5016 0%, #6ba547 100%);
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       padding: 20px;
     }
     
-    .wrapper {
-      width: 100%;
-      max-width: 700px;
+    .wrapper { max-width: 800px; margin: 0 auto; }
+    
+    .header {
+      text-align: center;
+      color: white;
+      margin-bottom: 30px;
     }
+    
+    .header h1 { font-size: 32px; margin-bottom: 8px; }
+    .header p { font-size: 14px; opacity: 0.9; }
     
     .container {
       background: white;
       border-radius: 16px;
-      padding: 40px 30px;
+      padding: 30px;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
     }
     
-    .header {
+    .score-display {
       text-align: center;
-      margin-bottom: 30px;
-    }
-    
-    .logo { color: #6ba547; font-size: 12px; font-weight: bold; margin-bottom: 10px; }
-    h1 { color: #2d5016; font-size: 28px; margin-bottom: 8px; }
-    .tagline { color: #888; font-size: 14px; }
-    
-    .season-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 25px;
-    }
-    
-    .season-btn {
-      padding: 15px;
-      border: 2px solid #ddd;
-      border-radius: 10px;
-      background: #f9f9f9;
-      color: #2d5016;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s;
-      text-align: center;
-    }
-    
-    .season-btn:hover {
-      transform: translateY(-2px);
-      border-color: #6ba547;
-    }
-    
-    .season-btn.active {
-      background: linear-gradient(135deg, #6ba547 0%, #2d5016 100%);
-      color: white;
-      border-color: #2d5016;
-      transform: scale(1.02);
-    }
-    
-    .content { display: none; }
-    .content.show { display: block; animation: fadeIn 0.4s; }
-    
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    
-    .season-title {
-      font-size: 22px;
-      color: #2d5016;
-      margin-bottom: 8px;
-      font-weight: bold;
-    }
-    
-    .season-subtitle {
-      font-size: 13px;
-      color: #888;
-      margin-bottom: 15px;
-      font-style: italic;
-    }
-    
-    .prompt-box {
       background: linear-gradient(135deg, #f0f8f0 0%, #e8f5e9 100%);
-      border-left: 5px solid #6ba547;
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      font-size: 15px;
-      color: #2d5016;
-      line-height: 1.5;
-    }
-    
-    .energy-section {
-      background: #f5f5f5;
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-    }
-    
-    .energy-label {
-      font-size: 11px;
-      color: #666;
-      font-weight: bold;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-    }
-    
-    .energy-buttons {
-      display: flex;
-      gap: 8px;
-    }
-    
-    .energy-btn {
-      flex: 1;
-      padding: 8px;
-      border: 2px solid #ddd;
-      border-radius: 6px;
-      background: white;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 12px;
-      transition: all 0.2s;
-    }
-    
-    .energy-btn:hover { transform: scale(1.05); }
-    .energy-btn.active { border-color: #6ba547; background: #f0f8f0; color: #6ba547; }
-    
-    label {
-      display: block;
-      font-weight: bold;
-      color: #2d5016;
-      margin-bottom: 8px;
-      font-size: 13px;
-    }
-    
-    textarea {
-      width: 100%;
-      height: 80px;
-      padding: 10px;
-      border: 2px solid #ddd;
-      border-radius: 6px;
-      font-family: inherit;
-      font-size: 13px;
-      resize: vertical;
-      margin-bottom: 15px;
-    }
-    
-    textarea:focus {
-      outline: none;
-      border-color: #6ba547;
-      background: #fafff9;
-    }
-    
-    .button-group {
-      display: flex;
-      gap: 10px;
-    }
-    
-    button.btn-save, button.btn-next {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.3s;
-      font-size: 13px;
-    }
-    
-    .btn-save {
-      background: #6ba547;
-      color: white;
-    }
-    
-    .btn-save:hover { background: #2d5016; }
-    
-    .btn-next {
-      background: white;
-      color: #2d5016;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 25px;
       border: 2px solid #6ba547;
     }
     
-    .btn-next:hover {
-      background: #6ba547;
-      color: white;
-    }
+    .score-title { color: #2d5016; font-size: 12px; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; }
     
-    .success {
-      display: none;
-      background: #d4edda;
-      color: #155724;
-      padding: 10px;
-      border-radius: 6px;
-      margin-bottom: 15px;
-      text-align: center;
-      font-size: 13px;
+    .score-number {
+      font-size: 48px;
       font-weight: bold;
+      color: #6ba547;
+      margin-bottom: 5px;
     }
     
-    .success.show {
-      display: block;
-      animation: slideDown 0.3s;
+    .score-label { color: #888; font-size: 14px; }
+    
+    .impact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 25px;
     }
     
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .impact-card {
+      background: #f9f9f9;
+      border: 2px solid #ddd;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
     }
+    
+    .impact-card:hover {
+      border-color: #6ba547;
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(107, 165, 71, 0.2);
+    }
+    
+    .impact-card.positive { border-color: #4caf50; }
+    .impact-card.negative { border-color: #ff6b6b; }
+    
+    .impact-emoji { font-size: 32px; margin-bottom: 10px; }
+    .impact-name { font-weight: bold; color: #2d5016; margin-bottom: 5px; font-size: 14px; }
+    .impact-desc { font-size: 12px; color: #888; margin-bottom: 8px; }
+    .impact-value { font-size: 18px; font-weight: bold; }
+    .impact-value.pos { color: #4caf50; }
+    .impact-value.neg { color: #ff6b6b; }
+    
+    .action-section {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #f5f5f5;
+      border-radius: 8px;
+    }
+    
+    .action-label { font-size: 12px; font-weight: bold; color: #666; text-transform: uppercase; margin-bottom: 12px; }
+    
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .action-btn {
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: white;
+      color: #2d5016;
+      font-weight: bold;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 2px solid #ddd;
+    }
+    
+    .action-btn:hover { border-color: #6ba547; background: #f0f8f0; }
+    .action-btn.pos { border-color: #4caf50; color: #4caf50; }
+    .action-btn.pos:hover { background: #e8f5e9; }
+    .action-btn.neg { border-color: #ff6b6b; color: #ff6b6b; }
+    .action-btn.neg:hover { background: #ffebee; }
+    
+    .weekly-summary {
+      background: linear-gradient(135deg, #f0f8f0 0%, #e8f5e9 100%);
+      padding: 20px;
+      border-radius: 12px;
+      border-left: 5px solid #6ba547;
+    }
+    
+    .summary-title { color: #2d5016; font-weight: bold; margin-bottom: 12px; }
+    .summary-text { color: #555; font-size: 13px; line-height: 1.6; }
+    .summary-stat { color: #6ba547; font-weight: bold; }
+    
+    .reset-btn {
+      width: 100%;
+      padding: 12px;
+      background: white;
+      color: #888;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: all 0.2s;
+    }
+    
+    .reset-btn:hover { border-color: #888; color: #2d5016; }
   </style>
 </head>
 <body>
   <div class="wrapper">
+    <div class="header">
+      <h1>🌱 Eco-Impact Tracker</h1>
+      <p>Your seasonal guide to sustainable living with EKOLITIKA</p>
+    </div>
+    
     <div class="container">
-      <div class="header">
-        <div class="logo">🌱 EKOLITIKA</div>
-        <h1>Creative Seasons</h1>
-        <p class="tagline">Discover your seasonal rhythm</p>
+      <div class="score-display">
+        <div class="score-title">Your Weekly Eco-Score</div>
+        <div class="score-number" id="score">50</div>
+        <div class="score-label">Track your environmental choices</div>
       </div>
       
-      <div class="season-grid">
-        <button class="season-btn active" onclick="switchSeason('spring')">🌱 Spring</button>
-        <button class="season-btn" onclick="switchSeason('summer')">☀️ Summer</button>
-        <button class="season-btn" onclick="switchSeason('autumn')">🍂 Autumn</button>
-        <button class="season-btn" onclick="switchSeason('winter')">❄️ Winter</button>
+      <div class="action-section">
+        <div class="action-label">Positive Actions</div>
+        <div class="action-buttons" id="positive-actions"></div>
       </div>
       
-      <div id="success" class="success">✓ Reflection saved!</div>
+      <div class="action-section">
+        <div class="action-label">Challenges to Avoid</div>
+        <div class="action-buttons" id="negative-actions"></div>
+      </div>
       
-      <div id="spring" class="content show">
-        <div class="season-title">Spring Renewal</div>
-        <div class="season-subtitle">Rebirth & Fresh Starts</div>
-        <div class="prompt-box">How are you planting seeds for growth this season?</div>
-        
-        <div class="energy-section">
-          <div class="energy-label">Current Energy</div>
-          <div class="energy-buttons">
-            <button class="energy-btn active" onclick="setEnergy('spring', 'low')">Low</button>
-            <button class="energy-btn active" onclick="setEnergy('spring', 'med')">Medium</button>
-            <button class="energy-btn" onclick="setEnergy('spring', 'high')">High</button>
-          </div>
+      <div class="weekly-summary">
+        <div class="summary-title">Your Eco-Impact This Week</div>
+        <div class="summary-text">
+          You've made <span class="summary-stat" id="good-count">0</span> positive choices and avoided <span class="summary-stat" id="bad-count">0</span> harmful impacts. 
+          <br><br>
+          Every action counts! Even small sustainable choices add up to create big environmental change. Keep tracking to improve your eco-score and inspire your community to live more sustainably.
         </div>
-        
-        <label>Your reflection:</label>
-        <textarea id="spring-text" placeholder="Write your thoughts about spring growth..."></textarea>
       </div>
       
-      <div id="summer" class="content">
-        <div class="season-title">Summer Abundance</div>
-        <div class="season-subtitle">Growth & Flourishing</div>
-        <div class="prompt-box">What projects are thriving in your life right now?</div>
-        
-        <div class="energy-section">
-          <div class="energy-label">Current Energy</div>
-          <div class="energy-buttons">
-            <button class="energy-btn" onclick="setEnergy('summer', 'low')">Low</button>
-            <button class="energy-btn" onclick="setEnergy('summer', 'med')">Medium</button>
-            <button class="energy-btn active" onclick="setEnergy('summer', 'high')">High</button>
-          </div>
-        </div>
-        
-        <label>Your reflection:</label>
-        <textarea id="summer-text" placeholder="Write your thoughts about summer abundance..."></textarea>
-      </div>
-      
-      <div id="autumn" class="content">
-        <div class="season-title">Autumn Release</div>
-        <div class="season-subtitle">Letting Go & Transformation</div>
-        <div class="prompt-box">What are you ready to release and transform?</div>
-        
-        <div class="energy-section">
-          <div class="energy-label">Current Energy</div>
-          <div class="energy-buttons">
-            <button class="energy-btn active" onclick="setEnergy('autumn', 'low')">Low</button>
-            <button class="energy-btn" onclick="setEnergy('autumn', 'med')">Medium</button>
-            <button class="energy-btn" onclick="setEnergy('autumn', 'high')">High</button>
-          </div>
-        </div>
-        
-        <label>Your reflection:</label>
-        <textarea id="autumn-text" placeholder="Write your thoughts about autumn release..."></textarea>
-      </div>
-      
-      <div id="winter" class="content">
-        <div class="season-title">Winter Rest</div>
-        <div class="season-subtitle">Reflection & Restoration</div>
-        <div class="prompt-box">What wisdom are you gathering in this quiet season?</div>
-        
-        <div class="energy-section">
-          <div class="energy-label">Current Energy</div>
-          <div class="energy-buttons">
-            <button class="energy-btn active" onclick="setEnergy('winter', 'low')">Low</button>
-            <button class="energy-btn" onclick="setEnergy('winter', 'med')">Medium</button>
-            <button class="energy-btn" onclick="setEnergy('winter', 'high')">High</button>
-          </div>
-        </div>
-        
-        <label>Your reflection:</label>
-        <textarea id="winter-text" placeholder="Write your thoughts about winter restoration..."></textarea>
-      </div>
-      
-      <div class="button-group">
-        <button class="btn-save" onclick="saveReflection()">Save</button>
-        <button class="btn-next" onclick="nextSeason()">Next Season →</button>
-      </div>
+      <button class="reset-btn" onclick="resetWeek()">Reset Weekly Score</button>
     </div>
   </div>
   
   <script>
-    let currentSeason = 'spring';
-    const seasons = ['spring', 'summer', 'autumn', 'winter'];
+    const actions = {
+      positive: [
+        { emoji: '🚴', name: 'Walk/Bike', desc: 'Instead of driving', points: 10 },
+        { emoji: '♻️', name: 'Recycle', desc: 'Properly sort waste', points: 5 },
+        { emoji: '🌱', name: 'Grow Food', desc: 'Plant something', points: 15 },
+        { emoji: '💧', name: 'Save Water', desc: 'Short showers/fix leaks', points: 8 },
+        { emoji: '🍃', name: 'Buy Local', desc: 'Support local eco-brands', points: 12 },
+        { emoji: '🚲', name: 'Zero Waste', desc: 'Reuse items', points: 10 }
+      ],
+      negative: [
+        { emoji: '🚗', name: 'Avoid Car', desc: 'Reduces 5 points', points: -5 },
+        { emoji: '🛍️', name: 'Skip Fast Fashion', desc: 'Reduces 8 points', points: -8 },
+        { emoji: '🚮', name: 'No Single-Use', desc: 'Reduces 6 points', points: -6 },
+        { emoji: '✈️', name: 'Skip Flights', desc: 'Reduces 20 points', points: -20 },
+        { emoji: '🥩', name: 'Reduce Meat', desc: 'Reduces 10 points', points: -10 },
+        { emoji: '💡', name: 'Cut Energy', desc: 'Reduces 7 points', points: -7 }
+      ]
+    };
     
-    function switchSeason(season) {
-      document.querySelectorAll('.content').forEach(el => el.classList.remove('show'));
-      document.querySelectorAll('.season-btn').forEach(el => el.classList.remove('active'));
+    let score = parseInt(localStorage.getItem('ecoScore')) || 50;
+    let goodCount = parseInt(localStorage.getItem('goodCount')) || 0;
+    let badCount = parseInt(localStorage.getItem('badCount')) || 0;
+    
+    function renderActions() {
+      const posContainer = document.getElementById('positive-actions');
+      const negContainer = document.getElementById('negative-actions');
       
-      document.getElementById(season).classList.add('show');
-      event.target.classList.add('active');
-      currentSeason = season;
+      posContainer.innerHTML = actions.positive.map(a => `
+        <button class="action-btn pos" onclick="addPoints(${a.points}, 'good')">
+          ${a.emoji} ${a.name} <span style="float:right">+${a.points}</span>
+        </button>
+      `).join('');
+      
+      negContainer.innerHTML = actions.negative.map(a => `
+        <button class="action-btn neg" onclick="addPoints(${a.points}, 'bad')">
+          ${a.emoji} ${a.name} <span style="float:right">${a.points}</span>
+        </button>
+      `).join('');
     }
     
-    function setEnergy(season, level) {
-      const buttons = event.target.parentElement.querySelectorAll('.energy-btn');
-      buttons.forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
-      localStorage.setItem(`${season}_energy`, level);
+    function addPoints(points, type) {
+      score += points;
+      score = Math.max(0, Math.min(100, score)); // Clamp 0-100
+      
+      if (type === 'good') goodCount++;
+      if (type === 'bad') badCount++;
+      
+      saveData();
+      updateDisplay();
     }
     
-    function saveReflection() {
-      const textarea = document.querySelector('.content.show textarea');
-      if (textarea && textarea.value.trim()) {
-        localStorage.setItem(`${currentSeason}_text`, textarea.value);
-        
-        const successEl = document.getElementById('success');
-        successEl.classList.add('show');
-        setTimeout(() => successEl.classList.remove('show'), 2500);
+    function updateDisplay() {
+      document.getElementById('score').textContent = score;
+      document.getElementById('good-count').textContent = goodCount;
+      document.getElementById('bad-count').textContent = badCount;
+    }
+    
+    function saveData() {
+      localStorage.setItem('ecoScore', score);
+      localStorage.setItem('goodCount', goodCount);
+      localStorage.setItem('badCount', badCount);
+    }
+    
+    function resetWeek() {
+      if (confirm('Reset your weekly eco-score? Your actions are archived for learning.')) {
+        score = 50;
+        goodCount = 0;
+        badCount = 0;
+        saveData();
+        updateDisplay();
       }
     }
     
-    function nextSeason() {
-      const idx = seasons.indexOf(currentSeason);
-      const next = seasons[(idx + 1) % 4];
-      const btn = document.querySelectorAll('.season-btn')[(idx + 1) % 4];
-      switchSeason(next);
-    }
-    
-    window.addEventListener('load', () => {
-      seasons.forEach(season => {
-        const saved = localStorage.getItem(`${season}_text`);
-        if (saved) document.getElementById(`${season}-text`).value = saved;
-      });
-    });
+    renderActions();
+    updateDisplay();
   </script>
 </body>
 </html>
