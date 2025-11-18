@@ -1,1 +1,441 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Creative Pulse - EKOLiTiKA</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#0f3d1f 0%,#2d5016 100%);min-height:100vh;padding:20px;display:flex;align-items:center;justify-content:center}.main-container{background:white;border-radius:20px;max-width:600px;width:100%;padding:40px 30px;box-shadow:0 30px 80px rgba(0,0,0,0.25)}.hero{text-align:center;margin-bottom:35px}.hero h1{color:#0f3d1f;font-size:32px;margin-bottom:8px;font-weight:700}.hero p{color:#666;font-size:14px;line-height:1.6;margin-bottom:15px}.badge{display:inline-block;background:#f0f7f3;color:#2d5016;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600}.message{display:none;padding:15px;margin-bottom:20px;border-radius:10px;font-size:14px;font-weight:600;animation:slideIn 0.3s ease}.message.show{display:block}.message.success{background:#d4edda;color:#155724;border-left:4px solid #28a745}.message.info{background:#e7f3ff;color:#004085;border-left:4px solid #0056b3}@keyframes slideIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}.state-indicator{background:#f9f9f9;padding:15px;border-radius:10px;margin-bottom:25px;border-left:4px solid #6ba547}.state-indicator h3{color:#0f3d1f;font-size:13px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px}.state-indicator p{color:#666;font-size:13px;line-height:1.6}.block-selector{margin-bottom:30px}.block-selector h2{color:#0f3d1f;font-size:16px;font-weight:700;margin-bottom:15px}.block-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}.block-btn{padding:15px;background:white;border:2px solid #e0e0e0;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;color:#333;text-align:left;transition:all 0.2s;position:relative;overflow:hidden}.block-btn::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#6ba547,#4a7c2c);opacity:0;transition:opacity 0.2s;z-index:-1}.block-btn:hover{border-color:#6ba547;transform:translateY(-2px)}.block-btn.selected{background:#6ba547;color:white;border-color:#4a7c2c}.block-btn::before{opacity:1 !important;z-index:0}.block-btn{z-index:1}.block-btn .emoji{display:block;font-size:20px;margin-bottom:5px}.block-btn.selected .emoji{filter:brightness(1.3)}.practice-section{display:none;margin-bottom:30px;padding:20px;background:#f9fff9;border-radius:10px;border-left:4px solid #6ba547}.practice-section.active{display:block;animation:slideIn 0.3s ease}.practice-h3{color:#0f3d1f;font-size:16px;font-weight:700;margin-bottom:15px}.practice-instructions{background:white;padding:15px;border-radius:8px;margin-bottom:15px;font-size:13px;line-height:1.8;color:#333;border-left:3px solid #6ba547}.practice-input{width:100%;padding:12px;border:2px solid #ddd;border-radius:8px;font-family:inherit;font-size:13px;resize:vertical;min-height:100px;margin-bottom:15px;transition:border-color 0.2s}.practice-input:focus{outline:none;border-color:#6ba547;background:#f9fff9}.button-group{display:grid;grid-template-columns:1fr 1fr;gap:12px}.btn{padding:12px 20px;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:all 0.2s;text-align:center;display:inline-block}.btn-primary{background:#6ba547;color:white}.btn-primary:hover{background:#4a7c2c;transform:translateY(-2px)}.btn-secondary{background:white;color:#0f3d1f;border:2px solid #6ba547}.btn-secondary:hover{background:#f9fff9}.btn-full{grid-column:1/-1}.stats{background:#f9f9f9;padding:15px;border-radius:10px;margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:15px}.stat-item{text-align:center;padding:10px}.stat-number{font-size:24px;font-weight:700;color:#6ba547}.stat-label{font-size:12px;color:#666;text-transform:uppercase;margin-top:5px}.final-screen{display:none;text-align:center;padding:20px}.final-screen.active{display:block}.final-celebration{font-size:48px;margin-bottom:15px}.final-text{color:#0f3d1f;font-size:15px;line-height:1.7;margin-bottom:20px}.reset-all{background:white;color:#0f3d1f;border:2px solid #ddd;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:12px;transition:all 0.2s;text-decoration:underline}.reset-all:hover{background:#f9f9f9;border-color:#6ba547}footer{text-align:center;margin-top:30px;font-size:11px;color:#999;letter-spacing:0.5px}@media(max-width:480px){.main-container{padding:25px 20px}.hero h1{font-size:26px}.block-options{grid-template-columns:1fr}.button-group{grid-template-columns:1fr}.stats{grid-template-columns:1fr}}</style></head><body><div class="main-container"><div class="hero"><h1>🎨 Creative Pulse</h1><p>A free tool from EKOLiTiKA to help you break through creative blocks and stay on your creative path.</p><span class="badge">By EKOLiTiKA</span></div><div id="message" class="message"></div><div class="state-indicator"><h3>How you're feeling right now</h3><p id="stateText">Let's start: What's blocking your creativity?</p></div><div id="blockSelector" class="block-selector"><h2>What's stopping you?</h2><div class="block-options"><button class="block-btn" onclick="selectBlock('perfectionism')"><span class="emoji">🎯</span><strong>Perfectionism</strong><small>Fear of not being good enough</small></button><button class="block-btn" onclick="selectBlock('blankpage')"><span class="emoji">📄</span><strong>Blank Page</strong><small>Don't know where to start</small></button><button class="block-btn" onclick="selectBlock('comparison')"><span class="emoji">🔍</span><strong>Comparison</strong><small>Everyone else is better</small></button><button class="block-btn" onclick="selectBlock('timecrush')"><span class="emoji">⏰</span><strong>Time Pressure</strong><small>Not enough time to create</small></button><button class="block-btn" onclick="selectBlock('wrongmedium')"><span class="emoji">🔧</span><strong>Wrong Medium</strong><small>Tools/format feel limiting</small></button><button class="block-btn" onclick="selectBlock('fatigue')"><span class="emoji">😴</span><strong>Creative Fatigue</strong><small>Burned out, empty tank</small></button></div></div><div id="practiceSection" class="practice-section"><h3 class="practice-h3" id="practiceTitle">Your Creative Practice</h3><div class="practice-instructions" id="practiceInstructions"></div><textarea id="practiceInput" class="practice-input" placeholder="Write here..."></textarea><div class="button-group"><button class="btn btn-secondary" onclick="goBack()">← Back</button><button class="btn btn-primary" onclick="completePractice()">✓ Done</button></div></div><div id="finalScreen" class="final-screen"><div class="final-celebration">🌱</div><p class="final-text"><strong>You just created something.</strong><br>That's what matters. That's your creative pulse beating strong.<br><br>This is how we build sustainable creativity: one small action at a time. No perfection required.<br><br>Come back whenever you need to unblock. We'll be here.</p><div class="stats"><div class="stat-item"><div class="stat-number" id="totalCount">0</div><div class="stat-label">times unblocked</div></div><div class="stat-item"><div class="stat-number" id="todayCount">0</div><div class="stat-label">times today</div></div></div><div class="button-group" style="margin-top:20px"><button class="btn btn-primary btn-full" onclick="startAgain()">Do Another</button><button class="btn btn-secondary btn-full" onclick="resetData()" style="margin-top:12px">Clear All</button></div></div><footer>✨ A sustainable creativity tool by EKOLiTiKA | Free for everyone</footer></div><script>const practices={perfectionism:{title:'Drop the Perfect, Keep the Real',instructions:'Set a timer for 2 minutes. Create something BADLY on purpose. Ugly, messy, unpolished. The goal is to break the perfectionism spell by proving you can make without judgment.'},blankpage:{title:'Start with Constraint',instructions:'You have 5 minutes to respond to this: "If I could only use 3 colors/sounds/words, what would I create?" Constraints are creative superpowers.'},comparison:{title:'Compare to Yesterday You',instructions:'Write about ONE thing you have created before that you now like. What did Past You not know that Current You knows? You ARE growing.'},timecrush:{title:'Speed Over Perfection',instructions:'You have 3 minutes to create something. It is not about quality—it is about momentum. Fast creation breaks the pressure spell.'},wrongmedium:{title:'Switch It Up',instructions:'What if you created in a different medium? (Write a song about your idea, sketch it, animate it, voice it) What opens up when you change the format?'},fatigue:{title:'Rest as Resistance',instructions:'This is not laziness. This is wisdom. Take 10 minutes to rest WITHOUT guilt. When you are back, you will create differently. Sustainable beats burned-out.'}};const blockNames=['perfectionism','blankpage','comparison','timecrush','wrongmedium','fatigue'];const blockLabels=['🎯 Perfectionism','📄 Blank Page','🔍 Comparison','⏰ Time Pressure','🔧 Wrong Medium','😴 Creative Fatigue'];let currentBlock=null;function selectBlock(block){currentBlock=block;document.querySelectorAll('.block-btn').forEach(btn=>btn.classList.remove('selected'));event.target.closest('.block-btn').classList.add('selected');const practice=practices[block];document.getElementById('practiceTitle').textContent=practice.title;document.getElementById('practiceInstructions').textContent=practice.instructions;document.getElementById('blockSelector').style.display='none';document.getElementById('practiceSection').classList.add('active');const blockIndex=blockNames.indexOf(block);document.getElementById('stateText').textContent='You selected: '+blockLabels[blockIndex];}function goBack(){document.getElementById('blockSelector').style.display='block';document.getElementById('practiceSection').classList.remove('active');document.getElementById('practiceInput').value='';currentBlock=null;document.querySelectorAll('.block-btn').forEach(btn=>btn.classList.remove('selected'));document.getElementById('stateText').textContent='Let\'s start: What\'s blocking your creativity?';}function completePractice(){const content=document.getElementById('practiceInput').value.trim();if(!content){showMessage('✍️ Write something first, even if it\'s messy!','info');return;}const data=JSON.parse(localStorage.getItem('creativeData')||'{"total":0,"today":0,"lastDate":null,"entries":[]}');const today=new Date().toDateString();if(data.lastDate!==today){data.today=0;data.lastDate=today;}data.total+=1;data.today+=1;data.entries.push({block:currentBlock,content:content,date:new Date().toISOString()});localStorage.setItem('creativeData',JSON.stringify(data));document.getElementById('totalCount').textContent=data.total;document.getElementById('todayCount').textContent=data.today;document.getElementById('practiceSection').classList.remove('active');document.getElementById('finalScreen').classList.add('active');}function startAgain(){document.getElementById('finalScreen').classList.remove('active');document.getElementById('blockSelector').style.display='block';document.getElementById('practiceInput').value='';currentBlock=null;document.querySelectorAll('.block-btn').forEach(btn=>btn.classList.remove('selected'));document.getElementById('stateText').textContent='Let\'s start: What\'s blocking your creativity?';}function resetData(){if(confirm('Are you sure? This will clear all your creative pulse records.')){localStorage.clear();location.reload();}}function showMessage(text,type){const msg=document.getElementById('message');msg.textContent=text;msg.className='message show '+type;setTimeout(()=>msg.classList.remove('show'),3000);}window.onload=function(){const data=JSON.parse(localStorage.getItem('creativeData')||'{"total":0,"today":0,"lastDate":null,"entries":[]}');if(data.total>0){document.getElementById('totalCount').textContent=data.total;document.getElementById('todayCount').textContent=data.today;}}</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creative Pulse - EKOLiTiKA</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a472a 0%, #0f3d1f 50%, #2d5016 100%);
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .main-container {
+      background: white;
+      border-radius: 25px;
+      max-width: 700px;
+      width: 100%;
+      padding: 50px 40px;
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Header Section */
+    .hero {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .hero h1 {
+      color: #0f3d1f;
+      font-size: 36px;
+      margin-bottom: 10px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .hero p {
+      color: #666;
+      font-size: 15px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .tagline {
+      display: inline-block;
+      background: linear-gradient(135deg, #6ba547 0%, #5a9437 100%);
+      color: white;
+      padding: 8px 18px;
+      border-radius: 25px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 15px rgba(107, 165, 71, 0.3);
+    }
+
+    /* State Indicator */
+    .state-indicator {
+      background: linear-gradient(135deg, #f0fdf4 0%, #f5fdf9 100%);
+      padding: 18px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      border-left: 5px solid #6ba547;
+      border: 2px solid #e8f5e9;
+      border-left: 5px solid #6ba547;
+    }
+
+    .state-indicator h3 {
+      color: #0f3d1f;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .state-indicator p {
+      color: #555;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* Block Selection Section */
+    .block-selector {
+      margin-bottom: 35px;
+    }
+
+    .block-selector h2 {
+      color: #0f3d1f;
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 18px;
+      letter-spacing: -0.3px;
+    }
+
+    .block-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* Main Buttons - with vibrant colors and helpful labels */
+    .block-btn {
+      padding: 18px 16px;
+      background: white;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      color: #333;
+      text-align: center;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      min-height: 100px;
+      justify-content: center;
+    }
+
+    .block-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, #6ba547 0%, #5a9437 100%);
+      opacity: 0;
+      transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: -1;
+    }
+
+    .block-btn:hover {
+      border-color: #6ba547;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(107, 165, 71, 0.25);
+    }
+
+    .block-btn:hover::before {
+      opacity: 1;
+    }
+
+    .block-btn:hover {
+      color: white;
+    }
+
+    .block-btn:active {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(107, 165, 71, 0.2);
+    }
+
+    .btn-icon {
+      font-size: 28px;
+    }
+
+    .btn-label {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-hint {
+      font-size: 11px;
+      opacity: 0.7;
+      font-weight: 600;
+      font-style: italic;
+    }
+
+    /* Colored button variants */
+    .btn-brainstorm {
+      border-color: #ff6b6b;
+    }
+
+    .btn-brainstorm:hover::before {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
+      opacity: 1;
+    }
+
+    .btn-organize {
+      border-color: #4ecdc4;
+    }
+
+    .btn-organize:hover::before {
+      background: linear-gradient(135deg, #4ecdc4 0%, #45b7ae 100%);
+      opacity: 1;
+    }
+
+    .btn-inspire {
+      border-color: #ffd93d;
+    }
+
+    .btn-inspire:hover::before {
+      background: linear-gradient(135deg, #ffd93d 0%, #ffca1a 100%);
+      opacity: 1;
+    }
+
+    .btn-share {
+      border-color: #6c5ce7;
+    }
+
+    .btn-share:hover::before {
+      background: linear-gradient(135deg, #6c5ce7 0%, #5f3dc4 100%);
+      opacity: 1;
+    }
+
+    /* Action Buttons Row */
+    .action-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .action-btn {
+      padding: 15px 20px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      letter-spacing: 0.5px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #6ba547 0%, #5a9437 100%);
+      color: white;
+      box-shadow: 0 6px 20px rgba(107, 165, 71, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(107, 165, 71, 0.4);
+    }
+
+    .btn-secondary {
+      background: #f5f5f5;
+      color: #333;
+      border: 2px solid #e0e0e0;
+    }
+
+    .btn-secondary:hover {
+      background: #efefef;
+      border-color: #6ba547;
+      color: #6ba547;
+    }
+
+    /* Message Display */
+    .message {
+      display: none;
+      padding: 16px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      animation: slideIn 0.3s ease;
+      border-left: 4px solid;
+    }
+
+    .message.show {
+      display: block;
+    }
+
+    .message.success {
+      background: #d4edda;
+      color: #155724;
+      border-left-color: #28a745;
+    }
+
+    .message.info {
+      background: #e7f3ff;
+      color: #004085;
+      border-left-color: #0056b3;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .main-container {
+        padding: 30px 20px;
+      }
+
+      .hero h1 {
+        font-size: 28px;
+      }
+
+      .block-options {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <!-- Hero Section -->
+    <div class="hero">
+      <h1>✨ Creative Pulse</h1>
+      <p>Fuel your creativity, organize your thoughts, and bring your ideas to life</p>
+      <span class="tagline">✶ BY EKOLiTiKA ✶</span>
+    </div>
+
+    <!-- State Indicator -->
+    <div class="state-indicator">
+      <h3>🎨 Your Creative Space Awaits</h3>
+      <p>Choose your creative activity below and start expressing yourself. Whether you're brainstorming wild ideas, organizing projects, seeking inspiration, or sharing your work—we're here to support your creative journey!</p>
+    </div>
+
+    <!-- Message Display -->
+    <div id="messageBox" class="message"></div>
+
+    <!-- Main Selection Blocks -->
+    <div class="block-selector">
+      <h2>Choose Your Creative Mode:</h2>
+      <div class="block-options">
+        <button class="block-btn btn-brainstorm" onclick="selectBlock('brainstorm')">
+          <span class="btn-icon">💡</span>
+          <span class="btn-label">BRAINSTORM</span>
+          <span class="btn-hint">Free-flow ideas</span>
+        </button>
+        <button class="block-btn btn-organize" onclick="selectBlock('organize')">
+          <span class="btn-icon">📋</span>
+          <span class="btn-label">ORGANIZE</span>
+          <span class="btn-hint">Structure & plan</span>
+        </button>
+        <button class="block-btn btn-inspire" onclick="selectBlock('inspire')">
+          <span class="btn-icon">🌟</span>
+          <span class="btn-label">INSPIRE</span>
+          <span class="btn-hint">Find fresh ideas</span>
+        </button>
+        <button class="block-btn btn-share" onclick="selectBlock('share')">
+          <span class="btn-icon">🚀</span>
+          <span class="btn-label">SHARE</span>
+          <span class="btn-hint">Showcase your work</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="action-btn btn-primary" onclick="executeAction()">
+        ✨ Let's Create!
+      </button>
+      <button class="action-btn btn-secondary" onclick="resetForm()">
+        ↻ Start Fresh
+      </button>
+    </div>
+  </div>
+
+  <script>
+    let selectedBlock = null;
+
+    function selectBlock(block) {
+      selectedBlock = block;
+      
+      const blocks = document.querySelectorAll('.block-btn');
+      blocks.forEach(btn => btn.style.transform = 'scale(1)');
+      
+      event.target.closest('.block-btn').style.transform = 'scale(1.05)';
+      
+      showMessage(`${getBlockEmoji(block)} You selected: ${getBlockName(block)}`, 'info');
+    }
+
+    function getBlockName(block) {
+      const names = {
+        'brainstorm': 'BRAINSTORM MODE',
+        'organize': 'ORGANIZE MODE',
+        'inspire': 'INSPIRE MODE',
+        'share': 'SHARE MODE'
+      };
+      return names[block] || 'Unknown';
+    }
+
+    function getBlockEmoji(block) {
+      const emojis = {
+        'brainstorm': '💡',
+        'organize': '📋',
+        'inspire': '🌟',
+        'share': '🚀'
+      };
+      return emojis[block] || '✨';
+    }
+
+    function executeAction() {
+      if (!selectedBlock) {
+        showMessage('Please select a creative mode first! 🎨', 'info');
+        return;
+      }
+
+      const messages = {
+        'brainstorm': '🧠 Brainstorm mode activated! Let those creative juices flow. No limits, no judgment—just pure creative energy!',
+        'organize': '📋 Organization mode on! Time to structure your brilliant ideas into a clear plan.',
+        'inspire': '🌟 Seeking inspiration! Let\'s find fresh perspectives and new creative directions for your project.',
+        'share': '🚀 Share mode enabled! It\'s time to showcase your amazing creative work to the world!'
+      };
+
+      showMessage(messages[selectedBlock], 'success');
+    }
+
+    function resetForm() {
+      selectedBlock = null;
+      
+      const blocks = document.querySelectorAll('.block-btn');
+      blocks.forEach(btn => btn.style.transform = 'scale(1)');
+      
+      const messageBox = document.getElementById('messageBox');
+      messageBox.classList.remove('show');
+      
+      showMessage('✨ Fresh canvas ready! Choose your creative path.', 'info');
+    }
+
+    function showMessage(text, type) {
+      const messageBox = document.getElementById('messageBox');
+      messageBox.textContent = text;
+      messageBox.className = `message show ${type}`;
+    }
+  </script>
+</body>
+</html>
