@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Creative Pulse - EKOLiTiKA</title>
+  
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -157,7 +158,8 @@
   <script src="seasonal-content.js"></script>
   <script src="app.js"></script>
   
-  <script>
+  128
+  
     let sessionData = null;
     const tools = {
       brainstorm: [{title: 'Rapid Fire Ideas', prompt: 'Write 3-5 quick ideas WITHOUT overthinking:', input: 'ideas'}, {title: 'What if Scenarios', prompt: 'Explore "what if" possibilities:', input: 'scenarios'}],
@@ -219,6 +221,19 @@
       document.getElementById('feedbackView').classList.remove('active');
       sessionData = null;
     }
+  
+  // Attach event listeners to buttons
+  document.querySelectorAll('button.block-btn').forEach(button => {
+    if(button.textContent.includes('BRAINSTORM')) {
+      button.addEventListener('click', () => startSession('brainstorm'));
+    } else if(button.textContent.includes('ORGANIZE')) {
+      button.addEventListener('click', () => startSession('organize'));
+    } else if(button.textContent.includes('INSPIRE')) {
+      button.addEventListener('click', () => startSession('inspire'));
+    } else if(button.textContent.includes('EXPERIMENT')) {
+      button.addEventListener('click', () => startSession('experiment'));
+    }
+  });
   </script>
 </body>
 </html>
