@@ -156,5 +156,69 @@
   <script src="data-store.js"></script>
   <script src="seasonal-content.js"></script>
   <script src="app.js"></script>
+  
+  <script>
+    let sessionData = null;
+    const tools = {
+      brainstorm: [{title: 'Rapid Fire Ideas', prompt: 'Write 3-5 quick ideas WITHOUT overthinking:', input: 'ideas'}, {title: 'What if Scenarios', prompt: 'Explore "what if" possibilities:', input: 'scenarios'}],
+      organize: [{title: 'Priority Matrix', prompt: 'What are your 3 most important next steps?', input: 'priorities'}, {title: 'Timeline', prompt: 'When do you want to complete each? (Week 1, End of month, etc)', input: 'timeline'}],
+      inspire: [{title: 'Reference Hunt', prompt: 'What existing projects/trends inspire you?', input: 'references'}, {title: 'Remix Ideas', prompt: 'How can you combine different ideas?', input: 'twists'}],
+      experiment: [{title: 'Quick Test', prompt: 'What is the fastest way to test your idea?', input: 'test'}, {title: 'Success Metrics', prompt: 'How will you know if it works?', input: 'metrics'}]
+    };
+    
+    function startSession(mode) {
+      document.getElementById('home').style.display = 'none';
+      document.getElementById('sessionView').classList.add('active');
+      document.getElementById('sessionTitle').textContent = {brainstorm: '💡 Brainstorm', organize: '📋 Organize', inspire: '🌟 Inspire', experiment: '🧪 Experiment'}[mode];
+      sessionData = {mode, data: {}};
+      const content = document.getElementById('sessionContent');
+      content.innerHTML = '';
+      tools[mode].forEach(tool => {
+        const card = document.createElement('div');
+        card.className = 'tool-card';
+        card.innerHTML = `<h3>${tool.title}</h3><p>${tool.prompt}</p><textarea id="${tool.input}" placeholder="Write in detail..."></textarea><button class="btn btn-add" onclick="addItem('${tool.input}')">+ Add</button><div class="items-list" id="${tool.input}-list"></div>`;
+        content.appendChild(card);
+      });
+    }
+    
+    function addItem(fieldId) {
+      const input = document.getElementById(fieldId);
+      const value = input.value.trim();
+      if (!value) return;
+      if (!sessionData.data[fieldId]) sessionData.data[fieldId] = [];
+      sessionData.data[fieldId].push(value);
+      renderList(fieldId);
+      input.value = '';
+    }
+    
+    function renderList(fieldId) {
+      const list = document.getElementById(fieldId + '-list');
+      list.innerHTML = sessionData.data[fieldId].map((item, i) => `<div class="item"><span>${item}</span><button class="btn" style="padding:5px 10px; background:#ff6b6b; color:white; border:none;" onclick="removeItem('${fieldId}',${i})">✕</button></div>`).join('');
+    }
+    
+    function removeItem(fieldId, idx) {
+      sessionData.data[fieldId].splice(idx, 1);
+      renderList(fieldId);
+    }
+    
+    function finalizeSession() {
+      if (!sessionData) return;
+      const feedback = typeof FeedbackEngine !== 'undefined' && FeedbackEngine ? FeedbackEngine.generateFeedback(sessionData) : {title: '✨ Session Complete', summary: 'Your data has been saved'};
+      if (typeof DataStore !== 'undefined' && DataStore) DataStore.saveSession(sessionData);
+      document.getElementById('sessionView').classList.remove('active');
+      document.getElementById('feedbackView').classList.add('active');
+      const content = document.getElementById('feedbackContent');
+      if (feedback.title) {
+        content.innerHTML = `<div class="feedback-card"><h3>${feedback.title}</h3><p><strong>${feedback.summary}</strong></p>${feedback.insights ? feedback.insights.map(i => `<div class="item" style="margin-top:10px;"><strong>${i.title}</strong><p>${i.content}</p></div>`).join('') : ''}</div>`;
+      }
+    }
+    
+    function exitSession() {
+      document.getElementById('home').style.display = 'block';
+      document.getElementById('sessionView').classList.remove('active');
+      document.getElementById('feedbackView').classList.remove('active');
+      sessionData = null;
+    }
+  </script>
 </body>
 </html>
