@@ -7,129 +7,158 @@
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg,#0a0f1f 0%, #1a2340 20%, #1f2d47 40%, #1a2845 60%, #162313 80%, #1f2d47 100%);
+      background: linear-gradient(130deg,#1a1d28 30%,#7c3aed 110%);
       min-height:100vh; margin:0;
       display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+      padding:0;
     }
-    .header{text-align:center;margin-top:36px;margin-bottom:8px}
+    .header{text-align:center;margin-top:32px;margin-bottom:6px}
     .logo-img{
-      width:215px;margin:0 auto 13px auto;filter:grayscale(1) brightness(1.14);
+      width:206px;margin:0 auto 11px auto;filter:grayscale(.25) brightness(1.14);
       cursor:pointer;transition:filter 0.19s;
     }
-    .logo-img:hover {filter:drop-shadow(0 0 12px #a855f7) brightness(1.23);}
-    h1{font-size:42px;color:#7c3aed;font-weight:900;margin-bottom:10px;}
+    .logo-img:hover {filter:drop-shadow(0 0 12px #a855f7) brightness(1.24);}
+    h1{font-size:43px;color:#7c3aed;font-weight:900;margin-bottom:10px;letter-spacing:-.5px;}
+    .mode-back-btn{
+      margin:7px auto 0 auto;background:linear-gradient(92deg,#a855f7 70%,#7c3aed 100%);
+      color:#fff;font-size:17px;font-weight:600;
+      border:none;padding:8px 23px 8px 23px;border-radius:27px;outline:none;
+      box-shadow:0 2px 8px #c084fc15, 0 0 0 #2220;
+      display:block;cursor:pointer;transition:filter 0.13s,box-shadow 0.17s;
+      letter-spacing:.02em;
+    }
+    .mode-back-btn:active,.mode-back-btn:focus{filter:brightness(1.12) drop-shadow(0 0 5px #a855f7ee);}
+
     .tagline{
       font-size:17px;background:linear-gradient(135deg,#a855f7,#9f1239);color:white;
-      padding:12px 33px;border-radius:27px;display:inline-block;width:fit-content;margin-bottom:24px;
+      padding:12px 33px;border-radius:27px;display:inline-block;width:fit-content;margin-bottom:22px;
     }
     .personalize-section{
-      background: linear-gradient(109deg, #271f5e 0%, #452671 100%);
-      border-radius:18px;max-width:460px;
-      box-shadow:0 12px 42px #0002;
-      padding:40px 36px 32px 36px;
-      margin:0 auto 36px auto;display:flex;flex-direction:column;align-items:center;
-      border:2.5px solid #7c3aed99;position:relative;
+      background: linear-gradient(117deg, #2a254d 0%, #412269 100%);
+      border-radius:18px;max-width:430px;
+      box-shadow:0 10px 34px #0001;
+      padding:41px 32px 34px 32px;margin:0 auto 25px auto;
+      display:flex;flex-direction:column;align-items:center; border:2.5px solid #7c3aed88;position:relative;
     }
     .personalize-section-title{
-      color:#fefcff;font-size:1.35em;letter-spacing:.01em;font-weight:700;margin-bottom:10px;text-align:center;
+      color:#fff;font-size:1.41em;letter-spacing:.01em;font-weight:700;margin-bottom:8px;text-align:center;
     }
     .personalize-section-exp{
-      color:#c6bfff;font-size:16.3px;margin-bottom:22px;text-align:center;line-height:1.6;
+      color:#c6bfff;font-size:16.3px;margin-bottom:23px;text-align:center;line-height:1.6;
     }
-    .personalize-form{width:99%;display:flex;flex-direction:column;gap:17px;align-items:center;}
+    .personalize-form{width:99%;display:flex;flex-direction:column;gap:18px;align-items:center;}
     .input-label{color:#ecd1ff;font-weight:500;font-size:15px;margin-bottom:4px;}
     .input{
-      font-size:17px;padding:12px 15px;border-radius:7px;border:1.6px solid #cbb8ec;
-      background:#f6edff;color:#342577;width:100%;outline:none;transition:box-shadow 0.13s;
+      font-size:17px;padding:10px 13px;border-radius:7px;border:1.6px solid #cbb8ec;
+      background:#f6edff;color:#342577;
+      width:100%;outline:none;transition:box-shadow 0.13s;
     }
     .input:focus{box-shadow:0 0 0 2px #b985ee;}
     .btn{
-      padding:13px 29px;font-size:16px;border:none;border-radius:10px;cursor:pointer;font-weight:600;
-      margin-top:13px;
+      padding:12px 28px;font-size:16px;border:none;border-radius:9px;cursor:pointer;font-weight:600;
+      margin-top:17px;
       background: linear-gradient(100deg,#a855f7 60%,#7c3aed 100%);
-      color:#fff;letter-spacing:.01em;
-      box-shadow: 0 2px 8px #a855f732;
+      color:#fff;
+      box-shadow: 0 2px 8px #a855f732;letter-spacing:.01em;
       transition:background 0.14s, box-shadow 0.14s;
     }
     .btn:hover {background:linear-gradient(120deg,#c084fc,#9333ea);}
     .mode-select-section{
       background: linear-gradient(110deg, #ece9fa 40%, #f8e6fa 100%);
-      border-radius:17px;
-      max-width:565px; margin:24px auto 24px auto;
-      padding:26px 30px 22px 30px;
-      box-shadow:0 6px 25px #a855f716;
-      display:flex; flex-direction:column; align-items:center;
+      border-radius:17px;max-width:570px;margin:26px auto 16px auto;
+      padding:27px 32px 19px 32px;box-shadow:0 7px 27px #a855f71c;
+      display:flex;flex-direction:column;align-items:center;
     }
-    .mode-select-title {color:#7c3aed;font-size:1.4em; font-weight:700; letter-spacing:-.01em; margin-bottom:13px;}
-    .mode-select-exp {color:#4c3380; font-size:16.5px;text-align:center;margin-bottom:21px;}
+    .mode-select-title {
+      color:#7c3aed;font-size:1.45em; font-weight:700; letter-spacing:-.01em; margin-bottom:13px;text-align:center;
+    }
+    .mode-select-exp {color:#4c3380; font-size:16.4px;text-align:center;margin-bottom:18px;}
     .mode-btns-grid{
-      display:grid;grid-template-columns:1fr 1fr;gap:26px;justify-content:center;margin-bottom:7px;width:100%;
+      display:grid;grid-template-columns:1fr 1fr;gap:25px;justify-content:center;margin-bottom:6px;width:100%;
     }
     .mode-btn{
       border:none;cursor:pointer;outline:none;text-align:center;
       font-family:inherit;display:flex;flex-direction:column;align-items:center;
       background:linear-gradient(140deg,#fff 32%,#ede7f6 100%);
-      border-radius:13px;box-shadow:0 2px 12px #7c3aed10;transition:transform 0.13s,border 0.14s;
-      border:2.2px solid #ded1ff;padding:24px 0 16px 0;
+      border-radius:15px;box-shadow:0 2px 11px #7c3aed13;transition:transform 0.12s,border 0.12s;
+      border:2.1px solid #ded1ff;min-height:130px;padding:18px 0 9px 0;
+      justify-content:center;
     }
-    .mode-btn:active,.mode-btn:focus{transform:scale(0.96);border-color:#bda6fa;}
-    .mode-icon{font-size:36px;margin-bottom:9px;}
-    .mode-btn-label{color:#7c3aed;font-size:20px;font-weight:650;}
-    .mode-btn-desc{color:#4c3380;font-size:14px;margin-top:3px;}
-    /* For feedback and UX */
-    .mode-card{background:#222;margin:0 auto 24px auto;padding:31px 18px 25px 18px;border-radius:17px;box-shadow:0 4px 22px #0001;max-width:501px;}
+    .mode-btn:active,.mode-btn:focus{transform:scale(0.97);border-color:#b985ee;}
+    .mode-icon{font-size:39px;margin-bottom:10px;}
+    .mode-btn-label{color:#7c3aed;font-size:21px;font-weight:650;}
+    .mode-btn-desc{color:#7156a1;font-size:14.3px;margin-top:6px;font-weight:420;}
+
+    .mode-card{background:#222;margin:16px auto 24px auto;padding:34px 17px 30px 17px;border-radius:18px;box-shadow:0 4px 22px #0002;max-width:510px;}
     .mode-title{font-size:22px;color:#7c3aed;font-weight:700;margin-bottom:7px;}
-    .mode-desc{font-size:15px;color:#b0b0b0;line-height:1.65;margin-bottom:16px;}
-    .question-label{color:#fff;font-size:17px;font-weight:500;margin-bottom:10px;display:block;}
+    .mode-desc{font-size:15px;color:#b0b0b0;line-height:1.67;margin-bottom:16px;}
+    .question-label{color:#fff;font-size:17.1px;font-weight:600;margin-bottom:13px;display:block;}
+    .choice-set{margin:6px 0 14px 0;display:flex;flex-direction:column;gap:9px;}
+    .choice-btn{
+      background:linear-gradient(102deg,#7c3aed16,#f6edff 90%);
+      color:#3a188e;font-weight:500;font-size:16px;padding:11px 19px;
+      border-radius:8px;border:1.7px solid #a855f7cc;cursor:pointer;
+      margin-bottom:3px;text-align:left;
+      transition:background .13s, box-shadow .13s,border-color .12s;
+    }
+    .choice-btn.selected,
+    .choice-btn:active,.choice-btn:focus{
+      background:linear-gradient(90deg,#7c3aed33,#f8fafc 100%);
+      border-color:#7c3aed;font-weight:730;box-shadow:0 0 0 2px #a855f777;
+    }
+    textarea.input{margin-top:7px;}
     .slider-value{color:#7c3aed;font-weight:bold;margin-left:7px;}
-    .feedback-box{background:#171728cc;border:2px solid #7c3aed;border-radius:13px;margin:27px auto 13px auto;max-width:545px;padding:28px 21px;}
-    .feedback-title{font-weight:bold;color:#7c3aed;margin-bottom:10px;font-size:17px;}
-    .feedback-text{color:#e5e5e5;font-size:15.7px;margin-bottom:8px;}
+    .feedback-box{background:#171728e0;border:2px solid #7c3aed;border-radius:13px;margin:27px auto 11px auto;max-width:560px;padding:29px 22px;}
+    .feedback-title{font-weight:bold;color:#7c3aed;margin-bottom:10px;font-size:18px;}
+    .feedback-text{color:#e5e5e5;font-size:16.3px;margin-bottom:8px;font-weight:420;}
+    .restart-btn{margin-top:17px;}
     .footer{
-      font-size:13.6px;color:#fff;text-align:center;margin-top:35px;
-      background:linear-gradient(97deg, #7c3aed, #a5b4fc 90%);border-radius:15px;
+      font-size:13.7px;color:#fff;text-align:center;margin-top:40px;
+      background:linear-gradient(97deg, #7c3aed, #a5b4fc 90%);
+      border-radius:15px;
       padding:21px 21px 17px 21px;
-      font-weight:600;letter-spacing:0.02em;
-      transition:box-shadow 0.18s;box-shadow:0 2px 18px #a855f726;
+      font-weight:600;letter-spacing:0.01em;
+      transition:box-shadow 0.17s;box-shadow:0 2px 14px #a855f724;
     }
     .footer a {color:#fff;text-decoration:none;}
-    .footer:hover{box-shadow:0 3px 24px #ad87e7aa;background:linear-gradient(100deg, #9d7ffe 30%, #a5b4fc 100%);}
-    .saved-block{background:#232339;color:#fff;border-radius:10px;padding:16px 11px;margin:17px auto;max-width:450px;}
-    .saved-title{color:#7c3aed;font-size:15px;font-weight:620;margin-bottom:7px;}
+    .footer:hover{box-shadow:0 3px 18px #ad87e7aa;background:linear-gradient(100deg, #a855f7 12%, #a5b4fc 100%);}
+    .saved-block{background:#232339;color:#fff;border-radius:10px;padding:17px 12px;margin:15px auto;max-width:445px;}
+    .saved-title{color:#7c3aed;font-size:15px;font-weight:600;margin-bottom:6px;}
     .story-section{
-      background: linear-gradient(101deg, #fff7fb 20%, #e5eaff 80%);
-      color: #312056;
-      border-radius: 22px;
-      box-shadow:0 4px 24px #a855f705;
-      margin:36px auto 38px auto;padding:46px 6vw 38px 6vw;
-      max-width:700px;border:2.6px solid #a855f7;
+      background: linear-gradient(98deg, #fff7fb 25%, #e4eaff 85%);
+      color: #2e2060;
+      border-radius: 25px;
+      box-shadow:0 4px 28px #a855f706;
+      margin:38px auto 40px auto;padding:50px 7vw 50px 7vw;
+      max-width:720px;border:2.8px solid #a855f7;
       display:flex;flex-direction:column;align-items:center;
     }
     .story-title{
-        font-size:21.4px;
+        font-size:22px;
         color:#9747ff;
         font-weight:800;
-        margin-bottom:15px;
-        letter-spacing:-.004em;
+        margin-bottom:17px;
+        letter-spacing:0;
         text-align:center;
     }
     .story-text{
-        font-size:17.4px;
-        line-height:1.85;
-        color:#1b113c;
+        font-size:17.2px;
+        line-height:1.87;
+        color:#342173;
         font-weight:470;
-        letter-spacing:.003em;
+        letter-spacing:.0007em;
         text-align:center;
-        max-width:95vw;
+        max-width:100vw;
     }
-    @media(max-width:760px){
-      h1{font-size:25px;}.logo-img{width:87px;}
-      .personalize-section, .story-section{max-width:99vw;padding-left:3vw;padding-right:3vw;}
-      .mode-select-section,.mode-card,.about-section,.feedback-box,.saved-block{padding:9px;max-width:99vw;}
-    }
-    @media(max-width:580px){
+    @media(max-width:900px){
       .mode-btns-grid{grid-template-columns:1fr;}
-      .personalize-section{padding:19px 2vw 17px 2vw;}
+      .personalize-section, .story-section{max-width:99vw;padding-left:3vw;padding-right:3vw;}
+      .mode-select-section,.mode-card,.feedback-box,.saved-block{padding:9px;max-width:99vw;}
+    }
+    @media(max-width:600px){
+      h1{font-size:23px;}.logo-img{width:80px;}
+      .story-section{padding:22px 2vw 27px 2vw;}
+      .personalize-section{padding:15px 2vw 16px 2vw;}
     }
   </style>
 </head>
@@ -141,14 +170,12 @@
   <h1>Creative Pulse</h1>
   <div class="tagline">Spark ideas. Shape them. Make them real.</div>
 </div>
-
+<button class="mode-back-btn" id="toModesBtn" style="display:none;" onclick="toModes()">← Back to Modes</button>
 <div class="personalize-section" id="personalizeArea">
   <div class="personalize-section-title">Personalize Your Journey</div>
   <div class="personalize-section-exp">
-    To unlock all Creative Pulse modes, help us tune the experience to you.
-    <br>After this, <b>choose any creative mode</b>—Diagnose, Inspire, Brainstorm, Organize, or Experiment. 
-    <br><br>
-    Every question and feedback will use what you share, for practical, personalized help exactly where you are.
+    Share a few things so we can personalize all five Creative Pulse modes.<br>
+    <b>You'll get tailored feedback in any creative step you need.<br>Choose one, or try them all!</b>
   </div>
   <form class="personalize-form" onsubmit="event.preventDefault();startJourney();">
     <label class="input-label" for="username">Name or nickname</label>
@@ -157,48 +184,20 @@
     <input class="input" type="text" id="creativeField" placeholder="e.g. design, teaching, writing..." maxlength="40" autocomplete="off"/>
     <label class="input-label" for="challengeDesc">Your creative challenge</label>
     <input class="input" type="text" id="challengeDesc" placeholder="Where are you most stuck or want to grow?" maxlength="90" autocomplete="off"/>
-    <button class="btn" type="submit">Personalize &amp; Enter</button>
+    <button class="btn" type="submit">Personalize &amp; See Modes</button>
   </form>
 </div>
-
 <div id="modeSelection" class="mode-select-section" style="display:none;">
-  <div class="mode-select-title">Choose Your Creative Mode</div>
+  <div class="mode-select-title">Choose a Creative Mode</div>
   <div class="mode-select-exp">
-    Each mode tackles a different phase in the creative process—choose one or explore them all. All feedback is tailored just for you, based on your input.
+    Each mode tackles a phase in creativity. Jump in anywhere—AI-powered, personalized feedback in every mode!
   </div>
-  <div class="mode-btns-grid">
-    <button class="mode-btn" onclick="launchMode('diagnose')" tabindex="0">
-      <span class="mode-icon">🩺</span>
-      <span class="mode-btn-label">Diagnose</span>
-      <span class="mode-btn-desc">Find your current creative block and get tailored steps.</span>
-    </button>
-    <button class="mode-btn" onclick="launchMode('inspire')" tabindex="0">
-      <span class="mode-icon">✨</span>
-      <span class="mode-btn-label">Inspire</span>
-      <span class="mode-btn-desc">Refuel when you’re low. Rediscover the spark.</span>
-    </button>
-    <button class="mode-btn" onclick="launchMode('brainstorm')" tabindex="0">
-      <span class="mode-icon">💡</span>
-      <span class="mode-btn-label">Brainstorm</span>
-      <span class="mode-btn-desc">Blow open challenges & think wild, without judgment.</span>
-    </button>
-    <button class="mode-btn" onclick="launchMode('organize')" tabindex="0">
-      <span class="mode-icon">📦</span>
-      <span class="mode-btn-label">Organize</span>
-      <span class="mode-btn-desc">Shape and filter ideas into clear, tiny next steps.</span>
-    </button>
-    <button class="mode-btn" onclick="launchMode('experiment')" tabindex="0">
-      <span class="mode-icon">🚀</span>
-      <span class="mode-btn-label">Experiment</span>
-      <span class="mode-btn-desc">Test, learn, and move from plan to real-world results.</span>
-    </button>
-  </div>
+  <div class="mode-btns-grid" id="modeBtns"></div>
   <div class="saved-block" id="savesBox" style="display:none;">
     <div class="saved-title">Your saved sparks</div>
     <div id="saves"></div>
   </div>
 </div>
-
 <div id="mainContent" style="display:none;">
   <div id="modeCard" class="mode-card" style="display:none;"></div>
   <div id="feedbackContainer" style="display:none;">
@@ -211,7 +210,6 @@
     </div>
   </div>
 </div>
-
 <div class="story-section">
   <div class="story-title">Born from Real Creative Struggle</div>
   <div class="story-text">
@@ -229,17 +227,13 @@
     Built by EKOLiTiKA - an NGO learning sustainability from nature and applying circular thinking to creativity, community, and change.
   </div>
 </div>
-
 <div class="footer">
   <a href="https://ekolitika.framer.website/" target="_blank">Made with 💚 by EKOLiTiKA 2025</a>
 </div>
-
 <script>
-// Modes definition
 const modes = {
   diagnose: {
-    title: "DIAGNOSE: What's Blocking You?",
-    desc: "Most creative journeys start with a block. Let's pinpoint yours.",
+    icon:"🩺", label:"Diagnose", desc:"Find your current creative block and get tailored steps.",
     questions: [
       { q: "Right now, what does your creative block feel like?", type: "choice", c: [
         "I have too many ideas and can't focus",
@@ -250,172 +244,184 @@ const modes = {
       ]},
       { q: "What's been draining your creative energy lately?", type: "text" },
       { q: "When you imagine breaking through this, what does that look like?", type: "text" },
-      { q: "What's one thing you've already tried that didn't work?", type: "text" }
+      { q: "Pick something you've already tried that didn't work.", type: "choice", c:[
+        "Waiting for inspiration", "Making endless to-do lists", "Getting feedback from wrong people", "Trying to work without breaks", "Jumping between projects", "Letting it bottle up"
+      ]}
     ]
   },
   inspire: {
-    title: "INSPIRE: Refuel before you rebuild.",
-    desc: "If you feel empty or stagnant, let's refill the tank before anything else.",
+    icon:"✨", label:"Inspire", desc:"Refuel when you’re low. Rediscover the spark.",
     questions: [
-      { q: "What kind of creative fuel do you need right now?", type: "choice", c: [
-        "New perspectives",
-        "Permission to rest",
-        "A reminder of why I started",
-        "Examples of what's possible",
-        "A creative challenge"
+      { q: "Choose your creative fuel for today:", type:"choice", c:[
+        "New perspectives","Permission to rest","A reminder of why I started","Examples of what's possible","A creative challenge"
       ]},
       { q: "Describe a moment when you felt most creatively alive.", type: "text" },
-      { q: "Who or what recently made you think 'damn, I want to make something like that'?", type: "text" },
+      { q: "What’s one thing, person, or project that recently lit you up?", type:"choice",c:[
+        "A friend's brave project","Something on YouTube or TikTok","Someone in my field","A story or book","Nature or a random moment"
+      ]},
       { q: "If you had zero pressure and total freedom, what would you create just for fun?", type: "text" }
     ]
   },
   brainstorm: {
-    title: "BRAINSTORM: Generate without judgment.",
-    desc: "Now we expand: dare to be weird, solve for someone else, go way outside your box.",
+    icon:"💡", label:"Brainstorm", desc:"Blow open challenges & think wild—no judgment.",
     questions: [
-      { q: "What creative challenge do you want to crack wide open?", type: "text" },
-      { q: "What would make this brainstorm session a wild success?", type: "text" },
-      { q: "If you solved this for someone you deeply care about, what would you try?", type: "text" },
-      { q: "What's the most ridiculous, impractical, or rule-breaking idea you can think of?", type: "text" }
+      { q: "Pick the energy for this brainstorm:",type:"choice",c:[
+        "Bold","Curious","Playful","Rebellious","Careful, but determined"
+      ]},
+      { q:"What creative challenge do you want to crack wide open?",type:"text"},
+      { q:"What would make this brainstorm session a wild success?", type:"text"},
+      { q:"What's the most ridiculous, impractical, or rule-breaking idea you can think of?", type:"text"}
     ]
   },
   organize: {
-    title: "ORGANIZE: Turn chaos into clarity.",
-    desc: "You've got raw material—now let's shape it into a plan.",
+    icon:"📦", label:"Organize", desc:"Shape and filter ideas into clear, tiny next steps.",
     questions: [
-      { q: "How many ideas are swirling around right now?", type: "slider", min:1, max:25, step:1, def:3 },
-      { q: "What's your gut telling you is the one idea worth pursuing first?", type: "text" },
-      { q: "What would make an idea feel 'ready' to move forward?", type: "text" },
-      { q: "What's the smallest, clearest next action you can take this week?", type: "text" }
+      {q:"About how many ideas are swirling right now?",type:"choice",c:["1–2","3–5","6–8","9–13","14 or more"]},
+      {q:"Your gut: which idea begs to move forward?",type:"text"},
+      {q:"What would make that one idea ‘ready’ for you?",type:"text"},
+      {q:"Pick your next step:",type:"choice",c:[
+        "Sketch or outline it","Test or research a small piece","Tell someone about it","Sleep on it and return","Find a collaborator"
+      ]}
     ]
   },
   experiment: {
-    title: "EXPERIMENT: Test it in the real world.",
-    desc: "Forget perfect plans: action creates clarity. Iterate and learn.",
-    questions: [
-      { q: "What's the tiniest version of this idea you could test this week?", type: "text" },
-      { q: "What are you most afraid will happen if you try this?", type: "text" },
-      { q: "Who's one person you trust enough to show this messy first draft?", type: "text" },
-      { q: "How will you celebrate trying, even if it flops?", type: "text" }
+    icon:"🚀",label:"Experiment",desc:"Test, learn, and move from plan to real-world results.",
+    questions:[
+      {q:"Pick a way you're comfortable & safe testing this idea:",type:"choice",c:[
+        "Solo dry run","Share with one friend","Post anonymously","Prototype with scraps","Write or record a voice memo just for me"
+      ]},
+      {q:"What's the tiniest version of this idea you could test this week?",type:"text"},
+      {q:"What are you most afraid will happen if you try this?",type:"text"},
+      {q:"How will you celebrate trying—even if it flops?",type:"text"}
     ]
   }
 };
-let userProfile = {}, answers = {}, curMode = null, curQ = 0, curA = [], lastMode = "", saves = [];
+let userProfile = {}, answers = {}, curMode = null, curQ = 0, curA = [], saves = [];
+// --- PERSONALIZE & MODES ---
 function startJourney() {
   const name = document.getElementById('username').value || "Friend";
   const field = document.getElementById('creativeField').value || "creativity";
   const challenge = document.getElementById('challengeDesc').value || "my creative process";
-  userProfile = {name, field, challenge};
-  answers = {}; curMode = null; curQ = 0; curA = [];
+  userProfile = { name, field, challenge };
+  answers = {};
   document.getElementById('personalizeArea').style.display = 'none';
+  renderModes();
   document.getElementById('modeSelection').style.display = 'flex';
+  document.getElementById('toModesBtn').style.display = "none";
   renderSaves();
 }
+function renderModes() {
+  const grid = document.getElementById('modeBtns');
+  grid.innerHTML = "";
+  Object.keys(modes).forEach((mode, i) => {
+    const d = modes[mode];
+    grid.innerHTML += `
+      <button class="mode-btn" onclick="launchMode('${mode}')" tabindex="0">
+        <span class="mode-icon">${d.icon}</span>
+        <span class="mode-btn-label">${d.label}</span>
+        <span class="mode-btn-desc">${d.desc}</span>
+      </button>
+    `;
+  });
+}
+// --- MODE EXECUTION ---
 function launchMode(mode) {
   curMode = mode; curQ = 0; curA = [];
   document.getElementById('modeSelection').style.display = "none";
   document.getElementById('mainContent').style.display = "block";
+  document.getElementById('toModesBtn').style.display = "block";
   showCard();
 }
 function showCard() {
   const cd = document.getElementById('modeCard');
-  const modeData = modes[curMode];
+  const d = modes[curMode];
   cd.style.display = "block";
-  let html = `<div class="mode-title">${modeData.title}</div><div class="mode-desc">${modeData.desc}</div>`;
-  let q = modeData.questions[curQ];
+  let html = `<div class="mode-title">${d.icon} ${d.title}</div><div class="mode-desc">${d.desc}</div>`;
+  let q = d.questions[curQ];
   html += `<label class="question-label">${q.q}</label>`;
   if(q.type==="choice") {
-    html += `<select class="input" id="qinput">${q.c.map(opt=>`<option value="${opt}">${opt}</option>`).join("")}</select>`;
+    html += `<div class="choice-set" id="choiceSet">`;
+    q.c.forEach((opt,j)=>{
+      html += `<button type="button" class="choice-btn" onclick="selectChoice(${j})" id="choiceBtn${j}" tabindex="0">${opt}</button>`;
+    });
+    html += "</div>";
+    html += `<input type="hidden" class="input" id="qinput" value="">`;
   } else if(q.type==="slider") {
-    let d = q.def||q.min;
-    html += `<input type="range" id="qinput" min="${q.min}" max="${q.max}" value="${d}" step="${q.step||1}"
-      oninput="document.getElementById('slideval').innerText=this.value;"><span class="slider-value" id="slideval">${d}</span>`;
+    let dflt = q.def||q.min;
+    html += `<input type="range" id="qinput" min="${q.min}" max="${q.max}" value="${dflt}" step="${q.step||1}"
+      oninput="document.getElementById('slideval').innerText=this.value;"><span class="slider-value" id="slideval">${dflt}</span>`;
   } else {
-    html += `<textarea class="input" id="qinput" rows="3" required placeholder="Type here..."></textarea>`;
+    html += `<textarea class="input" id="qinput" aria-label="${q.q}" rows="3" required placeholder="Type here..."></textarea>`;
   }
   html += `<br><button class="btn" style="margin-top:14px;" onclick="submitAnswer()">Next</button>`;
   cd.innerHTML = html;
   document.getElementById('feedbackContainer').style.display="none";
 }
+window.selectChoice = function(idx) {
+  var all = document.querySelectorAll("#choiceSet .choice-btn");
+  all.forEach(btn=>btn.classList.remove("selected"));
+  all[idx].classList.add("selected");
+  document.getElementById('qinput').value = modes[curMode].questions[curQ].c[idx];
+};
+
 function submitAnswer() {
-  let modeData = modes[curMode];
-  let qData = modeData.questions[curQ], val;
-  if(qData.type==="slider") {val=document.getElementById('qinput').value;}
-  else {val = document.getElementById('qinput').value.trim();}
+  let d = modes[curMode];
+  let qData = d.questions[curQ], val;
+  if(qData.type==="slider") { val=document.getElementById('qinput').value;}
+  else if(qData.type==="choice") {
+    val = document.getElementById('qinput').value.trim();
+    if(!val) { alert("Please select one option."); return; }
+  }
+  else { val = document.getElementById('qinput').value.trim(); }
   if(!val){alert("Answer required.");return;}
   curA.push(val);
   curQ++;
-  if(curQ<modeData.questions.length){showCard();}
+  if(curQ<d.questions.length){showCard();}
   else{finishMode();}
 }
 function finishMode() {
   answers[curMode] = [...curA];
   document.getElementById('modeCard').style.display="none";
-  genFeedback(curMode,curA);
-  lastMode = curMode;
+  generateFeedback(curMode,curA);
 }
-function genFeedback(mode,ans) {
-  let tone = "", summary="", bullets=[];
-  let you=userProfile.name, field=userProfile.field, userChallenge=userProfile.challenge;
-  if(mode==="diagnose") {
-    let blockType=ans[0], drain=ans[1], breakthrough=ans[2], tried=ans[3];
-    if(blockType==="I'm burned out and uninspired"){tone="gentle";}
-    else if(blockType==="I have too many ideas and can't focus"){tone="clarifying";}
-    else if(blockType==="I'm stuck on one problem"){tone="reframing";}
-    else if(blockType==="I'm completely blank"){tone="validating";}
-    else{tone="decisive";}
-    summary= tone==="gentle" ? `Hey ${you}, burnout means you care. Let's give that creativity permission to rest.` :
-      tone==="clarifying"? `Alright ${you}, clarity is your biggest ally now. Let's tame the chaos, not fight it.` :
-      tone==="reframing"? `When you're stuck, progress comes from shifting the lens. Let's do it together, ${you}.` :
-      tone==="validating"? `Blank is where all possibility starts. It's uncomfortable, but it's also pure potential, ${you}.` :
-      `Time to unlock your next breakthrough, ${you}.`;
-    bullets.push(`Block: "${blockType}"`);
-    bullets.push(`You've noticed "${drain}" draining your energy. Acknowledge it—don't push through blindly.`);
-    bullets.push(`Your vision: "${breakthrough}"—make this your north star this week.`);
-    if(tried){bullets.push(`Since "${tried}" didn't work, let's rule it out for now and find a new angle.`);}
+// --- PSEUDO-AI FEEDBACK ---
+function generateFeedback(mode,ans) {
+  let you=userProfile.name,field=userProfile.field,userChallenge=userProfile.challenge;
+  let creativeMessage = "";
+  // Short demo of what a real AI call would inject
+  switch(mode){
+    case "diagnose":{
+      creativeMessage = `🌱 <b>Creative Mentor Insight:</b> I get why "${ans[0]}" hits hard. The story you shared—<em>"${ans[2]}"</em>—is key: try working backwards from that vision, not forwards from the current block. Instead of <b>${ans[3] || "what didn't work"}</b>, experiment with its opposite (e.g. if you "waited", now act immediately in 10 min bursts).`;
+      break;
+    }
+    case "inspire":
+      creativeMessage = `✨ <b>Creative Spark:</b> For "${ans[0]}" as fuel, try curating a moodboard or playlist just for this week. Your most-alive moment was <em>"${ans[1]}"</em>—recreate a tiny piece of that environment in your work zone or routine, even symbolically.`;
+      break;
+    case "brainstorm":
+      creativeMessage = `🔥 <b>Creative Strategy:</b> Use your "${ans[0]}" energy as a lens. Tackle "${ans[1]}" by doing a 5-min "no-bad-ideas" sketch/voice note, then set it aside overnight. Invite a friend for a "ridiculous idea" duel—your <em>"${ans[3]}"</em> might be their favorite!`;
+      break;
+    case "organize":
+      creativeMessage = `📦 <b>Clarity Move:</b> For ${ans[0]} ideas, do a "keep-toss-maybe" exercise, then commit to "${ans[1]}" first. "Ready" means personal fit—so tweak your idea until you feel a "yes" in your gut. Celebrate completing "${ans[3] || '(your next step)'}" right after you do it—tiny wins build momentum.`;
+      break;
+    case "experiment":
+      creativeMessage = `🚀 <b>Courage Move:</b> For "${ans[0]}", keep it low stakes (private, playful, or absurdly small). Your fear (<em>"${ans[2]}"</em>) is the best teacher—write out what's the <b>worst realistic</b> outcome and test that small first. Celebrate all learning, not just "success". Reward yourself!`;
+      break;
+    default:creativeMessage="";
   }
-  else if(mode==="inspire") {
-    let needed=ans[0], alive=ans[1], recent=ans[2], fun=ans[3];
-    summary=`Hey ${you}, your creative engine needs "${needed}".`;
-    bullets.push(`You feel most alive creatively when: "${alive}"—prioritize this feeling in the week ahead.`);
-    bullets.push(`Let "${recent}" inspire you—don't copy, borrow what energizes you.`);
-    if(fun)bullets.push(`For playful reset: Just try "${fun}" (no pressure, just joy).`);
-    if(needed==="Permission to rest") bullets.push("Give yourself guilt-free downtime: real input grows output.");
-    else if(needed==="A creative challenge") bullets.push("Seek a bite-sized prompt or constraint—tiny wins build momentum.");
-    else if(needed==="A reminder of why I started") bullets.push("Reconnect with your original spark; message a past collaborator or recall your earliest success.");
-  }
-  else if(mode==="brainstorm") {
-    let cchallenge=ans[0], wsuc=ans[1], empathy=ans[2], wild=ans[3];
-    summary=`Let's unlock new avenues, ${you}.`;
-    bullets.push(`Crack your challenge: "${cchallenge}"`);
-    bullets.push(`Success for you would look like: "${wsuc}".`);
-    bullets.push(`If helping someone else, you'd try: "${empathy}"—try applying that to your own roadblocks.`);
-    if(wild)bullets.push(`Breakthroughs are often "impractical": "${wild}". Could a fragment of that idea actually work? Borrow shamelessly from the ridiculous.`);
-  }
-  else if(mode==="organize") {
-    let n = ans[0], best=ans[1], ready=ans[2], next=ans[3];
-    summary=`Let's bring order to the storm, ${you}.`;
-    bullets.push(`You have ${n} ideas to sort. It's normal to feel chaos at this stage—one step at a time.`);
-    bullets.push(`Your gut says to focus on: "${best}"`);
-    bullets.push(`For you, "ready" means: "${ready}".`);
-    bullets.push(`Smallest next action: "${next}". Block time for just this—no other planning until you complete it.`);
-    if(n>8) bullets.push("Try using a matrix or sticky-notes for rapid grouping (Notion, Google Keep, or even scrap paper).");
-  }
-  else if (mode==="experiment") {
-    let tinniest=ans[0], fear=ans[1], friend=ans[2], reward=ans[3];
-    summary=`It's courage time, ${you}.`;
-    bullets.push(`Test just this: "${tinniest}"`);
-    if(fear)bullets.push(`You're afraid: "${fear}". Treat this as useful data—what's the *realistic* risk?`);
-    if(friend)bullets.push(`Show your messy draft to: "${friend}". Safe feedback speeds up progress.`);
-    bullets.push(`If you try—even if you 'fail'—reward yourself: "${reward}".`);
-  }
-  document.getElementById('personalFeedback').innerHTML = `<b>${summary}</b><ul>${bullets.map(t=>`<li>${t}</li>`).join("")}</ul>`;
+  document.getElementById('personalFeedback').innerHTML = `Hi <b>${you}</b>,<br>
+    <span style="color:#a855f7;font-weight:600;font-size:1.07em">${modes[mode].label}</span> takeaways for your <b style="color:#7c3aed">${field}</b>:
+    <div style="margin:10px 0 13px 0"><em>Your current challenge:</em> "${userChallenge}"</div>
+    <div>${creativeMessage}</div>
+    <div style="color:#d0d0c0;font-size:0.97em;margin-top:15px;">To keep momentum: try a small action based on this feedback in the next 24h—even if it's just writing down your insights!
+    </div>`;
   document.getElementById('feedbackContainer').style.display = "block";
 }
+// ---
 function toModes(){
   document.getElementById('feedbackContainer').style.display="none";
   document.getElementById('mainContent').style.display="none";
   document.getElementById('modeSelection').style.display="flex";
+  document.getElementById('toModesBtn').style.display = "none";
 }
 function copyResult() {
   let txt = document.getElementById('personalFeedback').innerText;
@@ -429,8 +435,7 @@ function saveSpark() {
   alert("Saved!");
 }
 function renderSaves() {
-  let sb=document.getElementById('saves');
-  if(!sb) return;
+  let sb=document.getElementById('saves'); if(!sb) return;
   sb.innerHTML = saves.map((a,i)=>`<div style="margin:13px 0;"><b>Spark #${i+1}:</b><br>${a}</div>`).join('');
   var boxes = document.querySelectorAll("#savesBox");
   boxes.forEach(b=>{b.style.display=saves.length?"block":"none";});
