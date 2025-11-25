@@ -5,37 +5,112 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Creative Pulse - EKOLITIKA</title>
   <style>
-    body {font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#0a0f1f 0%,#1a2340 20%,#1f2d47 40%,#1a2845 60%,#162313 80%,#1f2d47 100%);min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;gap:30px;}
-    .header{text-align:center;margin-bottom:20px}
-    .logo-img{width:210px;margin:0 auto 11px auto;filter:grayscale(1) brightness(1.3);cursor:pointer;}
+    body {font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#0a0f1f 0%,#1a2340 20%,#1f2d47 40%,#1a2845 60%,#162313 80%,#1f2d47 100%);min-height:100vh;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;padding:0 0 70px 0;}
+    .header{text-align:center;margin-top:30px;margin-bottom:6px}
+    .logo-img{width:210px;margin:0 auto 8px auto;filter:grayscale(1) brightness(1.3);cursor:pointer;transition:filter 0.2s;}
+    .logo-img:hover {filter:brightness(1.6) drop-shadow(0 0 5px #7c3aed);}
     h1{font-size:43px;color:#7c3aed;font-weight:900;margin-bottom:8px;}
-    .tagline{font-size:17px;background:linear-gradient(135deg,#a855f7,#9f1239);color:white;padding:10px 30px;border-radius:25px;display:inline-block;width:fit-content;}
-    .about-section{max-width:630px;text-align:center;margin:26px auto 18px auto;background:rgba(20,20,30,0.86);padding:22px 24px 16px 24px;border-radius:12px;}
-    .about-title{font-size:19px;color:#7c3aed;font-weight:bold;margin-bottom:7px;}
-    .about-text{color:#bbb;line-height:1.7;font-size:15px;}
+    .tagline{font-size:17px;background:linear-gradient(135deg,#a855f7,#9f1239);color:white;padding:11px 32px;border-radius:26px;display:inline-block;width:fit-content;margin-bottom:22px;}
+    .personalize-section{
+        background: linear-gradient(117deg, #2a254d 0%, #412269 100%);
+        border-radius:18px;
+        box-shadow:0 8px 32px #0001;
+        max-width:420px;
+        padding:34px 32px 28px 32px;
+        margin:0 auto 36px auto;
+        display:flex; flex-direction:column; align-items:center;
+        border:2px solid #7c3aed88;
+        position:relative;
+    }
+    .personalize-section-title{
+        color:#fff;
+        font-size:1.44em;
+        letter-spacing:.01em;
+        font-weight:700;
+        margin-bottom:6px;
+        text-align:center;
+    }
+    .personalize-section-exp{
+        color:#a59ef0;
+        font-size:16px;
+        margin-bottom:19px;
+        text-align:center;
+        line-height:1.6;
+    }
+    .personalize-form{
+        width:94%;display:flex;flex-direction:column;gap:15px;align-items:center;
+    }
+    .input-label{color:#ecd1ff;font-weight:500;margin-bottom:3px;}
+    .input{
+        font-size:17px;
+        padding:11px 14px;
+        border-radius:7px;
+        border:1.5px solid #cbb8ec;
+        background:#f6edff;
+        color:#362572;
+        width:100%;
+        outline:none;transition:box-shadow 0.12s;
+    }
+    .input:focus{box-shadow:0 0 0 2px #b985ee;}
+    .btn{
+        padding:12px 27px;font-size:15px;
+        border:none;border-radius:9px;
+        cursor:pointer;font-weight:600;
+        margin-top:8px;
+        background: linear-gradient(100deg,#a855f7 60%,#7c3aed 100%);
+        color:#fff;
+        letter-spacing:.01em;
+        box-shadow: 0 2px 8px #a855f732;
+        transition:background 0.13s, box-shadow 0.14s;
+    }
+    .btn:hover {background:linear-gradient(120deg,#c084fc,#9333ea);}
     .progress{display:flex;justify-content:center;align-items:center;gap:10px;margin:28px auto 22px auto;}
-    .circle{background:#222;color:#7c3aed;border-radius:50%;width:28px;height:28px;display:flex;justify-content:center;align-items:center;font-weight:bold;border:2.5px solid #7c3aed;transition:all 0.2s}
+    .circle{background:#222;color:#7c3aed;border-radius:50%;width:28px;height:28px;display:flex;justify-content:center;align-items:center;font-weight:bold;border:2.2px solid #7c3aed;transition:all 0.2s}
     .circle.active{background:#7c3aed;color:#fff;box-shadow:0 0 0 2px #a855f7;}
     .circle.done{background:#7c3aed;color:#fff;}
-    .progress-label{color:#a9a7be;font-size:11px;text-align:center;max-width:66px;}
-    .form-box{background:#222;padding:20px 14px 25px 14px;border-radius:13px;max-width:410px;margin:18px auto;}
-    .input{width:90%;margin:6px auto 17px auto;font-size:16px;border-radius:6px;padding:9px 14px;}
-    label{display:block;font-weight:600;margin-bottom:3px;color:#acf;}
-    textarea{width:97.5%;margin-bottom:10px;}
-    select,input[type="range"]{margin:0 0 16px 0;}
-    .mode-title{font-size:22px;color:#7c3aed;font-weight:700;margin-bottom:5px;margin-top:10px}
+    .progress-label{color:#a9a7be;font-size:11px;text-align:center;max-width:60px;}
+    .saved-block{background:#232339;color:#fff;border-radius:10px;padding:15px 13px;margin:20px auto;max-width:420px;}
+    .saved-title{color:#7c3aed;font-size:15px;font-weight:bold;margin-bottom:7px;}
+    .mode-card{background:#222;margin:0 auto 24px auto;padding:30px 18px 25px 18px;border-radius:16px;box-shadow:0 4px 28px #0001;max-width:475px;}
+    .mode-title{font-size:22px;color:#7c3aed;font-weight:700;margin-bottom:5px;margin-top:6px}
     .mode-desc{font-size:15px;color:#b0b0b0;line-height:1.6;margin-bottom:16px;}
-    .btn{padding:12px 27px;font-size:15px;border:none;border-radius:8px;cursor:pointer;font-weight:600;}
-    .btn-s{background:#7c3aed;color:#fff;} .btn-s:hover{background:#6d28d9;}
-    .btn-p{background:#3d3d3d;color:#fff;} .btn-p:hover{background:#555;}
-    .footer{font-size:13px;color:#888;text-align:center;margin-top:19px;}
+    .question-label{color:#fff;font-size:17px;font-weight:500;margin-bottom:10px;display:block;}
+    select,textarea,input[type="text"],input[type="range"]{width:98%;}
+    .slider-value{color:#7c3aed;font-weight:bold;margin-left:7px;}
     .feedback-box{background:#171728cc;border:2px solid #7c3aed;border-radius:13px;margin:24px auto 10px auto;max-width:545px;padding:26px 19px;}
     .feedback-title{font-weight:bold;color:#7c3aed;margin-bottom:10px;font-size:17px;}
     .feedback-text{color:#e5e5e5;font-size:15.5px;margin-bottom:8px;}
-    .saved-block{background:#232339;color:#fff;border-radius:10px;padding:15px 13px;margin:20px auto;max-width:420px;}
-    .saved-title{color:#7c3aed;font-size:15px;font-weight:bold;margin-bottom:7px;}
     .restart-btn{margin-top:17px;}
-    @media(max-width:590px){h1{font-size:25px;}.logo-img{width:95px;}.about-section{padding:9px;}.form-box,.feedback-box,.saved-block{max-width:99vw;padding:9px;}}
+    .footer{font-size:13px;color:#888;text-align:center;margin-top:27px;}
+    .story-section{
+        background: linear-gradient(101deg, #fff5fb 10%, #e4eaff 90%);
+        color: #312056;
+        border-radius: 18px;
+        box-shadow:0 4px 20px #a855f709;
+        margin:35px auto 18px auto;
+        padding:32px 7vw 27px 7vw;
+        max-width:655px;
+        border:2.3px solid #a855f7;
+    }
+    .story-title{
+        font-size:20px;
+        color:#9747ff;
+        font-weight:800;
+        margin-bottom:12px;
+        letter-spacing:-.006em;
+    }
+    .story-text{
+        font-size:16.7px;
+        line-height:1.8;
+        color:#261b3c;
+        font-weight:450;
+        letter-spacing:.003em;
+    }
+    @media(max-width:650px){
+      h1{font-size:24px;}.logo-img{width:93px;}
+      .personalize-section, .story-section{max-width:98vw;padding-left:4vw;padding-right:4vw;}
+      .about-section,.feedback-box,.saved-block{padding:9px;max-width:99vw;}
+    }
   </style>
 </head>
 <body>
@@ -46,25 +121,25 @@
   <h1>Creative Pulse</h1>
   <div class="tagline">Spark ideas. Shape them. Make them real.</div>
 </div>
-<div class="about-section">
-  <div class="about-title">Born from Real Creative Struggle</div>
-  <div class="about-text">
-    In 2025, a team joined The Creative Mess—an Erasmus+ course that proved creativity isn't magic. It's a cycle: brainstorm, organize, rest, inspire, experiment, repeat.<br><br>
-    The problem: Most tools feed you empty motivation or treat creativity like a factory line. Neither helps when you're actually stuck.<br><br>
-    So we built Creative Pulse.<br>
-    A free tool that diagnoses your block, tells you what you actually need, and gives you real feedback—not fluff.<br><br>
-    For designers, educators, changemakers, anyone who creates. Creativity as a sustainable practice, not burnout waiting to happen.<br><br>
-    From stuck to unstuck. Idea to action. Exhaustion to rhythm.<br>
-    Built by EKOLiTiKA - an NGO learning sustainability from nature and applying circular thinking to creativity, community, and change.
+
+<div class="personalize-section" id="personalizeArea">
+  <div class="personalize-section-title">Let's personalize your journey</div>
+  <div class="personalize-section-exp">
+    We'll tailor Creative Pulse to you and your creative process.<br>
+    Fill this out to unlock all 5 modes—<b>Diagnose, Inspire, Brainstorm, Organize, Experiment</b>—in the right order for getting truly unstuck.<br>
+    Start here, then watch your whole creative cycle unfold step by step.
   </div>
+  <form class="personalize-form" onsubmit="event.preventDefault();startJourney();">
+    <label class="input-label" for="username">Name or nickname</label>
+    <input class="input" type="text" id="username" placeholder="e.g. Sam, Li, Alex" maxlength="32"/>
+    <label class="input-label" for="creativeField">Creative field/interest</label>
+    <input class="input" type="text" id="creativeField" placeholder="e.g. design, teaching, writing..." maxlength="40"/>
+    <label class="input-label" for="challengeDesc">Your creative challenge</label>
+    <input class="input" type="text" id="challengeDesc" placeholder="Where are you most stuck or want to grow?" maxlength="90"/>
+    <button class="btn" type="submit">Start My Journey</button>
+  </form>
 </div>
-<div id="userForm" class="form-box">
-  <div class="form-title">Let's personalize your journey</div>
-  <input class="input" type="text" id="username" placeholder="Your name or nickname" />
-  <input class="input" type="text" id="creativeField" placeholder="Your creative field/interest" />
-  <input class="input" type="text" id="challengeDesc" placeholder="Describe your creative challenge" />
-  <button class="btn btn-s" onclick="startJourney()">Start</button>
-</div>
+
 <div id="mainContent" style="display:none;">
   <div class="progress" id="progressBar"></div>
   <div class="saved-block" id="savesBox" style="display:none;">
@@ -78,10 +153,24 @@
       <div class="feedback-text" id="personalFeedback"></div>
       <button class="btn btn-p restart-btn" onclick="restart()">Restart</button>
       <button class="btn btn-p restart-btn" onclick="copyResult()">Copy Feedback</button>
-      <button class="btn btn-s restart-btn" onclick="saveSpark()">Save Spark</button>
+      <button class="btn restart-btn" style="background:#a855f7;color:#fff" onclick="saveSpark()">Save Spark</button>
     </div>
   </div>
 </div>
+
+<div class="story-section">
+  <div class="story-title">Born from Real Creative Struggle</div>
+  <div class="story-text">
+    In 2025, a team joined The Creative Mess—an Erasmus+ course that proved creativity isn't magic. It's a cycle: brainstorm, organize, rest, inspire, experiment, repeat.<br><br>
+    The problem: Most tools feed you empty motivation or treat creativity like a factory line. Neither helps when you're actually stuck.<br><br>
+    So we built Creative Pulse.<br>
+    A free tool that diagnoses your block, tells you what you actually need, and gives you real feedback—not fluff.<br><br>
+    For designers, educators, changemakers, anyone who creates. Creativity as a sustainable practice, not burnout waiting to happen.<br><br>
+    From stuck to unstuck. Idea to action. Exhaustion to rhythm.<br>
+    Built by EKOLiTiKA - an NGO learning sustainability from nature and applying circular thinking to creativity, community, and change.
+  </div>
+</div>
+
 <div class="footer">Made with 💚 for all the creative people EKOLiTiKA 2025</div>
 <script>
 // Modes/steps definition (order matters)
@@ -157,7 +246,6 @@ const modes = {
     ]
   }
 };
-// User and answers
 let userProfile = {}, journey = [], modeIndex = 0, currentQ = 0, answers = [], saves = [];
 function startJourney() {
   const name = document.getElementById('username').value || "Friend";
@@ -165,7 +253,7 @@ function startJourney() {
   const challenge = document.getElementById('challengeDesc').value || "my creative process";
   userProfile = {name, field, challenge};
   modeIndex = 0; journey = []; saves = [];
-  document.getElementById('userForm').style.display = 'none';
+  document.getElementById('personalizeArea').style.display = 'none';
   document.getElementById('mainContent').style.display = 'block';
   document.getElementById('savesBox').style.display=saves.length?"block":"none";
   showProgress();
@@ -203,7 +291,7 @@ function showCard(modeData,qi,current) {
   } else {
     html += `<textarea class="input" id="qinput" rows="3" required placeholder="Type here...">${typeof current!=='string'?"":current}</textarea>`;
   }
-  html += `<br><button class="btn btn-s" onclick="submitAnswer()">Next</button>`;
+  html += `<br><button class="btn" onclick="submitAnswer()">Next</button>`;
   card.innerHTML = html;
   document.getElementById('feedbackContainer').style.display="none";
 }
@@ -225,11 +313,8 @@ function finishMode() {
   genFeedback(modeId,answers);
 }
 function genFeedback(mode,ans) {
-  // FEEDBACK LOGIC (greatly improved and mode-specific)
   let tone = "", summary="", bullets=[];
-  // Personalized hooks
   let you=userProfile.name, field=userProfile.field, userChallenge=userProfile.challenge;
-  // MODE logics
   if(mode==="diagnose") {
     let blockType=ans[0], drain=ans[1], breakthrough=ans[2], tried=ans[3];
     if(blockType==="I'm burned out and uninspired"){tone="gentle";}
@@ -253,7 +338,6 @@ function genFeedback(mode,ans) {
     bullets.push(`You feel most alive creatively when: "${alive}"—prioritize this feeling in the week ahead.`);
     bullets.push(`Let "${recent}" inspire you—don't copy, borrow what energizes you.`);
     if(fun)bullets.push(`For playful reset: Just try "${fun}" (no pressure, just joy).`);
-    // Guidance by "fuel"
     if(needed==="Permission to rest") bullets.push("Give yourself guilt-free downtime: real input grows output.");
     else if(needed==="A creative challenge") bullets.push("Seek a bite-sized prompt or constraint—tiny wins build momentum.");
     else if(needed==="A reminder of why I started") bullets.push("Reconnect with your original spark; message a past collaborator or recall your earliest success.");
@@ -287,9 +371,9 @@ function genFeedback(mode,ans) {
   document.getElementById('feedbackContainer').style.display = "block";
 }
 function restart() {
-  document.getElementById('mainContent').style.display="block";
+  document.getElementById('mainContent').style.display="none";
   document.getElementById('feedbackContainer').style.display="none";
-  document.getElementById('userForm').style.display="block";
+  document.getElementById('personalizeArea').style.display="flex";
 }
 function copyResult() {
   let txt = document.getElementById('personalFeedback').innerText;
@@ -308,7 +392,7 @@ function renderSaves() {
   document.getElementById('savesBox').style.display=saves.length?"block":"none";
 }
 document.getElementById('feedbackContainer').addEventListener('click',function(e){
-  if(e.target.classList.contains('btn-s')) {
+  if(e.target.classList.contains('btn')) {
     if(modeIndex<MODE_SEQUENCE.length-1){modeIndex++;launchMode();}
     else {alert("You finished the Creative Cycle! Restart or review your sparks.");}
   }
