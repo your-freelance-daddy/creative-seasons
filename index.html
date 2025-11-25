@@ -5,111 +5,131 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Creative Pulse - EKOLITIKA</title>
   <style>
-    body {font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#0a0f1f 0%,#1a2340 20%,#1f2d47 40%,#1a2845 60%,#162313 80%,#1f2d47 100%);min-height:100vh;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;padding:0 0 70px 0;}
-    .header{text-align:center;margin-top:30px;margin-bottom:6px}
-    .logo-img{width:210px;margin:0 auto 8px auto;filter:grayscale(1) brightness(1.3);cursor:pointer;transition:filter 0.2s;}
-    .logo-img:hover {filter:brightness(1.6) drop-shadow(0 0 5px #7c3aed);}
-    h1{font-size:43px;color:#7c3aed;font-weight:900;margin-bottom:8px;}
-    .tagline{font-size:17px;background:linear-gradient(135deg,#a855f7,#9f1239);color:white;padding:11px 32px;border-radius:26px;display:inline-block;width:fit-content;margin-bottom:22px;}
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg,#0a0f1f 0%, #1a2340 20%, #1f2d47 40%, #1a2845 60%, #162313 80%, #1f2d47 100%);
+      min-height:100vh; margin:0;
+      display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+    }
+    .header{text-align:center;margin-top:36px;margin-bottom:8px}
+    .logo-img{
+      width:215px;margin:0 auto 13px auto;filter:grayscale(1) brightness(1.14);
+      cursor:pointer;transition:filter 0.19s;
+    }
+    .logo-img:hover {filter:drop-shadow(0 0 12px #a855f7) brightness(1.23);}
+    h1{font-size:42px;color:#7c3aed;font-weight:900;margin-bottom:10px;}
+    .tagline{
+      font-size:17px;background:linear-gradient(135deg,#a855f7,#9f1239);color:white;
+      padding:12px 33px;border-radius:27px;display:inline-block;width:fit-content;margin-bottom:24px;
+    }
     .personalize-section{
-        background: linear-gradient(117deg, #2a254d 0%, #412269 100%);
-        border-radius:18px;
-        box-shadow:0 8px 32px #0001;
-        max-width:420px;
-        padding:34px 32px 28px 32px;
-        margin:0 auto 36px auto;
-        display:flex; flex-direction:column; align-items:center;
-        border:2px solid #7c3aed88;
-        position:relative;
+      background: linear-gradient(109deg, #271f5e 0%, #452671 100%);
+      border-radius:18px;max-width:460px;
+      box-shadow:0 12px 42px #0002;
+      padding:40px 36px 32px 36px;
+      margin:0 auto 36px auto;display:flex;flex-direction:column;align-items:center;
+      border:2.5px solid #7c3aed99;position:relative;
     }
     .personalize-section-title{
-        color:#fff;
-        font-size:1.44em;
-        letter-spacing:.01em;
-        font-weight:700;
-        margin-bottom:6px;
-        text-align:center;
+      color:#fefcff;font-size:1.35em;letter-spacing:.01em;font-weight:700;margin-bottom:10px;text-align:center;
     }
     .personalize-section-exp{
-        color:#a59ef0;
-        font-size:16px;
-        margin-bottom:19px;
-        text-align:center;
-        line-height:1.6;
+      color:#c6bfff;font-size:16.3px;margin-bottom:22px;text-align:center;line-height:1.6;
     }
-    .personalize-form{
-        width:94%;display:flex;flex-direction:column;gap:15px;align-items:center;
-    }
-    .input-label{color:#ecd1ff;font-weight:500;margin-bottom:3px;}
+    .personalize-form{width:99%;display:flex;flex-direction:column;gap:17px;align-items:center;}
+    .input-label{color:#ecd1ff;font-weight:500;font-size:15px;margin-bottom:4px;}
     .input{
-        font-size:17px;
-        padding:11px 14px;
-        border-radius:7px;
-        border:1.5px solid #cbb8ec;
-        background:#f6edff;
-        color:#362572;
-        width:100%;
-        outline:none;transition:box-shadow 0.12s;
+      font-size:17px;padding:12px 15px;border-radius:7px;border:1.6px solid #cbb8ec;
+      background:#f6edff;color:#342577;width:100%;outline:none;transition:box-shadow 0.13s;
     }
     .input:focus{box-shadow:0 0 0 2px #b985ee;}
     .btn{
-        padding:12px 27px;font-size:15px;
-        border:none;border-radius:9px;
-        cursor:pointer;font-weight:600;
-        margin-top:8px;
-        background: linear-gradient(100deg,#a855f7 60%,#7c3aed 100%);
-        color:#fff;
-        letter-spacing:.01em;
-        box-shadow: 0 2px 8px #a855f732;
-        transition:background 0.13s, box-shadow 0.14s;
+      padding:13px 29px;font-size:16px;border:none;border-radius:10px;cursor:pointer;font-weight:600;
+      margin-top:13px;
+      background: linear-gradient(100deg,#a855f7 60%,#7c3aed 100%);
+      color:#fff;letter-spacing:.01em;
+      box-shadow: 0 2px 8px #a855f732;
+      transition:background 0.14s, box-shadow 0.14s;
     }
     .btn:hover {background:linear-gradient(120deg,#c084fc,#9333ea);}
-    .progress{display:flex;justify-content:center;align-items:center;gap:10px;margin:28px auto 22px auto;}
-    .circle{background:#222;color:#7c3aed;border-radius:50%;width:28px;height:28px;display:flex;justify-content:center;align-items:center;font-weight:bold;border:2.2px solid #7c3aed;transition:all 0.2s}
-    .circle.active{background:#7c3aed;color:#fff;box-shadow:0 0 0 2px #a855f7;}
-    .circle.done{background:#7c3aed;color:#fff;}
-    .progress-label{color:#a9a7be;font-size:11px;text-align:center;max-width:60px;}
-    .saved-block{background:#232339;color:#fff;border-radius:10px;padding:15px 13px;margin:20px auto;max-width:420px;}
-    .saved-title{color:#7c3aed;font-size:15px;font-weight:bold;margin-bottom:7px;}
-    .mode-card{background:#222;margin:0 auto 24px auto;padding:30px 18px 25px 18px;border-radius:16px;box-shadow:0 4px 28px #0001;max-width:475px;}
-    .mode-title{font-size:22px;color:#7c3aed;font-weight:700;margin-bottom:5px;margin-top:6px}
-    .mode-desc{font-size:15px;color:#b0b0b0;line-height:1.6;margin-bottom:16px;}
+    .mode-select-section{
+      background: linear-gradient(110deg, #ece9fa 40%, #f8e6fa 100%);
+      border-radius:17px;
+      max-width:565px; margin:24px auto 24px auto;
+      padding:26px 30px 22px 30px;
+      box-shadow:0 6px 25px #a855f716;
+      display:flex; flex-direction:column; align-items:center;
+    }
+    .mode-select-title {color:#7c3aed;font-size:1.4em; font-weight:700; letter-spacing:-.01em; margin-bottom:13px;}
+    .mode-select-exp {color:#4c3380; font-size:16.5px;text-align:center;margin-bottom:21px;}
+    .mode-btns-grid{
+      display:grid;grid-template-columns:1fr 1fr;gap:26px;justify-content:center;margin-bottom:7px;width:100%;
+    }
+    .mode-btn{
+      border:none;cursor:pointer;outline:none;text-align:center;
+      font-family:inherit;display:flex;flex-direction:column;align-items:center;
+      background:linear-gradient(140deg,#fff 32%,#ede7f6 100%);
+      border-radius:13px;box-shadow:0 2px 12px #7c3aed10;transition:transform 0.13s,border 0.14s;
+      border:2.2px solid #ded1ff;padding:24px 0 16px 0;
+    }
+    .mode-btn:active,.mode-btn:focus{transform:scale(0.96);border-color:#bda6fa;}
+    .mode-icon{font-size:36px;margin-bottom:9px;}
+    .mode-btn-label{color:#7c3aed;font-size:20px;font-weight:650;}
+    .mode-btn-desc{color:#4c3380;font-size:14px;margin-top:3px;}
+    /* For feedback and UX */
+    .mode-card{background:#222;margin:0 auto 24px auto;padding:31px 18px 25px 18px;border-radius:17px;box-shadow:0 4px 22px #0001;max-width:501px;}
+    .mode-title{font-size:22px;color:#7c3aed;font-weight:700;margin-bottom:7px;}
+    .mode-desc{font-size:15px;color:#b0b0b0;line-height:1.65;margin-bottom:16px;}
     .question-label{color:#fff;font-size:17px;font-weight:500;margin-bottom:10px;display:block;}
-    select,textarea,input[type="text"],input[type="range"]{width:98%;}
     .slider-value{color:#7c3aed;font-weight:bold;margin-left:7px;}
-    .feedback-box{background:#171728cc;border:2px solid #7c3aed;border-radius:13px;margin:24px auto 10px auto;max-width:545px;padding:26px 19px;}
+    .feedback-box{background:#171728cc;border:2px solid #7c3aed;border-radius:13px;margin:27px auto 13px auto;max-width:545px;padding:28px 21px;}
     .feedback-title{font-weight:bold;color:#7c3aed;margin-bottom:10px;font-size:17px;}
-    .feedback-text{color:#e5e5e5;font-size:15.5px;margin-bottom:8px;}
-    .restart-btn{margin-top:17px;}
-    .footer{font-size:13px;color:#888;text-align:center;margin-top:27px;}
+    .feedback-text{color:#e5e5e5;font-size:15.7px;margin-bottom:8px;}
+    .footer{
+      font-size:13.6px;color:#fff;text-align:center;margin-top:35px;
+      background:linear-gradient(97deg, #7c3aed, #a5b4fc 90%);border-radius:15px;
+      padding:21px 21px 17px 21px;
+      font-weight:600;letter-spacing:0.02em;
+      transition:box-shadow 0.18s;box-shadow:0 2px 18px #a855f726;
+    }
+    .footer a {color:#fff;text-decoration:none;}
+    .footer:hover{box-shadow:0 3px 24px #ad87e7aa;background:linear-gradient(100deg, #9d7ffe 30%, #a5b4fc 100%);}
+    .saved-block{background:#232339;color:#fff;border-radius:10px;padding:16px 11px;margin:17px auto;max-width:450px;}
+    .saved-title{color:#7c3aed;font-size:15px;font-weight:620;margin-bottom:7px;}
     .story-section{
-        background: linear-gradient(101deg, #fff5fb 10%, #e4eaff 90%);
-        color: #312056;
-        border-radius: 18px;
-        box-shadow:0 4px 20px #a855f709;
-        margin:35px auto 18px auto;
-        padding:32px 7vw 27px 7vw;
-        max-width:655px;
-        border:2.3px solid #a855f7;
+      background: linear-gradient(101deg, #fff7fb 20%, #e5eaff 80%);
+      color: #312056;
+      border-radius: 22px;
+      box-shadow:0 4px 24px #a855f705;
+      margin:36px auto 38px auto;padding:46px 6vw 38px 6vw;
+      max-width:700px;border:2.6px solid #a855f7;
+      display:flex;flex-direction:column;align-items:center;
     }
     .story-title{
-        font-size:20px;
+        font-size:21.4px;
         color:#9747ff;
         font-weight:800;
-        margin-bottom:12px;
-        letter-spacing:-.006em;
+        margin-bottom:15px;
+        letter-spacing:-.004em;
+        text-align:center;
     }
     .story-text{
-        font-size:16.7px;
-        line-height:1.8;
-        color:#261b3c;
-        font-weight:450;
+        font-size:17.4px;
+        line-height:1.85;
+        color:#1b113c;
+        font-weight:470;
         letter-spacing:.003em;
+        text-align:center;
+        max-width:95vw;
     }
-    @media(max-width:650px){
-      h1{font-size:24px;}.logo-img{width:93px;}
-      .personalize-section, .story-section{max-width:98vw;padding-left:4vw;padding-right:4vw;}
-      .about-section,.feedback-box,.saved-block{padding:9px;max-width:99vw;}
+    @media(max-width:760px){
+      h1{font-size:25px;}.logo-img{width:87px;}
+      .personalize-section, .story-section{max-width:99vw;padding-left:3vw;padding-right:3vw;}
+      .mode-select-section,.mode-card,.about-section,.feedback-box,.saved-block{padding:9px;max-width:99vw;}
+    }
+    @media(max-width:580px){
+      .mode-btns-grid{grid-template-columns:1fr;}
+      .personalize-section{padding:19px 2vw 17px 2vw;}
     }
   </style>
 </head>
@@ -123,35 +143,69 @@
 </div>
 
 <div class="personalize-section" id="personalizeArea">
-  <div class="personalize-section-title">Let's personalize your journey</div>
+  <div class="personalize-section-title">Personalize Your Journey</div>
   <div class="personalize-section-exp">
-    We'll tailor Creative Pulse to you and your creative process.<br>
-    Fill this out to unlock all 5 modes—<b>Diagnose, Inspire, Brainstorm, Organize, Experiment</b>—in the right order for getting truly unstuck.<br>
-    Start here, then watch your whole creative cycle unfold step by step.
+    To unlock all Creative Pulse modes, help us tune the experience to you.
+    <br>After this, <b>choose any creative mode</b>—Diagnose, Inspire, Brainstorm, Organize, or Experiment. 
+    <br><br>
+    Every question and feedback will use what you share, for practical, personalized help exactly where you are.
   </div>
   <form class="personalize-form" onsubmit="event.preventDefault();startJourney();">
     <label class="input-label" for="username">Name or nickname</label>
-    <input class="input" type="text" id="username" placeholder="e.g. Sam, Li, Alex" maxlength="32"/>
+    <input class="input" type="text" id="username" placeholder="e.g. Sam, Li, Alex" maxlength="32" autocomplete="off"/>
     <label class="input-label" for="creativeField">Creative field/interest</label>
-    <input class="input" type="text" id="creativeField" placeholder="e.g. design, teaching, writing..." maxlength="40"/>
+    <input class="input" type="text" id="creativeField" placeholder="e.g. design, teaching, writing..." maxlength="40" autocomplete="off"/>
     <label class="input-label" for="challengeDesc">Your creative challenge</label>
-    <input class="input" type="text" id="challengeDesc" placeholder="Where are you most stuck or want to grow?" maxlength="90"/>
-    <button class="btn" type="submit">Start My Journey</button>
+    <input class="input" type="text" id="challengeDesc" placeholder="Where are you most stuck or want to grow?" maxlength="90" autocomplete="off"/>
+    <button class="btn" type="submit">Personalize &amp; Enter</button>
   </form>
 </div>
 
-<div id="mainContent" style="display:none;">
-  <div class="progress" id="progressBar"></div>
+<div id="modeSelection" class="mode-select-section" style="display:none;">
+  <div class="mode-select-title">Choose Your Creative Mode</div>
+  <div class="mode-select-exp">
+    Each mode tackles a different phase in the creative process—choose one or explore them all. All feedback is tailored just for you, based on your input.
+  </div>
+  <div class="mode-btns-grid">
+    <button class="mode-btn" onclick="launchMode('diagnose')" tabindex="0">
+      <span class="mode-icon">🩺</span>
+      <span class="mode-btn-label">Diagnose</span>
+      <span class="mode-btn-desc">Find your current creative block and get tailored steps.</span>
+    </button>
+    <button class="mode-btn" onclick="launchMode('inspire')" tabindex="0">
+      <span class="mode-icon">✨</span>
+      <span class="mode-btn-label">Inspire</span>
+      <span class="mode-btn-desc">Refuel when you’re low. Rediscover the spark.</span>
+    </button>
+    <button class="mode-btn" onclick="launchMode('brainstorm')" tabindex="0">
+      <span class="mode-icon">💡</span>
+      <span class="mode-btn-label">Brainstorm</span>
+      <span class="mode-btn-desc">Blow open challenges & think wild, without judgment.</span>
+    </button>
+    <button class="mode-btn" onclick="launchMode('organize')" tabindex="0">
+      <span class="mode-icon">📦</span>
+      <span class="mode-btn-label">Organize</span>
+      <span class="mode-btn-desc">Shape and filter ideas into clear, tiny next steps.</span>
+    </button>
+    <button class="mode-btn" onclick="launchMode('experiment')" tabindex="0">
+      <span class="mode-icon">🚀</span>
+      <span class="mode-btn-label">Experiment</span>
+      <span class="mode-btn-desc">Test, learn, and move from plan to real-world results.</span>
+    </button>
+  </div>
   <div class="saved-block" id="savesBox" style="display:none;">
     <div class="saved-title">Your saved sparks</div>
     <div id="saves"></div>
   </div>
+</div>
+
+<div id="mainContent" style="display:none;">
   <div id="modeCard" class="mode-card" style="display:none;"></div>
   <div id="feedbackContainer" style="display:none;">
     <div class="feedback-box">
       <div class="feedback-title">Your Feedback</div>
       <div class="feedback-text" id="personalFeedback"></div>
-      <button class="btn btn-p restart-btn" onclick="restart()">Restart</button>
+      <button class="btn btn-p restart-btn" onclick="toModes()">Back to Modes</button>
       <button class="btn btn-p restart-btn" onclick="copyResult()">Copy Feedback</button>
       <button class="btn restart-btn" style="background:#a855f7;color:#fff" onclick="saveSpark()">Save Spark</button>
     </div>
@@ -161,27 +215,27 @@
 <div class="story-section">
   <div class="story-title">Born from Real Creative Struggle</div>
   <div class="story-text">
-    In 2025, a team joined The Creative Mess—an Erasmus+ course that proved creativity isn't magic. It's a cycle: brainstorm, organize, rest, inspire, experiment, repeat.<br><br>
-    The problem: Most tools feed you empty motivation or treat creativity like a factory line. Neither helps when you're actually stuck.<br><br>
-    So we built Creative Pulse.<br>
-    A free tool that diagnoses your block, tells you what you actually need, and gives you real feedback—not fluff.<br><br>
-    For designers, educators, changemakers, anyone who creates. Creativity as a sustainable practice, not burnout waiting to happen.<br><br>
-    From stuck to unstuck. Idea to action. Exhaustion to rhythm.<br>
+    In 2025, a team joined The Creative Mess—an Erasmus+ course that proved creativity isn't magic. It's a cycle: brainstorm, organize, rest, inspire, experiment, repeat.
+    <br><br>
+    The problem: Most tools feed you empty motivation or treat creativity like a factory line. Neither helps when you're actually stuck.
+    <br><br>
+    So we built Creative Pulse.
+    A free tool that diagnoses your block, tells you what you actually need, and gives you real feedback—not fluff.
+    <br><br>
+    For designers, educators, changemakers, anyone who creates. Creativity as a sustainable practice, not burnout waiting to happen.
+    <br><br>
+    From stuck to unstuck. Idea to action. Exhaustion to rhythm.
+    <br>
     Built by EKOLiTiKA - an NGO learning sustainability from nature and applying circular thinking to creativity, community, and change.
   </div>
 </div>
 
-<div class="footer">Made with 💚 for all the creative people EKOLiTiKA 2025</div>
+<div class="footer">
+  <a href="https://ekolitika.framer.website/" target="_blank">Made with 💚 by EKOLiTiKA 2025</a>
+</div>
+
 <script>
-// Modes/steps definition (order matters)
-const MODE_SEQUENCE = [
-  { id: "diagnose",  label: "DIAGNOSE" },
-  { id: "inspire",   label: "INSPIRE" },
-  { id: "brainstorm",label: "BRAINSTORM" },
-  { id: "organize",  label: "ORGANIZE" },
-  { id: "experiment",label: "EXPERIMENT" }
-];
-// Mode data and questions
+// Modes definition
 const modes = {
   diagnose: {
     title: "DIAGNOSE: What's Blocking You?",
@@ -246,71 +300,59 @@ const modes = {
     ]
   }
 };
-let userProfile = {}, journey = [], modeIndex = 0, currentQ = 0, answers = [], saves = [];
+let userProfile = {}, answers = {}, curMode = null, curQ = 0, curA = [], lastMode = "", saves = [];
 function startJourney() {
   const name = document.getElementById('username').value || "Friend";
   const field = document.getElementById('creativeField').value || "creativity";
   const challenge = document.getElementById('challengeDesc').value || "my creative process";
   userProfile = {name, field, challenge};
-  modeIndex = 0; journey = []; saves = [];
+  answers = {}; curMode = null; curQ = 0; curA = [];
   document.getElementById('personalizeArea').style.display = 'none';
-  document.getElementById('mainContent').style.display = 'block';
-  document.getElementById('savesBox').style.display=saves.length?"block":"none";
-  showProgress();
-  launchMode();
+  document.getElementById('modeSelection').style.display = 'flex';
+  renderSaves();
 }
-function showProgress() {
-  let html = '', n = MODE_SEQUENCE.length;
-  for(let i=0;i<n;i++){
-    let step = MODE_SEQUENCE[i], done= i<modeIndex, active=i===modeIndex;
-    html+= `<div>
-      <div class="circle${done?" done":""}${active?" active":""}">${i+1}</div>
-      <div class="progress-label">${step.label}</div>
-    </div>`;
-  }
-  document.getElementById('progressBar').innerHTML = html;
+function launchMode(mode) {
+  curMode = mode; curQ = 0; curA = [];
+  document.getElementById('modeSelection').style.display = "none";
+  document.getElementById('mainContent').style.display = "block";
+  showCard();
 }
-function launchMode() {
-  currentQ = 0; answers = [];
-  let mode = MODE_SEQUENCE[modeIndex].id, data = modes[mode];
-  showProgress();
-  showCard(data,0,[]);
-}
-function showCard(modeData,qi,current) {
-  const card = document.getElementById('modeCard');
-  card.style.display="block";
+function showCard() {
+  const cd = document.getElementById('modeCard');
+  const modeData = modes[curMode];
+  cd.style.display = "block";
   let html = `<div class="mode-title">${modeData.title}</div><div class="mode-desc">${modeData.desc}</div>`;
-  let q = modeData.questions[qi];
+  let q = modeData.questions[curQ];
   html += `<label class="question-label">${q.q}</label>`;
   if(q.type==="choice") {
     html += `<select class="input" id="qinput">${q.c.map(opt=>`<option value="${opt}">${opt}</option>`).join("")}</select>`;
   } else if(q.type==="slider") {
     let d = q.def||q.min;
-    html += `<input type="range" id="qinput" min="${q.min}" max="${q.max}" value="${d}" step="${q.step||1}" 
+    html += `<input type="range" id="qinput" min="${q.min}" max="${q.max}" value="${d}" step="${q.step||1}"
       oninput="document.getElementById('slideval').innerText=this.value;"><span class="slider-value" id="slideval">${d}</span>`;
   } else {
-    html += `<textarea class="input" id="qinput" rows="3" required placeholder="Type here...">${typeof current!=='string'?"":current}</textarea>`;
+    html += `<textarea class="input" id="qinput" rows="3" required placeholder="Type here..."></textarea>`;
   }
-  html += `<br><button class="btn" onclick="submitAnswer()">Next</button>`;
-  card.innerHTML = html;
+  html += `<br><button class="btn" style="margin-top:14px;" onclick="submitAnswer()">Next</button>`;
+  cd.innerHTML = html;
   document.getElementById('feedbackContainer').style.display="none";
 }
 function submitAnswer() {
-  let mode = MODE_SEQUENCE[modeIndex].id;
-  let qData = modes[mode].questions[currentQ], val;
+  let modeData = modes[curMode];
+  let qData = modeData.questions[curQ], val;
   if(qData.type==="slider") {val=document.getElementById('qinput').value;}
   else {val = document.getElementById('qinput').value.trim();}
   if(!val){alert("Answer required.");return;}
-  answers.push(val);
-  currentQ++;
-  if(currentQ<modes[mode].questions.length){showCard(modes[mode],currentQ,answers[currentQ]);}
+  curA.push(val);
+  curQ++;
+  if(curQ<modeData.questions.length){showCard();}
   else{finishMode();}
 }
 function finishMode() {
-  let modeId = MODE_SEQUENCE[modeIndex].id;
-  journey.push({mode:modeId,answers:[...answers]});
+  answers[curMode] = [...curA];
   document.getElementById('modeCard').style.display="none";
-  genFeedback(modeId,answers);
+  genFeedback(curMode,curA);
+  lastMode = curMode;
 }
 function genFeedback(mode,ans) {
   let tone = "", summary="", bullets=[];
@@ -357,7 +399,7 @@ function genFeedback(mode,ans) {
     bullets.push(`Your gut says to focus on: "${best}"`);
     bullets.push(`For you, "ready" means: "${ready}".`);
     bullets.push(`Smallest next action: "${next}". Block time for just this—no other planning until you complete it.`);
-    if(n > 8) bullets.push("Try using a matrix or sticky-notes for rapid grouping (Notion, Google Keep, or even scrap paper).");
+    if(n>8) bullets.push("Try using a matrix or sticky-notes for rapid grouping (Notion, Google Keep, or even scrap paper).");
   }
   else if (mode==="experiment") {
     let tinniest=ans[0], fear=ans[1], friend=ans[2], reward=ans[3];
@@ -370,10 +412,10 @@ function genFeedback(mode,ans) {
   document.getElementById('personalFeedback').innerHTML = `<b>${summary}</b><ul>${bullets.map(t=>`<li>${t}</li>`).join("")}</ul>`;
   document.getElementById('feedbackContainer').style.display = "block";
 }
-function restart() {
-  document.getElementById('mainContent').style.display="none";
+function toModes(){
   document.getElementById('feedbackContainer').style.display="none";
-  document.getElementById('personalizeArea').style.display="flex";
+  document.getElementById('mainContent').style.display="none";
+  document.getElementById('modeSelection').style.display="flex";
 }
 function copyResult() {
   let txt = document.getElementById('personalFeedback').innerText;
@@ -388,15 +430,11 @@ function saveSpark() {
 }
 function renderSaves() {
   let sb=document.getElementById('saves');
+  if(!sb) return;
   sb.innerHTML = saves.map((a,i)=>`<div style="margin:13px 0;"><b>Spark #${i+1}:</b><br>${a}</div>`).join('');
-  document.getElementById('savesBox').style.display=saves.length?"block":"none";
+  var boxes = document.querySelectorAll("#savesBox");
+  boxes.forEach(b=>{b.style.display=saves.length?"block":"none";});
 }
-document.getElementById('feedbackContainer').addEventListener('click',function(e){
-  if(e.target.classList.contains('btn')) {
-    if(modeIndex<MODE_SEQUENCE.length-1){modeIndex++;launchMode();}
-    else {alert("You finished the Creative Cycle! Restart or review your sparks.");}
-  }
-});
 </script>
 </body>
 </html>
