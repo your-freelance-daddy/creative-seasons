@@ -5,205 +5,314 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Creative Pulse - EKOLITIKA</title>
   <style>
-    * {margin: 0; padding: 0; box-sizing: border-box;}
-    body {font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg,#0a0f1f 0%,#1a2340 20%,#1f2d47 40%,#1a2845 60%,#162313 80%,#1f2d47 100%); min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; gap: 30px;}
-    .header {text-align: center; margin-bottom: 30px}
-    .logo-img {width: 60px; margin-bottom: 15px; filter: grayscale(1) brightness(1.7);}
-    h1 {font-size: 46px; color:#7c3aed; font-weight: 900; margin-bottom: 15px; text-shadow: 0 0 20px rgba(124,58,237,0.3);}
-    .tagline {font-size: 18px; background: linear-gradient(135deg,#a855f7,#9f1239); color: white; padding: 10px 30px; border-radius: 25px; display:inline-block; width: fit-content;}
-    .main-container {display: grid; grid-template-columns: repeat(2,1fr); gap: 20px; max-width: 900px; width: 100%; padding: 0 20px; margin: 0 auto;}
-    .mode-btn {padding: 30px; border-radius: 15px; cursor:pointer; transition: all 0.25s ease; text-align: center; border: 3px solid #2a2a2a; display: flex; flex-direction: column; align-items: center; justify-content: center;}
-    .mode-btn:hover {transform: scale(1.05);}
-    .mode-btn-brainstorm{background:linear-gradient(135deg,#fef08a 0%,#fde047 100%)}
-    .mode-btn-organize{background:linear-gradient(135deg,#bfdbfe 0%,#93c5fd 100%)}
-    .mode-btn-inspire{background:linear-gradient(135deg,#fbcfe8 0%,#f472b6 100%)}
-    .mode-btn-experiment{background:linear-gradient(135deg,#a7f3d0 0%,#6ee7b7 100%)}
-    .mode-icon {font-size: 36px; margin-bottom:12px;}
-    .mode-title {font-size: 24px; font-weight: 700; margin-bottom: 5px; color: #2a2a2a;}
-    .mode-desc {font-size: 16px; color: #2a2a2a;}
-    .about-section {text-align: center; max-width: 900px; padding: 30px; margin-top: 20px; background: rgba(20,20,30,0.8); border: 1px solid #3d3d3d; border-radius: 10px;}
-    .about-title {font-size: 22px; font-weight: 700; color: #7c3aed; margin-bottom: 15px;}
-    .about-text {font-size: 15px; color: #b0b0b0; line-height: 1.8; margin-bottom: 10px;}
-    .footer {font-size: 13px; color: #888; text-align: center; margin-top:30px;}
-    .input {margin:10px auto 22px auto; font-size:16px; border-radius:6px; padding:7px 14px;}
-    .btn {padding: 12px 24px; font-size: 16px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;}
-    .btn-s {background: #7c3aed; color:#fff;}
-    .btn-s:hover {background: #6d28d9;}
-    .btn-p {background: #3d3d3d; color:#fff;}
-    .btn-p:hover {background:#555;}
-    .feedback-box {background: #171728cc; border: 2px solid #7c3aed; border-radius: 12px; margin: 25px 0; max-width: 620px; padding:28px 20px;}
-    .feedback-title {font-weight: bold; color: #7c3aed; margin-bottom: 8px;}
-    .feedback-text {color:#e5e5e5; font-size:16px; margin-bottom:8px;}
-    .restart-btn {margin-top: 22px;}
-    @media(max-width:768px){h1{font-size:30px;}.main-container{grid-template-columns:1fr;}.mode-title{font-size:18px;}}
+    body {font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#0a0f1f 0%,#1a2340 20%,#1f2d47 40%,#1a2845 60%,#162313 80%,#1f2d47 100%);min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px;gap:30px;}
+    .header{text-align:center;margin-bottom:20px}
+    .logo-img{width:210px;margin:0 auto 11px auto;filter:grayscale(1) brightness(1.3);cursor:pointer;}
+    h1{font-size:43px;color:#7c3aed;font-weight:900;margin-bottom:8px;}
+    .tagline{font-size:17px;background:linear-gradient(135deg,#a855f7,#9f1239);color:white;padding:10px 30px;border-radius:25px;display:inline-block;width:fit-content;}
+    .about-section{max-width:630px;text-align:center;margin:26px auto 18px auto;background:rgba(20,20,30,0.86);padding:22px 24px 16px 24px;border-radius:12px;}
+    .about-title{font-size:19px;color:#7c3aed;font-weight:bold;margin-bottom:7px;}
+    .about-text{color:#bbb;line-height:1.7;font-size:15px;}
+    .progress{display:flex;justify-content:center;align-items:center;gap:10px;margin:28px auto 22px auto;}
+    .circle{background:#222;color:#7c3aed;border-radius:50%;width:28px;height:28px;display:flex;justify-content:center;align-items:center;font-weight:bold;border:2.5px solid #7c3aed;transition:all 0.2s}
+    .circle.active{background:#7c3aed;color:#fff;box-shadow:0 0 0 2px #a855f7;}
+    .circle.done{background:#7c3aed;color:#fff;}
+    .progress-label{color:#a9a7be;font-size:11px;text-align:center;max-width:66px;}
+    .form-box{background:#222;padding:20px 14px 25px 14px;border-radius:13px;max-width:410px;margin:18px auto;}
+    .input{width:90%;margin:6px auto 17px auto;font-size:16px;border-radius:6px;padding:9px 14px;}
+    label{display:block;font-weight:600;margin-bottom:3px;color:#acf;}
+    textarea{width:97.5%;margin-bottom:10px;}
+    select,input[type="range"]{margin:0 0 16px 0;}
+    .mode-title{font-size:22px;color:#7c3aed;font-weight:700;margin-bottom:5px;margin-top:10px}
+    .mode-desc{font-size:15px;color:#b0b0b0;line-height:1.6;margin-bottom:16px;}
+    .btn{padding:12px 27px;font-size:15px;border:none;border-radius:8px;cursor:pointer;font-weight:600;}
+    .btn-s{background:#7c3aed;color:#fff;} .btn-s:hover{background:#6d28d9;}
+    .btn-p{background:#3d3d3d;color:#fff;} .btn-p:hover{background:#555;}
+    .footer{font-size:13px;color:#888;text-align:center;margin-top:19px;}
+    .feedback-box{background:#171728cc;border:2px solid #7c3aed;border-radius:13px;margin:24px auto 10px auto;max-width:545px;padding:26px 19px;}
+    .feedback-title{font-weight:bold;color:#7c3aed;margin-bottom:10px;font-size:17px;}
+    .feedback-text{color:#e5e5e5;font-size:15.5px;margin-bottom:8px;}
+    .saved-block{background:#232339;color:#fff;border-radius:10px;padding:15px 13px;margin:20px auto;max-width:420px;}
+    .saved-title{color:#7c3aed;font-size:15px;font-weight:bold;margin-bottom:7px;}
+    .restart-btn{margin-top:17px;}
+    @media(max-width:590px){h1{font-size:25px;}.logo-img{width:95px;}.about-section{padding:9px;}.form-box,.feedback-box,.saved-block{max-width:99vw;padding:9px;}}
   </style>
 </head>
 <body>
-  <div class="header">
+<div class="header">
+  <a href="https://ekolitika.framer.website/" target="_blank" tabindex="-1">
     <img src="https://framerusercontent.com/images/NhZAoGoxBJzZIPWRIXCzVkkNuDA.png?scale-down-to=512" class="logo-img" alt="EKOLITIKA Logo"/>
-    <h1>Creative Pulse</h1>
-    <div class="tagline">Spark ideas. Shape them. Make them real.</div>
+  </a>
+  <h1>Creative Pulse</h1>
+  <div class="tagline">Spark ideas. Shape them. Make them real.</div>
+</div>
+<div class="about-section">
+  <div class="about-title">Born from Real Creative Struggle</div>
+  <div class="about-text">
+    In 2025, a team joined The Creative Mess—an Erasmus+ course that proved creativity isn't magic. It's a cycle: brainstorm, organize, rest, inspire, experiment, repeat.<br><br>
+    The problem: Most tools feed you empty motivation or treat creativity like a factory line. Neither helps when you're actually stuck.<br><br>
+    So we built Creative Pulse.<br>
+    A free tool that diagnoses your block, tells you what you actually need, and gives you real feedback—not fluff.<br><br>
+    For designers, educators, changemakers, anyone who creates. Creativity as a sustainable practice, not burnout waiting to happen.<br><br>
+    From stuck to unstuck. Idea to action. Exhaustion to rhythm.<br>
+    Built by EKOLiTiKA - an NGO learning sustainability from nature and applying circular thinking to creativity, community, and change.
   </div>
-  <div id="userForm">
-    <div style="background:#222;padding:24px;border-radius:12px;max-width:420px;margin:0 auto 24px;">
-      <div style="color:#fff;font-weight:600;font-size:18px;margin-bottom:10px;">Let's personalize your journey</div>
-      <input class="input" type="text" id="username" placeholder="Your name or nickname" />
-      <input class="input" type="text" id="creativeField" placeholder="Creative field/interest" />
-      <input class="input" type="text" id="challengeDesc" placeholder="Describe your current creative challenge" />
-      <button class="btn btn-s" onclick="startModes()">Start</button>
-    </div>
+</div>
+<div id="userForm" class="form-box">
+  <div class="form-title">Let's personalize your journey</div>
+  <input class="input" type="text" id="username" placeholder="Your name or nickname" />
+  <input class="input" type="text" id="creativeField" placeholder="Your creative field/interest" />
+  <input class="input" type="text" id="challengeDesc" placeholder="Describe your creative challenge" />
+  <button class="btn btn-s" onclick="startJourney()">Start</button>
+</div>
+<div id="mainContent" style="display:none;">
+  <div class="progress" id="progressBar"></div>
+  <div class="saved-block" id="savesBox" style="display:none;">
+    <div class="saved-title">Your saved sparks</div>
+    <div id="saves"></div>
   </div>
-  <div id="mainContent" style="display:none;">
-    <div id="modes">
-      <div class="main-container">
-        <button class="mode-btn mode-btn-brainstorm" onclick="startMode('brainstorm')"><div class="mode-icon">💡</div><div class="mode-title">BRAINSTORM</div><div class="mode-desc">Generate freely</div></button>
-        <button class="mode-btn mode-btn-organize" onclick="startMode('organize')"><div class="mode-icon">📋</div><div class="mode-title">ORGANIZE</div><div class="mode-desc">Get structure</div></button>
-        <button class="mode-btn mode-btn-inspire" onclick="startMode('inspire')"><div class="mode-icon">⭐</div><div class="mode-title">INSPIRE</div><div class="mode-desc">Find spark</div></button>
-        <button class="mode-btn mode-btn-experiment" onclick="startMode('experiment')"><div class="mode-icon">🚀</div><div class="mode-title">EXPERIMENT</div><div class="mode-desc">Try new</div></button>
-      </div>
-      <div class="about-section">
-        <div class="about-title">Why Creative Pulse?</div>
-        <div class="about-text"><b>BRAINSTORM:</b> Generate without limits. More ideas, more solutions. Don't filter early.</div>
-        <div class="about-text"><b>ORGANIZE:</b> Move from chaos to clarity. Group and prioritize, make your idea real.</div>
-        <div class="about-text"><b>INSPIRE:</b> Refuel. Look for what's new, rediscover your 'why', and stay open.</div>
-        <div class="about-text"><b>EXPERIMENT:</b> Try, test, learn. Fast feedback makes ideas stronger and more practical.</div>
-        <div class="about-text">Every mode is here to keep you moving: more ideas, more clarity, more results.</div>
-      </div>
-    </div>
-    <div id="qContainer" style="display:none;">
-      <form id="qForm" onsubmit="nextQuestion(event)">
-        <div id="qBox" style="margin-bottom:14px;color:#fff;font-size:19px;font-weight:500;"></div>
-        <textarea class="input" id="userAnswer" rows="3" style="width:98%;min-height:50px;" required placeholder="Type your answer..."></textarea>
-        <button class="btn btn-s" type="submit">Next</button>
-      </form>
-    </div>
-    <div id="feedbackContainer" style="display:none;">
-      <div class="feedback-box">
-        <div class="feedback-title">Your Insight</div>
-        <div class="feedback-text" id="personalFeedback"></div>
-        <button class="btn btn-p restart-btn" onclick="restart()">Home / Try Again</button>
-        <button class="btn btn-p restart-btn" onclick="copyResult()">Copy Feedback</button>
-      </div>
+  <div id="modeCard" class="mode-card" style="display:none;"></div>
+  <div id="feedbackContainer" style="display:none;">
+    <div class="feedback-box">
+      <div class="feedback-title">Your Feedback</div>
+      <div class="feedback-text" id="personalFeedback"></div>
+      <button class="btn btn-p restart-btn" onclick="restart()">Restart</button>
+      <button class="btn btn-p restart-btn" onclick="copyResult()">Copy Feedback</button>
+      <button class="btn btn-s restart-btn" onclick="saveSpark()">Save Spark</button>
     </div>
   </div>
-  <div class="footer">Made with 💚 for creative community<br>EKOLITIKA 2025</div>
-  <script>
-    // User Details
-    let userProfile = {};
-    function startModes() {
-      const name = document.getElementById('username').value || "Participant";
-      const field = document.getElementById('creativeField').value || "creativity";
-      const challenge = document.getElementById('challengeDesc').value || "my creative process";
-      userProfile = {name, field, challenge};
-      document.getElementById('userForm').style.display = 'none';
-      document.getElementById('mainContent').style.display = 'block';
-    }
-    // Modes Q&A
-    const modes = {
-      brainstorm: {
-        questions: [
-          "What challenge do you want to brainstorm for?",
-          "What mindset will help you brainstorm better?",
-          "Who would benefit from your ideas?",
-          "What's the wildest idea you can think of for this?"
-        ]
-      },
-      organize: {
-        questions: [
-          "How many ideas do you want to organize?",
-          "How will you group or rank these ideas?",
-          "What makes an idea a top priority for you?",
-          "What's your first concrete next step?"
-        ]
-      },
-      inspire: {
-        questions: [
-          "What kind of inspiration are you seeking?",
-          "Where do you usually find your best ideas?",
-          "Who inspires you in your work or life?",
-          "How will you use your new spark?"
-        ]
-      },
-      experiment: {
-        questions: [
-          "What do you want to test or prototype?",
-          "How much risk are you willing to take?",
-          "What's the simplest way to get feedback?",
-          "How will you know if it worked?"
-        ]
-      }
-    };
-    let activeMode = "";
-    let currentQ = 0;
-    let answers = [];
-    function startMode(mode) {
-      activeMode = mode;
-      currentQ = 0;
-      answers = [];
-      document.getElementById('modes').style.display = "none";
-      document.getElementById('feedbackContainer').style.display = "none";
-      document.getElementById('qContainer').style.display = "block";
-      showQuestion();
-    }
-    function showQuestion() {
-      document.getElementById('qBox').innerText = modes[activeMode].questions[currentQ];
-      document.getElementById('userAnswer').value = '';
-    }
-    function nextQuestion(e) {
-      e.preventDefault();
-      answers.push(document.getElementById('userAnswer').value.trim());
-      currentQ++;
-      if(currentQ >= modes[activeMode].questions.length) {
-        generateFeedback();
-      } else {
-        showQuestion();
-      }
-    }
-    function generateFeedback() {
-      // Feedback recipes per mode, pulling from both userProfile and answers
-      let advice = "";
-      let tips = [];
-      if(activeMode === "brainstorm") {
-        advice = `Hi ${userProfile.name}, you tackled brainstorming for: "${answers[0] || userProfile.challenge}".`;
-        tips.push("Try to suspend all judgment—quantity creates quality at this stage.");
-        tips.push(`Your craziest idea: "${answers[3] || '(no answer)'}" may hold surprising value.`);
-        tips.push("Don't brainstorm alone—share your ideas and get feedback from others.");
-        tips.push(`Mindset to use: "${answers[1] || 'open'}"—apply it widely for the next steps.`);
-      } else if(activeMode === "organize") {
-        advice = `Hi ${userProfile.name}, you’re organizing ideas around: "${userProfile.challenge}".`;
-        tips.push(`Group of ideas: "${answers[0] || 'not specified'}".`);
-        tips.push('Group/rank ideas based on impact and feasibility for real-world focus.');
-        tips.push(`Next step: "${answers[3] || 'Define an action to move forward'}"—commit it by tomorrow.`);
-      } else if (activeMode === "inspire") {
-        advice = `Hi ${userProfile.name}, you're seeking fresh inspiration for: "${userProfile.field}".`;
-        tips.push(`Try a new source for inspiration, like "${answers[1] || 'exploring art, nature, or tech'}".`);
-        tips.push(`Person who inspires you: "${answers[2] || 'Think of a mentor or peer'}".`);
-        tips.push(`Take your spark to action: "${answers[3] || 'Develop one concrete idea now!'}"`);
-      } else if (activeMode === "experiment") {
-        advice = `Hi ${userProfile.name}, it's time to experiment on "${answers[0] || userProfile.challenge}".`;
-        tips.push(`Risk level: "${answers[1] || 'medium'}" is good; but start small to learn fast.`);
-        tips.push(`Test early: “${answers[2] || 'Seek direct feedback from one trusted person'}”.`);
-        tips.push(`Define clear criteria: success = "${answers[3] || 'You learned something new.'}"`);
-      }
-      // Build feedback text
-      let feedbackHtml = `<b>${advice}</b>`;
-      feedbackHtml += "<ul style='margin:1em 0 0 18px;padding:0 0 0 8px;color:#ddd;font-size:15px;'>";
-      tips.forEach(t => feedbackHtml += `<li>${t}</li>`);
-      feedbackHtml += "</ul>";
-      document.getElementById('qContainer').style.display = "none";
-      document.getElementById('feedbackContainer').style.display = "block";
-      document.getElementById('personalFeedback').innerHTML = feedbackHtml;
-    }
-    function restart() {
-      document.getElementById('mainContent').style.display = 'block';
-      document.getElementById('feedbackContainer').style.display = "none";
-      document.getElementById('modes').style.display = "block";
-    }
-    function copyResult() {
-      let txt = document.getElementById('personalFeedback').innerText;
-      navigator.clipboard.writeText(txt);
-      alert("Feedback copied!");
-    }
-  </script>
+</div>
+<div class="footer">Made with 💚 for all the creative people EKOLiTiKA 2025</div>
+<script>
+// Modes/steps definition (order matters)
+const MODE_SEQUENCE = [
+  { id: "diagnose",  label: "DIAGNOSE" },
+  { id: "inspire",   label: "INSPIRE" },
+  { id: "brainstorm",label: "BRAINSTORM" },
+  { id: "organize",  label: "ORGANIZE" },
+  { id: "experiment",label: "EXPERIMENT" }
+];
+// Mode data and questions
+const modes = {
+  diagnose: {
+    title: "DIAGNOSE: What's Blocking You?",
+    desc: "Most creative journeys start with a block. Let's pinpoint yours.",
+    questions: [
+      { q: "Right now, what does your creative block feel like?", type: "choice", c: [
+        "I have too many ideas and can't focus",
+        "I'm completely blank",
+        "I know what to do but can't start",
+        "I'm burned out and uninspired",
+        "I'm stuck on one problem"
+      ]},
+      { q: "What's been draining your creative energy lately?", type: "text" },
+      { q: "When you imagine breaking through this, what does that look like?", type: "text" },
+      { q: "What's one thing you've already tried that didn't work?", type: "text" }
+    ]
+  },
+  inspire: {
+    title: "INSPIRE: Refuel before you rebuild.",
+    desc: "If you feel empty or stagnant, let's refill the tank before anything else.",
+    questions: [
+      { q: "What kind of creative fuel do you need right now?", type: "choice", c: [
+        "New perspectives",
+        "Permission to rest",
+        "A reminder of why I started",
+        "Examples of what's possible",
+        "A creative challenge"
+      ]},
+      { q: "Describe a moment when you felt most creatively alive.", type: "text" },
+      { q: "Who or what recently made you think 'damn, I want to make something like that'?", type: "text" },
+      { q: "If you had zero pressure and total freedom, what would you create just for fun?", type: "text" }
+    ]
+  },
+  brainstorm: {
+    title: "BRAINSTORM: Generate without judgment.",
+    desc: "Now we expand: dare to be weird, solve for someone else, go way outside your box.",
+    questions: [
+      { q: "What creative challenge do you want to crack wide open?", type: "text" },
+      { q: "What would make this brainstorm session a wild success?", type: "text" },
+      { q: "If you solved this for someone you deeply care about, what would you try?", type: "text" },
+      { q: "What's the most ridiculous, impractical, or rule-breaking idea you can think of?", type: "text" }
+    ]
+  },
+  organize: {
+    title: "ORGANIZE: Turn chaos into clarity.",
+    desc: "You've got raw material—now let's shape it into a plan.",
+    questions: [
+      { q: "How many ideas are swirling around right now?", type: "slider", min:1, max:25, step:1, def:3 },
+      { q: "What's your gut telling you is the one idea worth pursuing first?", type: "text" },
+      { q: "What would make an idea feel 'ready' to move forward?", type: "text" },
+      { q: "What's the smallest, clearest next action you can take this week?", type: "text" }
+    ]
+  },
+  experiment: {
+    title: "EXPERIMENT: Test it in the real world.",
+    desc: "Forget perfect plans: action creates clarity. Iterate and learn.",
+    questions: [
+      { q: "What's the tiniest version of this idea you could test this week?", type: "text" },
+      { q: "What are you most afraid will happen if you try this?", type: "text" },
+      { q: "Who's one person you trust enough to show this messy first draft?", type: "text" },
+      { q: "How will you celebrate trying, even if it flops?", type: "text" }
+    ]
+  }
+};
+// User and answers
+let userProfile = {}, journey = [], modeIndex = 0, currentQ = 0, answers = [], saves = [];
+function startJourney() {
+  const name = document.getElementById('username').value || "Friend";
+  const field = document.getElementById('creativeField').value || "creativity";
+  const challenge = document.getElementById('challengeDesc').value || "my creative process";
+  userProfile = {name, field, challenge};
+  modeIndex = 0; journey = []; saves = [];
+  document.getElementById('userForm').style.display = 'none';
+  document.getElementById('mainContent').style.display = 'block';
+  document.getElementById('savesBox').style.display=saves.length?"block":"none";
+  showProgress();
+  launchMode();
+}
+function showProgress() {
+  let html = '', n = MODE_SEQUENCE.length;
+  for(let i=0;i<n;i++){
+    let step = MODE_SEQUENCE[i], done= i<modeIndex, active=i===modeIndex;
+    html+= `<div>
+      <div class="circle${done?" done":""}${active?" active":""}">${i+1}</div>
+      <div class="progress-label">${step.label}</div>
+    </div>`;
+  }
+  document.getElementById('progressBar').innerHTML = html;
+}
+function launchMode() {
+  currentQ = 0; answers = [];
+  let mode = MODE_SEQUENCE[modeIndex].id, data = modes[mode];
+  showProgress();
+  showCard(data,0,[]);
+}
+function showCard(modeData,qi,current) {
+  const card = document.getElementById('modeCard');
+  card.style.display="block";
+  let html = `<div class="mode-title">${modeData.title}</div><div class="mode-desc">${modeData.desc}</div>`;
+  let q = modeData.questions[qi];
+  html += `<label class="question-label">${q.q}</label>`;
+  if(q.type==="choice") {
+    html += `<select class="input" id="qinput">${q.c.map(opt=>`<option value="${opt}">${opt}</option>`).join("")}</select>`;
+  } else if(q.type==="slider") {
+    let d = q.def||q.min;
+    html += `<input type="range" id="qinput" min="${q.min}" max="${q.max}" value="${d}" step="${q.step||1}" 
+      oninput="document.getElementById('slideval').innerText=this.value;"><span class="slider-value" id="slideval">${d}</span>`;
+  } else {
+    html += `<textarea class="input" id="qinput" rows="3" required placeholder="Type here...">${typeof current!=='string'?"":current}</textarea>`;
+  }
+  html += `<br><button class="btn btn-s" onclick="submitAnswer()">Next</button>`;
+  card.innerHTML = html;
+  document.getElementById('feedbackContainer').style.display="none";
+}
+function submitAnswer() {
+  let mode = MODE_SEQUENCE[modeIndex].id;
+  let qData = modes[mode].questions[currentQ], val;
+  if(qData.type==="slider") {val=document.getElementById('qinput').value;}
+  else {val = document.getElementById('qinput').value.trim();}
+  if(!val){alert("Answer required.");return;}
+  answers.push(val);
+  currentQ++;
+  if(currentQ<modes[mode].questions.length){showCard(modes[mode],currentQ,answers[currentQ]);}
+  else{finishMode();}
+}
+function finishMode() {
+  let modeId = MODE_SEQUENCE[modeIndex].id;
+  journey.push({mode:modeId,answers:[...answers]});
+  document.getElementById('modeCard').style.display="none";
+  genFeedback(modeId,answers);
+}
+function genFeedback(mode,ans) {
+  // FEEDBACK LOGIC (greatly improved and mode-specific)
+  let tone = "", summary="", bullets=[];
+  // Personalized hooks
+  let you=userProfile.name, field=userProfile.field, userChallenge=userProfile.challenge;
+  // MODE logics
+  if(mode==="diagnose") {
+    let blockType=ans[0], drain=ans[1], breakthrough=ans[2], tried=ans[3];
+    if(blockType==="I'm burned out and uninspired"){tone="gentle";}
+    else if(blockType==="I have too many ideas and can't focus"){tone="clarifying";}
+    else if(blockType==="I'm stuck on one problem"){tone="reframing";}
+    else if(blockType==="I'm completely blank"){tone="validating";}
+    else{tone="decisive";}
+    summary= tone==="gentle" ? `Hey ${you}, burnout means you care. Let's give that creativity permission to rest.` :
+      tone==="clarifying"? `Alright ${you}, clarity is your biggest ally now. Let's tame the chaos, not fight it.` :
+      tone==="reframing"? `When you're stuck, progress comes from shifting the lens. Let's do it together, ${you}.` :
+      tone==="validating"? `Blank is where all possibility starts. It's uncomfortable, but it's also pure potential, ${you}.` :
+      `Time to unlock your next breakthrough, ${you}.`;
+    bullets.push(`Block: "${blockType}"`);
+    bullets.push(`You've noticed "${drain}" draining your energy. Acknowledge it—don't push through blindly.`);
+    bullets.push(`Your vision: "${breakthrough}"—make this your north star this week.`);
+    if(tried){bullets.push(`Since "${tried}" didn't work, let's rule it out for now and find a new angle.`);}
+  }
+  else if(mode==="inspire") {
+    let needed=ans[0], alive=ans[1], recent=ans[2], fun=ans[3];
+    summary=`Hey ${you}, your creative engine needs "${needed}".`;
+    bullets.push(`You feel most alive creatively when: "${alive}"—prioritize this feeling in the week ahead.`);
+    bullets.push(`Let "${recent}" inspire you—don't copy, borrow what energizes you.`);
+    if(fun)bullets.push(`For playful reset: Just try "${fun}" (no pressure, just joy).`);
+    // Guidance by "fuel"
+    if(needed==="Permission to rest") bullets.push("Give yourself guilt-free downtime: real input grows output.");
+    else if(needed==="A creative challenge") bullets.push("Seek a bite-sized prompt or constraint—tiny wins build momentum.");
+    else if(needed==="A reminder of why I started") bullets.push("Reconnect with your original spark; message a past collaborator or recall your earliest success.");
+  }
+  else if(mode==="brainstorm") {
+    let cchallenge=ans[0], wsuc=ans[1], empathy=ans[2], wild=ans[3];
+    summary=`Let's unlock new avenues, ${you}.`;
+    bullets.push(`Crack your challenge: "${cchallenge}"`);
+    bullets.push(`Success for you would look like: "${wsuc}".`);
+    bullets.push(`If helping someone else, you'd try: "${empathy}"—try applying that to your own roadblocks.`);
+    if(wild)bullets.push(`Breakthroughs are often "impractical": "${wild}". Could a fragment of that idea actually work? Borrow shamelessly from the ridiculous.`);
+  }
+  else if(mode==="organize") {
+    let n = ans[0], best=ans[1], ready=ans[2], next=ans[3];
+    summary=`Let's bring order to the storm, ${you}.`;
+    bullets.push(`You have ${n} ideas to sort. It's normal to feel chaos at this stage—one step at a time.`);
+    bullets.push(`Your gut says to focus on: "${best}"`);
+    bullets.push(`For you, "ready" means: "${ready}".`);
+    bullets.push(`Smallest next action: "${next}". Block time for just this—no other planning until you complete it.`);
+    if(n > 8) bullets.push("Try using a matrix or sticky-notes for rapid grouping (Notion, Google Keep, or even scrap paper).");
+  }
+  else if (mode==="experiment") {
+    let tinniest=ans[0], fear=ans[1], friend=ans[2], reward=ans[3];
+    summary=`It's courage time, ${you}.`;
+    bullets.push(`Test just this: "${tinniest}"`);
+    if(fear)bullets.push(`You're afraid: "${fear}". Treat this as useful data—what's the *realistic* risk?`);
+    if(friend)bullets.push(`Show your messy draft to: "${friend}". Safe feedback speeds up progress.`);
+    bullets.push(`If you try—even if you 'fail'—reward yourself: "${reward}".`);
+  }
+  document.getElementById('personalFeedback').innerHTML = `<b>${summary}</b><ul>${bullets.map(t=>`<li>${t}</li>`).join("")}</ul>`;
+  document.getElementById('feedbackContainer').style.display = "block";
+}
+function restart() {
+  document.getElementById('mainContent').style.display="block";
+  document.getElementById('feedbackContainer').style.display="none";
+  document.getElementById('userForm').style.display="block";
+}
+function copyResult() {
+  let txt = document.getElementById('personalFeedback').innerText;
+  navigator.clipboard.writeText(txt);
+  alert("Feedback copied!");
+}
+function saveSpark() {
+  let fb = document.getElementById('personalFeedback').innerText;
+  saves.push(fb);
+  renderSaves();
+  alert("Saved!");
+}
+function renderSaves() {
+  let sb=document.getElementById('saves');
+  sb.innerHTML = saves.map((a,i)=>`<div style="margin:13px 0;"><b>Spark #${i+1}:</b><br>${a}</div>`).join('');
+  document.getElementById('savesBox').style.display=saves.length?"block":"none";
+}
+document.getElementById('feedbackContainer').addEventListener('click',function(e){
+  if(e.target.classList.contains('btn-s')) {
+    if(modeIndex<MODE_SEQUENCE.length-1){modeIndex++;launchMode();}
+    else {alert("You finished the Creative Cycle! Restart or review your sparks.");}
+  }
+});
+</script>
 </body>
 </html>
