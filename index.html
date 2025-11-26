@@ -10,8 +10,8 @@
             --primary-glow: #a855f788;
             --secondary: #ec4899;
             --bg-dark: #0f172a;
-            --glass-bg: rgba(255, 255, 255, 0.07);
-            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
             --text-main: #ffffff;
             --text-muted: #94a3b8;
         }
@@ -53,7 +53,7 @@
             50% { transform: translate(30px, -30px); }
         }
 
-        /* --- UI Components --- */
+        /* --- UI Layout --- */
         .container {
             width: 100%;
             max-width: 600px;
@@ -62,42 +62,61 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            position: relative;
         }
 
+        /* --- Header & Logo --- */
         .header {
             text-align: center;
-            margin-bottom: 20px;
-            margin-top: 10px;
+            margin-bottom: 10px;
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
-        .logo-text {
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff, #cbd5e1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.02em;
+        .logo-img {
+            width: 180px;
+            height: auto;
+            filter: brightness(1.2);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
+        .logo-img:hover { transform: scale(1.05) rotate(-2deg); }
 
         .tagline {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-top: 5px;
+            font-size: 0.95rem;
+            background: linear-gradient(90deg, #e9d5ff, #fff, #e9d5ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 600;
+            margin-top: 8px;
+            opacity: 0.9;
+            letter-spacing: 0.5px;
         }
 
-        /* Glass Cards */
+        /* --- Glass Cards --- */
         .glass-panel {
             background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-radius: 24px;
-            padding: 30px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            padding: 28px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
             margin-bottom: 20px;
-            transition: transform 0.3s ease, opacity 0.3s ease;
+            transition: transform 0.2s ease, opacity 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
+        /* Shine effect on cards */
+        .glass-panel::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
+            transform: skewX(-25deg); transition: 0.5s; pointer-events: none;
+        }
+        .glass-panel:hover::after { left: 150%; transition: 0.7s; }
 
+        /* --- Buttons --- */
         .btn {
             background: linear-gradient(135deg, var(--primary), #7c3aed);
             color: white;
@@ -105,91 +124,143 @@
             padding: 16px 32px;
             border-radius: 16px;
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             width: 100%;
-            transition: all 0.2s;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
             box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
-            text-align: center;
+            display: inline-flex; justify-content: center; align-items: center; gap: 8px;
+            text-decoration: none;
         }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(168, 85, 247, 0.5); }
-        .btn:active { transform: scale(0.98); }
+        .btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 25px rgba(168, 85, 247, 0.5); }
+        .btn:active { transform: scale(0.96); }
+        
         .btn-secondary { background: rgba(255,255,255,0.1); box-shadow: none; border: 1px solid rgba(255,255,255,0.1); }
-        .btn-secondary:hover { background: rgba(255,255,255,0.2); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
 
-        .btn-icon { font-size: 1.2rem; margin-right: 8px; }
-
-        /* Form Elements */
-        input[type="text"] {
-            width: 100%;
-            background: rgba(0,0,0,0.2);
+        .icon-btn {
+            background: rgba(255,255,255,0.1);
             border: 1px solid var(--glass-border);
-            padding: 15px;
+            color: var(--text-muted);
+            width: 40px; height: 40px;
             border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.2s;
+            font-size: 1.2rem;
+        }
+        .icon-btn:hover { background: rgba(236, 72, 153, 0.2); color: white; border-color: #ec4899; transform: rotate(10deg); }
+
+        .story-btn {
+            background: none; border: none; color: var(--text-muted);
+            font-size: 0.85rem; cursor: pointer; margin-top: 10px;
+            text-decoration: underline; opacity: 0.7; transition: 0.2s;
+        }
+        .story-btn:hover { opacity: 1; color: var(--primary); }
+
+        /* --- Forms --- */
+        input[type="text"], textarea {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
+            padding: 16px;
+            border-radius: 14px;
             color: white;
             font-size: 1rem;
-            margin-bottom: 15px;
+            margin-bottom: 18px;
             outline: none;
+            transition: 0.2s;
+            font-family: inherit;
         }
-        input[type="text"]:focus { border-color: var(--primary); }
+        input[type="text"]:focus, textarea:focus { border-color: var(--primary); background: rgba(0,0,0,0.5); box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2); }
         
-        label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.9rem; color: #e2e8f0; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; color: #e9d5ff; }
 
-        /* --- Views Management --- */
-        .view { display: none; animation: fadeIn 0.4s ease-out; }
+        /* --- Views & Animations --- */
+        .view { display: none; animation: fadeIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
         .view.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
         /* --- Dashboard Grid --- */
         .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .mode-card {
-            background: rgba(255,255,255,0.05);
+            background: linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
             border: 1px solid var(--glass-border);
             border-radius: 20px;
-            padding: 20px;
+            padding: 20px 15px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 140px;
+            min-height: 145px;
+            position: relative;
         }
-        .mode-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-3px); border-color: var(--primary); }
-        .mode-emoji { font-size: 2.5rem; margin-bottom: 10px; }
-        .mode-name { font-weight: 700; color: white; margin-bottom: 4px; }
-        .mode-desc { font-size: 0.75rem; color: var(--text-muted); line-height: 1.3; }
+        .mode-card:hover { 
+            background: rgba(255,255,255,0.12); 
+            transform: translateY(-5px) scale(1.02); 
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px -10px rgba(168, 85, 247, 0.4);
+        }
+        .mode-emoji { font-size: 2.8rem; margin-bottom: 12px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
+        .mode-name { font-weight: 800; color: white; margin-bottom: 5px; font-size: 1.1rem; }
+        .mode-desc { font-size: 0.75rem; color: #cbd5e1; line-height: 1.4; max-width: 90%; }
 
-        /* --- Focus Wizard (Question Mode) --- */
-        .progress-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-bottom: 30px; }
-        .progress-fill { height: 100%; background: var(--primary); border-radius: 2px; width: 0%; transition: width 0.3s; }
+        /* --- Focus Wizard --- */
+        .progress-container { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-bottom: 30px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); border-radius: 10px; width: 0%; transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); box-shadow: 0 0 10px var(--primary); }
         
-        .question-text { font-size: 1.4rem; font-weight: 700; margin-bottom: 25px; line-height: 1.4; }
+        .question-text { font-size: 1.5rem; font-weight: 800; margin-bottom: 25px; line-height: 1.35; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
         .option-btn {
-            display: block; width: 100%; text-align: left;
-            background: rgba(255,255,255,0.05);
+            display: flex; align-items: center; width: 100%; text-align: left;
+            background: rgba(255,255,255,0.03);
             border: 1px solid var(--glass-border);
-            padding: 18px 20px; margin-bottom: 12px;
-            border-radius: 12px; color: #cbd5e1;
+            padding: 18px 22px; margin-bottom: 12px;
+            border-radius: 16px; color: #cbd5e1;
             cursor: pointer; transition: 0.2s;
-            font-size: 1rem;
+            font-size: 1rem; font-weight: 500;
         }
-        .option-btn:hover { background: rgba(168, 85, 247, 0.15); border-color: var(--primary); color: white; }
-        .option-btn.selected { background: var(--primary); border-color: var(--primary); color: white; }
+        .option-btn:hover { background: rgba(168, 85, 247, 0.15); border-color: var(--primary); color: white; padding-left: 26px; }
+        .option-btn.selected { background: linear-gradient(90deg, var(--primary), #9333ea); border-color: var(--primary); color: white; font-weight: 700; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4); transform: scale(1.01); }
 
-        /* --- Result Card --- */
-        .result-card { border-top: 4px solid var(--primary); }
-        .result-header { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); margin-bottom: 10px; font-weight: 700; }
-        .result-body { font-size: 1.1rem; line-height: 1.6; color: #e2e8f0; margin-bottom: 25px; }
-        .result-archetype { font-size: 1.8rem; font-weight: 800; margin-bottom: 15px; color: white; }
-        .action-box { background: rgba(168, 85, 247, 0.1); border-left: 3px solid var(--primary); padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        /* --- Result & Typing Effect --- */
+        .result-card { border-top: 5px solid var(--primary); }
+        .result-header { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; color: var(--secondary); margin-bottom: 15px; font-weight: 800; }
+        .result-archetype { font-size: 2rem; font-weight: 900; margin-bottom: 20px; background: linear-gradient(135deg, #fff, #e9d5ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
+        .typewriter-text { font-size: 1.15rem; line-height: 1.7; color: #e2e8f0; margin-bottom: 30px; border-left: 2px solid var(--glass-border); padding-left: 15px; }
+        .cursor::after { content: '|'; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .action-box { background: rgba(168, 85, 247, 0.15); border: 1px solid rgba(168, 85, 247, 0.3); padding: 20px; border-radius: 16px; margin-bottom: 25px; }
+        
+        /* --- Modal (Story) --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+            z-index: 100; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: 0.3s;
+        }
+        .modal-overlay.open { opacity: 1; pointer-events: all; }
+        .modal-content {
+            background: #1e1b4b;
+            border: 2px solid var(--primary);
+            width: 90%; max-width: 500px; max-height: 85vh; overflow-y: auto;
+            border-radius: 24px; padding: 30px;
+            transform: translateY(20px); transition: 0.3s;
+            box-shadow: 0 0 40px rgba(168, 85, 247, 0.4);
+        }
+        .modal-overlay.open .modal-content { transform: translateY(0); }
+        .story-text { font-size: 1rem; line-height: 1.7; color: #cbd5e1; margin-bottom: 15px; }
+        .story-highlight { color: var(--primary); font-weight: 700; }
+
         /* --- Saved Sparks --- */
-        .spark-item { padding: 15px; background: rgba(0,0,0,0.2); border-radius: 12px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05); }
-        .spark-date { font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 5px; }
+        .spark-item { padding: 20px; background: rgba(0,0,0,0.25); border-radius: 16px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.05); transition: 0.2s; }
+        .spark-item:hover { border-color: var(--primary-glow); background: rgba(0,0,0,0.4); }
 
         .hidden { display: none; }
+        .top-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; }
     </style>
 </head>
 <body>
@@ -201,159 +272,200 @@
     </div>
 
     <div class="container">
+        
         <header class="header">
-            <div class="logo-text">Creative Pulse</div>
-            <div class="tagline">An EKOLITIKA Project</div>
+            <img src="https://framerusercontent.com/images/NhZAoGoxBJzZIPWRIXCzVkkNuDA.png?scale-down-to=512" alt="EKOLITIKA Logo" class="logo-img">
+            <div class="tagline">Creative Pulse</div>
         </header>
 
         <div id="view-onboarding" class="view active">
-            <div class="glass-panel">
-                <h2 style="font-size:1.8rem; margin-bottom:10px;">Unstick your mind.</h2>
+            <div class="glass-panel" style="text-align:center;">
+                <h2 style="font-size:1.8rem; margin-bottom:15px; background: linear-gradient(to right, #fff, #cbd5e1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Unstick your mind.</h2>
                 <p style="color:#cbd5e1; margin-bottom:30px; line-height:1.6;">
-                    A free digital mentor for creators. No fluff, just practical steps to get you moving again.<br><br>
-                    <em style="font-size:0.9rem; opacity:0.7;">100% Free • Private • No Login Required</em>
+                    A digital mentor for the creative community.<br>
+                    Diagnose blocks, find inspiration, and get actionable advice.
                 </p>
-                <form id="onboardForm">
-                    <label>What should we call you?</label>
-                    <input type="text" id="userName" placeholder="e.g., Alex, Sam..." required autocomplete="off">
+                <form id="onboardForm" style="text-align:left;">
+                    <label>Your Name / Nickname</label>
+                    <input type="text" id="userName" placeholder="e.g. Alex, Sam..." required autocomplete="off">
                     
-                    <label>What's your creative field?</label>
-                    <input type="text" id="userField" placeholder="e.g., Design, Writing, Music..." required autocomplete="off">
+                    <label>Your Creative Field</label>
+                    <input type="text" id="userField" placeholder="e.g. Design, Education, Music..." required autocomplete="off">
 
-                    <button type="submit" class="btn">Start Journey &rarr;</button>
+                    <button type="submit" class="btn">Start Your Journey 🚀</button>
                 </form>
             </div>
-            <div style="text-align:center; font-size:0.8rem; opacity:0.5; margin-top:20px;">
-                Born from "The Creative Mess" Erasmus+ Course
-            </div>
+            
+            <button class="story-btn" onclick="openStory()">Wait, what is this tool?</button>
         </div>
 
         <div id="view-dashboard" class="view">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                <h3 style="margin:0;">Hello, <span id="dashName" style="color:var(--primary);">Creator</span>.</h3>
-                <button onclick="logout()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.8rem;">Reset</button>
+            <div class="top-nav">
+                <div>
+                    <div style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Welcome back</div>
+                    <div style="font-size:1.4rem; font-weight:700;" id="dashName">Creator</div>
+                </div>
+                <button onclick="logout()" class="icon-btn" title="Reset Profile">⏻</button>
             </div>
 
-            <div class="glass-panel" style="padding:20px;">
-                <label style="margin-bottom:15px; display:block;">How can we help today?</label>
+            <div class="glass-panel" style="padding:20px 20px 30px 20px;">
+                <div style="text-align:center; margin-bottom:20px; font-weight:600; color:#e2e8f0;">Choose your mode</div>
                 <div class="mode-grid">
                     <div class="mode-card" onclick="startMode('diagnose')">
                         <div class="mode-emoji">🩺</div>
                         <div class="mode-name">Diagnose</div>
-                        <div class="mode-desc">Find out why you're stuck.</div>
+                        <div class="mode-desc">Identify exactly why you are stuck.</div>
                     </div>
                     <div class="mode-card" onclick="startMode('inspire')">
                         <div class="mode-emoji">✨</div>
                         <div class="mode-name">Inspire</div>
-                        <div class="mode-desc">Refill your creative well.</div>
+                        <div class="mode-desc">Refuel your creative energy tank.</div>
                     </div>
                     <div class="mode-card" onclick="startMode('brainstorm')">
-                        <div class="mode-emoji">🌪️</div>
+                        <div class="mode-emoji">💡</div>
                         <div class="mode-name">Brainstorm</div>
-                        <div class="mode-desc">Generate wild ideas fast.</div>
+                        <div class="mode-desc">Break rules and think wild.</div>
                     </div>
                     <div class="mode-card" onclick="startMode('organize')">
                         <div class="mode-emoji">📦</div>
                         <div class="mode-name">Organize</div>
-                        <div class="mode-desc">Make chaos actionable.</div>
+                        <div class="mode-desc">Turn chaos into tiny steps.</div>
                     </div>
                     <div class="mode-card" onclick="startMode('experiment')">
-                        <div class="mode-emoji">🧪</div>
+                        <div class="mode-emoji">🚀</div>
                         <div class="mode-name">Experiment</div>
-                        <div class="mode-desc">Test ideas safely.</div>
+                        <div class="mode-desc">Test ideas without fear.</div>
                     </div>
-                    <div class="mode-card" style="border-style:dashed; opacity:0.7;" onclick="showSaved()">
-                        <div class="mode-emoji">📂</div>
+                    <div class="mode-card" style="border-style:dashed; opacity:0.8;" onclick="showSaved()">
+                        <div class="mode-emoji">⚡</div>
                         <div class="mode-name">My Sparks</div>
-                        <div class="mode-desc">View your saved advice.</div>
+                        <div class="mode-desc">Library of saved advice.</div>
                     </div>
                 </div>
+            </div>
+            <div style="text-align:center;">
+                <button class="story-btn" onclick="openStory()">Read the Origin Story 📖</button>
             </div>
         </div>
 
         <div id="view-wizard" class="view">
-            <button onclick="goHome()" style="background:none; border:none; color:var(--text-muted); margin-bottom:10px; cursor:pointer;">&larr; Exit</button>
+            <div class="top-nav">
+                <button onclick="goHome()" class="icon-btn" title="Exit">✕</button>
+                <div style="font-weight:700; color:var(--primary);" id="wizardModeTitle">MODE</div>
+                <div style="width:40px;"></div> </div>
+
             <div class="glass-panel">
-                <div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div>
+                <div class="progress-container"><div class="progress-fill" id="progressBar"></div></div>
+                
                 <div id="questionContainer">
                     <div id="questionText" class="question-text">Question goes here...</div>
                     <div id="optionsArea"></div>
-                    <textarea id="textInput" class="hidden" rows="4" style="width:100%; background:rgba(0,0,0,0.2); border:1px solid var(--glass-border); padding:15px; border-radius:12px; color:white; font-family:inherit; margin-bottom:15px; resize:none;"></textarea>
+                    <textarea id="textInput" class="hidden" rows="3" placeholder="Type your thoughts here..."></textarea>
                 </div>
-                <button id="nextBtn" class="btn" style="margin-top:10px;" onclick="nextStep()">Continue</button>
+                
+                <button id="nextBtn" class="btn" style="margin-top:15px; opacity:0.5; pointer-events:none;" onclick="nextStep()">Continue &rarr;</button>
             </div>
         </div>
 
         <div id="view-result" class="view">
             <div class="glass-panel result-card">
-                <div class="result-header">Your Personal Prescription</div>
-                <div class="result-archetype" id="resArchetype">The Result Title</div>
-                <div class="result-body" id="resBody">
-                    Advice text...
+                <div class="result-header">Your Digital Mentor Says:</div>
+                <div class="result-archetype" id="resArchetype">Loading...</div>
+                
+                <div class="typewriter-text" id="resBody"><span class="cursor"></span></div>
+                
+                <div class="action-box hidden" id="resActionBox">
+                    <strong style="color:var(--primary); display:block; margin-bottom:5px;">⚡ TINY NEXT STEP:</strong>
+                    <span id="resAction" style="font-size:1.1rem; font-weight:600; color:white;">Action...</span>
                 </div>
-                <div class="action-box">
-                    <strong>⚡ Tiny Next Step:</strong><br>
-                    <span id="resAction">Action...</span>
-                </div>
-                <div style="display:flex; gap:10px;">
-                    <button class="btn" onclick="saveResult()">Save Spark 💾</button>
-                    <button class="btn btn-secondary" onclick="goHome()">Done</button>
+                
+                <div class="hidden" id="resButtons" style="display:flex; flex-direction:column; gap:10px;">
+                    <button class="btn" onclick="saveResult()">Save this Spark 💾</button>
+                    <button class="btn btn-secondary" onclick="goHome()">Back to Modes</button>
                 </div>
             </div>
         </div>
 
         <div id="view-saved" class="view">
-            <button onclick="goHome()" style="background:none; border:none; color:var(--text-muted); margin-bottom:10px; cursor:pointer;">&larr; Back</button>
-            <h2 style="margin-bottom:20px;">Your Spark Library</h2>
-            <div id="savedList"></div>
+            <div class="top-nav">
+                <button onclick="goHome()" class="icon-btn">←</button>
+                <h3 style="margin:0;">Your Spark Library</h3>
+                <div style="width:40px;"></div>
+            </div>
+            <div id="savedList" style="padding-bottom:50px;"></div>
         </div>
 
     </div>
 
+    <div class="modal-overlay" id="storyModal">
+        <div class="modal-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 style="margin:0; font-size:1.5rem; color:var(--primary);">Born from Struggle</h3>
+                <button onclick="closeStory()" class="icon-btn">✕</button>
+            </div>
+            
+            <div class="story-text">
+                In 2025, a team joined <span class="story-highlight">The Creative Mess</span>—an Erasmus+ course that proved creativity isn't magic. It's a cycle: brainstorm, organize, rest, inspire, experiment, repeat.
+            </div>
+            <div class="story-text">
+                The problem? Most tools feed you empty motivation or treat creativity like a factory line. Neither helps when you're actually stuck.
+            </div>
+            <div class="story-text">
+                So we built <span class="story-highlight">Creative Pulse</span>. A free tool that diagnoses your block, tells you what you actually need, and gives you real feedback—not fluff.
+            </div>
+            <div class="story-text">
+                From stuck to unstuck. Idea to action. Exhaustion to rhythm.
+            </div>
+            <div style="margin-top:30px; padding-top:20px; border-top:1px solid var(--glass-border); text-align:center; font-size:0.9rem; color:#cbd5e1;">
+                Built by <b>EKOLiTiKA</b> — an NGO learning sustainability from nature and applying circular thinking to creativity.
+            </div>
+            <button class="btn" style="margin-top:20px;" onclick="closeStory()">Got it!</button>
+        </div>
+    </div>
+
 <script>
-/* --- DATA & CONTENT ENGINE --- */
+/* --- DATA & CONTENT --- */
 const content = {
     diagnose: {
         steps: [
-            { q: "How does your 'stuckness' feel physically?", type:"choice", opts: ["Heavy/Exhausted", "Anxious/Buzzing", "Empty/Blank", "Frustrated/Tight"] },
-            { q: "If your project could talk, what would it say?", type:"choice", opts: ["'You're not good enough'", "'I'm too complicated'", "'Why are you ignoring me?'", "'I'm boring'"] },
-            { q: "What's the one tiny thing blocking you?", type:"text" }
+            { q: "Right now, how does your creative block feel?", type:"choice", opts: ["Foggy & Overwhelming", "Empty & Drained", "Anxious & Fast", "Boring & Repetitive"] },
+            { q: "What is the story you are telling yourself?", type:"choice", opts: ["'I'm not good enough'", "'I'm out of time'", "'This idea is stupid'", "'I don't know where to start'"] },
+            { q: "Describe the specific project or problem in one sentence:", type:"text" }
         ]
     },
     inspire: {
         steps: [
-            { q: "What is your creative tank running on?", type:"choice", opts: ["Fumes (Empty)", "Adrenaline (Panic)", "Routine (Boredom)", "Chaos (Distraction)"] },
-            { q: "What's a piece of art/media that recently made you jealous?", type:"text" },
-            { q: "Choose a permission slip for today:", type:"choice", opts: ["Permission to be bad", "Permission to do nothing", "Permission to copy (to learn)", "Permission to quit early"] }
+            { q: "What kind of fuel do you need?", type:"choice", opts: ["Soft comfort (Rest)", "Hard truth (Kick)", "New input (Awe)", "Just a distraction"] },
+            { q: "Who is an artist or creator you are jealous of right now?", type:"text" },
+            { q: "If you couldn't fail, what would you make today?", type:"text" }
         ]
     },
     brainstorm: {
         steps: [
-            { q: "Set the constraint:", type:"choice", opts: ["If I had $0 budget", "If I had to finish in 1 hour", "If it had to be ugly", "If I were an alien"] },
-            { q: "What is the problem you are solving?", type:"text" },
-            { q: "Write 3 terrible ideas (fast). Go!", type:"text" }
+            { q: "Pick a constraint to force creativity:", type:"choice", opts: ["Explain it to a 5-year-old", "Do it with $0 budget", "Make the 'evil' version", "Finish it in 15 minutes"] },
+            { q: "What is the core problem you want to solve?", type:"text" },
+            { q: "Write down 3 terrible, silly, or illegal ideas. Go.", type:"text" }
         ]
     },
     organize: {
         steps: [
-            { q: "How many open loops are in your head?", type:"choice", opts: ["1-3 (Manageable)", "4-10 (Messy)", "10+ (Chaos)", "I lost count"] },
-            { q: "Which one task scares you the most?", type:"text" },
-            { q: "What does 'Finished' look like for this week?", type:"text" }
+            { q: "How many tabs/tasks are open in your brain?", type:"choice", opts: ["1-3 (Clean)", "4-10 (Cluttered)", "10+ (Disaster)", "System overload"] },
+            { q: "Which single task is making you feel guilty?", type:"text" },
+            { q: "What is the absolute smallest first step?", type:"text" }
         ]
     },
     experiment: {
         steps: [
-            { q: "What's the risk level?", type:"choice", opts: ["Private (Just me)", "Low (A friend)", "Medium (Socials)", "High (Launch)"] },
-            { q: "What's the worst meaningful thing that could happen?", type:"text" },
-            { q: "How will you reward yourself for trying?", type:"text" }
+            { q: "How risky does this feel?", type:"choice", opts: ["Terrifying", "Uncomfortable", "Exciting", "Safe"] },
+            { q: "What is the worst REALISTIC outcome?", type:"text" },
+            { q: "How will you celebrate just for trying?", type:"text" }
         ]
     }
 };
 
-/* --- STATE MANAGEMENT --- */
+/* --- STATE --- */
 let state = {
     user: { name: "", field: "" },
-    history: [],
     currentMode: null,
     step: 0,
     answers: []
@@ -364,12 +476,11 @@ window.onload = () => {
     const savedUser = localStorage.getItem('cp_user');
     if (savedUser) {
         state.user = JSON.parse(savedUser);
-        document.getElementById('dashName').innerText = state.user.name;
+        updateDashUI();
         switchView('view-dashboard');
     } else {
         switchView('view-onboarding');
     }
-    loadHistory();
 };
 
 /* --- NAVIGATION --- */
@@ -378,19 +489,13 @@ function switchView(viewId) {
     document.getElementById(viewId).classList.add('active');
     window.scrollTo(0,0);
 }
+function goHome() { switchView('view-dashboard'); }
 
-function goHome() {
-    switchView('view-dashboard');
-}
+/* --- MODAL LOGIC --- */
+function openStory() { document.getElementById('storyModal').classList.add('open'); }
+function closeStory() { document.getElementById('storyModal').classList.remove('open'); }
 
-function logout() {
-    if(confirm("Reset your profile? This won't delete saved sparks.")) {
-        localStorage.removeItem('cp_user');
-        location.reload();
-    }
-}
-
-/* --- ONBOARDING --- */
+/* --- AUTH / USER --- */
 document.getElementById('onboardForm').addEventListener('submit', (e) => {
     e.preventDefault();
     const name = document.getElementById('userName').value;
@@ -398,16 +503,24 @@ document.getElementById('onboardForm').addEventListener('submit', (e) => {
     if(name && field) {
         state.user = { name, field };
         localStorage.setItem('cp_user', JSON.stringify(state.user));
-        document.getElementById('dashName').innerText = name;
+        updateDashUI();
         switchView('view-dashboard');
     }
 });
+function updateDashUI() { document.getElementById('dashName').innerText = state.user.name; }
+function logout() {
+    if(confirm("Reset your profile? (Saved sparks will remain)")) {
+        localStorage.removeItem('cp_user');
+        location.reload();
+    }
+}
 
-/* --- MODE WIZARD LOGIC --- */
+/* --- WIZARD LOGIC --- */
 function startMode(mode) {
     state.currentMode = mode;
     state.step = 0;
     state.answers = [];
+    document.getElementById('wizardModeTitle').innerText = mode.toUpperCase();
     switchView('view-wizard');
     renderStep();
 }
@@ -416,37 +529,38 @@ function renderStep() {
     const modeData = content[state.currentMode];
     const qData = modeData.steps[state.step];
     
-    // Progress
+    // Progress Bar
     const pct = ((state.step) / modeData.steps.length) * 100;
     document.getElementById('progressBar').style.width = pct + "%";
 
-    // Text
+    // Content
     document.getElementById('questionText').innerText = qData.q;
-    
-    // Inputs
     const optsArea = document.getElementById('optionsArea');
     const textArea = document.getElementById('textInput');
     const nextBtn = document.getElementById('nextBtn');
     
+    // Reset UI
     optsArea.innerHTML = "";
     textArea.classList.add('hidden');
     textArea.value = "";
-    nextBtn.disabled = true;
     nextBtn.style.opacity = "0.5";
+    nextBtn.style.pointerEvents = "none";
 
     if (qData.type === "choice") {
-        optsArea.classList.remove('hidden');
         qData.opts.forEach(opt => {
             const btn = document.createElement('button');
             btn.className = "option-btn";
-            btn.innerText = opt;
+            btn.innerHTML = `<span style="margin-right:10px;">⚪</span> ${opt}`;
             btn.onclick = () => {
-                document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+                document.querySelectorAll('.option-btn').forEach(b => {
+                    b.classList.remove('selected');
+                    b.innerHTML = b.innerHTML.replace("🟣", "⚪");
+                });
                 btn.classList.add('selected');
-                nextBtn.disabled = false;
+                btn.innerHTML = btn.innerHTML.replace("⚪", "🟣");
                 nextBtn.style.opacity = "1";
-                // Auto-save val temporarily
-                textArea.value = opt; 
+                nextBtn.style.pointerEvents = "all";
+                textArea.value = opt; // Store val
             };
             optsArea.appendChild(btn);
         });
@@ -455,8 +569,8 @@ function renderStep() {
         textArea.focus();
         textArea.oninput = () => {
             if(textArea.value.length > 2) {
-                nextBtn.disabled = false;
                 nextBtn.style.opacity = "1";
+                nextBtn.style.pointerEvents = "all";
             }
         };
     }
@@ -465,106 +579,121 @@ function renderStep() {
 function nextStep() {
     const val = document.getElementById('textInput').value;
     state.answers.push(val);
-    
     state.step++;
     if (state.step < content[state.currentMode].steps.length) {
         renderStep();
     } else {
-        generateResult();
+        prepResult();
     }
 }
 
-/* --- THE LOGIC ENGINE (GENERATOR) --- */
-function generateResult() {
-    const mode = state.currentMode;
-    const ans = state.answers;
-    const user = state.user;
-    
-    let title = "";
-    let body = "";
-    let action = "";
-
-    // logic engine: Maps input patterns to archetypes
-    if (mode === 'diagnose') {
-        if (ans[0].includes("Heavy") || ans[0].includes("Empty")) {
-            title = "The Empty Well";
-            body = `You are trying to draw water from a dry well, ${user.name}. The feeling of heaviness isn't laziness—it's a biological signal to stop outputting. Your "${ans[2]}" block is likely a symptom of burnout, not lack of skill.`;
-            action = "Do strictly zero creative work for 24 hours. Input only (books, walks, sleep).";
-        } else {
-            title = "Analysis Paralysis";
-            body = `Your energy is high but scattered. You are over-intellectualizing the process. When your project says "${ans[1]}", it's actually asking for simplification.`;
-            action = "Set a timer for 10 minutes. Do the 'ugly version' of the next step. Quantity over quality.";
-        }
-    } 
-    else if (mode === 'inspire') {
-        title = "The Spark Hunter";
-        body = `You're running on ${ans[0]}, which is not sustainable. Inspiration isn't magic; it's a discipline. You chose "${ans[2]}"—lean into that hard.`;
-        action = "Curate 3 images or songs that match the 'vibe' of what you want to make. Do nothing else.";
-    }
-    else if (mode === 'brainstorm') {
-        title = "The Chaos Pilot";
-        body = `Constraints breed creativity. By thinking about "${ans[0]}", you tricked your brain into bypassing its internal critic. The terrible ideas you wrote? One of them is the seed of genius.`;
-        action = "Pick the most ridiculous idea you wrote. Find one realistic aspect of it and sketch it out.";
-    }
-    else if (mode === 'organize') {
-        title = "The Essentialist";
-        body = `You are carrying too much cognitive load. ${ans[0]} open loops is a recipe for anxiety. Your intuition knows that "${ans[1]}" is the beast you need to slay.`;
-        action = "Ignore everything else. Write the first 3 sub-steps for that scary task. Do step 1 now.";
-    }
-    else if (mode === 'experiment') {
-        title = "The Scientist";
-        body = `Fear is data. You identified that the worst outcome is "${ans[1]}". Usually, when we write it down, it looks smaller. You are testing a hypothesis, not your self-worth.`;
-        action = "Run the test. Then, regardless of the result, trigger your reward: " + ans[2];
-    }
-
-    // Render Result
-    document.getElementById('resArchetype').innerText = title;
-    document.getElementById('resBody').innerText = body;
-    document.getElementById('resAction').innerText = action;
-    
+/* --- LOGIC ENGINE & TYPING EFFECT --- */
+function prepResult() {
     switchView('view-result');
+    document.getElementById('resArchetype').innerText = "Analyzing...";
+    document.getElementById('resBody').innerHTML = '<span class="cursor"></span>';
+    document.getElementById('resActionBox').classList.add('hidden');
+    document.getElementById('resButtons').classList.add('hidden'); // hidden
+    document.getElementById('resButtons').style.display = "none";
+
+    // Simple Logic Map
+    const m = state.currentMode;
+    const a = state.answers;
+    let title="", body="", action="";
+
+    if(m==='diagnose') {
+        if(a[0].includes("Foggy") || a[0].includes("Empty")) {
+            title="Burnout Warning"; 
+            body=`Listen closely, ${state.user.name}. You aren't blocked because you lack skill. You are blocked because your input/output ratio is broken. The story "${a[1]}" is a lie your tired brain is telling you.`;
+            action="Stop working. Go for a 20 min walk without your phone.";
+        } else {
+            title="The Perfectionist's Trap";
+            body=`Your energy is too high, creating a bottleneck. You're trying to solve the whole problem at once. "${a[2]}" is too big to swallow in one bite.`;
+            action="Draft the ugliest, messiest version possible in 10 minutes.";
+        }
+    } else if(m==='inspire') {
+        title="The Vessel";
+        body=`You can't pour from an empty cup. You chose "${a[0]}", which means you need to change your environment, not your willpower.`;
+        action="Find one piece of work by " + a[1] + " and just admire it. Don't analyze it.";
+    } else if(m==='brainstorm') {
+        title="The Rule Breaker";
+        body=`Excellent. By choosing to "${a[0]}", you silenced your inner critic. The 'terrible' ideas you wrote down contain the seed of the solution.`;
+        action="Take your third 'terrible' idea and treat it seriously for 5 minutes.";
+    } else if(m==='organize') {
+        title="The Strategist";
+        body=`Chaos is just a lack of structure. With "${a[0]}" loops open, no wonder you're paralyzed. Guilt over "${a[1]}" is draining your battery.`;
+        action="Do the absolute smallest first step you defined (" + a[2] + ") right now.";
+    } else if(m==='experiment') {
+        title="The Brave";
+        body=`You identified the worst outcome: "${a[1]}". Now that it's written down, it likely looks smaller than it felt in your head.`;
+        action="Run the test. Then reward yourself with: " + a[2];
+    }
+
+    // Start Typing
+    setTimeout(() => {
+        document.getElementById('resArchetype').innerText = title;
+        typeWriter(body, action);
+    }, 800);
 }
 
-/* --- SAVING SYSTEM --- */
+function typeWriter(text, actionText) {
+    const el = document.getElementById('resBody');
+    el.innerHTML = ""; 
+    let i = 0;
+    let speed = 25; // ms per char
+
+    function type() {
+        if (i < text.length) {
+            el.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+        } else {
+            // Finished typing
+            document.getElementById('resAction').innerText = actionText;
+            document.getElementById('resActionBox').classList.remove('hidden');
+            
+            const btnDiv = document.getElementById('resButtons');
+            btnDiv.style.display = "flex";
+            btnDiv.classList.remove('hidden'); // Ensure CSS fade in if you added keyframes
+        }
+    }
+    type();
+}
+
+/* --- SAVING --- */
 function saveResult() {
     const spark = {
         title: document.getElementById('resArchetype').innerText,
         action: document.getElementById('resAction').innerText,
-        date: new Date().toLocaleDateString(),
-        mode: state.currentMode
+        mode: state.currentMode,
+        date: new Date().toLocaleDateString()
     };
+    let h = JSON.parse(localStorage.getItem('cp_history') || "[]");
+    h.unshift(spark);
+    localStorage.setItem('cp_history', JSON.stringify(h));
     
-    let history = JSON.parse(localStorage.getItem('cp_history') || "[]");
-    history.unshift(spark);
-    localStorage.setItem('cp_history', JSON.stringify(history));
-    
-    alert("Spark saved to your library!");
-}
-
-function loadHistory() {
-    const history = JSON.parse(localStorage.getItem('cp_history') || "[]");
-    const container = document.getElementById('savedList');
-    container.innerHTML = "";
-    
-    if(history.length === 0) {
-        container.innerHTML = "<div style='opacity:0.6; text-align:center;'>No saved sparks yet. Go explore a mode!</div>";
-        return;
-    }
-
-    history.forEach(item => {
-        const div = document.createElement('div');
-        div.className = "spark-item";
-        div.innerHTML = `
-            <span class="spark-date">${item.date} • ${item.mode.toUpperCase()}</span>
-            <div style="font-weight:700; color:var(--primary); margin-bottom:5px;">${item.title}</div>
-            <div style="font-size:0.9rem;">${item.action}</div>
-        `;
-        container.appendChild(div);
-    });
+    // Confetti button effect
+    const btn = event.target;
+    const oldText = btn.innerText;
+    btn.innerText = "Saved! 🎉";
+    btn.style.background = "#10b981"; // Green
+    setTimeout(()=>{ btn.innerText=oldText; btn.style.background=""; }, 2000);
 }
 
 function showSaved() {
-    loadHistory();
+    const h = JSON.parse(localStorage.getItem('cp_history') || "[]");
+    const c = document.getElementById('savedList');
+    c.innerHTML = "";
+    if(h.length===0) c.innerHTML = "<div style='text-align:center; opacity:0.5; margin-top:30px;'>No sparks collected yet.</div>";
+    
+    h.forEach(s => {
+        c.innerHTML += `
+        <div class="spark-item">
+            <div style="font-size:0.75rem; text-transform:uppercase; color:var(--secondary); margin-bottom:5px; letter-spacing:1px;">${s.mode} • ${s.date}</div>
+            <div style="font-weight:700; font-size:1.1rem; color:white; margin-bottom:8px;">${s.title}</div>
+            <div style="color:#cbd5e1; line-height:1.5;">${s.action}</div>
+        </div>`;
+    });
     switchView('view-saved');
 }
 </script>
