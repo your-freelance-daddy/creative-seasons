@@ -469,18 +469,22 @@
                 <button onclick="closeStory()" class="icon-btn">✕</button>
             </div>
             
-            <div class="story-text">
-                In 2025, a team joined <a href="https://ekolitika.framer.website/project/the-creative-mess" target="_blank" class="story-highlight" style="text-decoration: underline;">The Creative Mess</a>—an Erasmus+ course that proved creativity isn't magic. It's a cycle: brainstorm, organize, rest, inspire, experiment, repeat.
+            <!-- Dedicated area for story content. This replaces the multiple .story-text divs for robustness. -->
+            <div id="storyContent" style="margin-bottom: 20px;">
+                <p class="story-text">
+                    In 2025, a team joined <a href="https://ekolitika.framer.website/project/the-creative-mess" target="_blank" class="story-highlight" style="text-decoration: underline;">The Creative Mess</a>—an Erasmus+ course that proved creativity isn't magic. It's a cycle: brainstorm, organize, rest, inspire, experiment, repeat.
+                </p>
+                <p class="story-text">
+                    The problem? Most tools feed you empty motivation or treat creativity like a factory line. Neither helps when you're actually stuck.
+                </p>
+                <p class="story-text">
+                    So we built <span class="story-highlight">Creative Pulse</span>. A free tool that diagnoses your block, tells you what you actually need, and gives you real feedback—not fluff.
+                </p>
+                <p class="story-text">
+                    From stuck to unstuck. Idea to action. Exhaustion to rhythm.
+                </p>
             </div>
-            <div class="story-text">
-                The problem? Most tools feed you empty motivation or treat creativity like a factory line. Neither helps when you're actually stuck.
-            </div>
-            <div class="story-text">
-                So we built <span class="story-highlight">Creative Pulse</span>. A free tool that diagnoses your block, tells you what you actually need, and gives you real feedback—not fluff.
-            </div>
-            <div class="story-text">
-                From stuck to unstuck. Idea to action. Exhaustion to rhythm.
-            </div>
+            
             <div style="margin-top:30px; padding-top:20px; border-top:1px solid var(--glass-border); text-align:center; font-size:0.9rem; color:#cbd5e1;">
                 Built by <b>EKOLiTiKA</b> — an NGO learning sustainability from nature and applying circular thinking to creativity.
             </div>
@@ -670,7 +674,7 @@
                 `;
                 sparkItem.onclick = () => alertModal(
                     `${modeName}: ${spark.archetype}`, 
-                    `<p>${spark.advice}</p><p style="margin-top:15px; color:var(--primary); font-weight:700;">Tiny Next Step: ${spark.action}</p>`
+                    `<p class="story-text">${spark.advice}</p><p class="story-text" style="margin-top:15px; color:var(--primary); font-weight:700;">Tiny Next Step: ${spark.action}</p>`
                 );
                 listEl.appendChild(sparkItem);
             });
@@ -859,7 +863,8 @@
     function alertModal(title, bodyHTML) {
         const modal = document.getElementById('storyModal');
         modal.querySelector('h3').textContent = title;
-        modal.querySelector('.story-text').innerHTML = bodyHTML;
+        // Target the new container
+        modal.querySelector('#storyContent').innerHTML = bodyHTML; 
         modal.querySelector('.btn').textContent = "Close";
         modal.querySelector('.btn').onclick = closeStory; // Use closeStory logic
         modal.classList.add('open');
@@ -1073,19 +1078,23 @@
         const modal = document.getElementById('storyModal');
         // Reset to story content
         modal.querySelector('h3').textContent = "Born from Struggle";
-        // Re-inject the original story content (simplified, as it was overwritten by alertModal)
-        modal.querySelector('.story-text').innerHTML = `
-            In 2025, a team joined <a href="https://ekolitika.framer.website/project/the-creative-mess" target="_blank" class="story-highlight" style="text-decoration: underline;">The Creative Mess</a>—an Erasmus+ course that proved creativity isn't magic. It's a cycle: brainstorm, organize, rest, inspire, experiment, repeat.
-            <div class="story-text">
+        
+        // Inject the full, correct story into the dedicated content area
+        modal.querySelector('#storyContent').innerHTML = `
+            <p class="story-text">
+                In 2025, a team joined <a href="https://ekolitika.framer.website/project/the-creative-mess" target="_blank" class="story-highlight" style="text-decoration: underline;">The Creative Mess</a>—an Erasmus+ course that proved creativity isn't magic. It's a cycle: brainstorm, organize, rest, inspire, experiment, repeat.
+            </p>
+            <p class="story-text">
                 The problem? Most tools feed you empty motivation or treat creativity like a factory line. Neither helps when you're actually stuck.
-            </div>
-            <div class="story-text">
+            </p>
+            <p class="story-text">
                 So we built <span class="story-highlight">Creative Pulse</span>. A free tool that diagnoses your block, tells you what you actually need, and gives you real feedback—not fluff.
-            </div>
-            <div class="story-text">
+            </p>
+            <p class="story-text">
                 From stuck to unstuck. Idea to action. Exhaustion to rhythm.
-            </div>
+            </p>
         `;
+        
         modal.querySelector('.btn').textContent = "Got it!";
         modal.querySelector('.btn').onclick = closeStory;
         modal.classList.add('open');
