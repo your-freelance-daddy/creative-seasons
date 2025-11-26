@@ -307,28 +307,22 @@
 </head>
 <body>
 
-    
-<div class="ambient-light">
+    <!-- Animated Background --><div class="ambient-light">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
         <div class="orb orb-3"></div>
     </div>
 
-    
-<div class="container">
+    <!-- MAIN CONTAINER --><div class="container">
         
-        
-<header class="header">
-            
-<a href="https://ekolitika.framer.website/" target="_blank">
+        <!-- GLOBAL HEADER --><header class="header">
+            <!-- Link the logo to EKOLITIKA's website --><a href="https://ekolitika.framer.website/" target="_blank">
                 <img src="https://framerusercontent.com/images/NhZAoGoxBJzZIPWRIXCzVkkNuDA.png?scale-down-to=512" alt="EKOLITIKA Logo" class="logo-img">
             </a>
-            
-<div class="platform-title">Creative Pulse</div>
+            <!-- Platform name with POP style --><div class="platform-title">Creative Pulse</div>
         </header>
 
-        
-<div id="view-onboarding" class="view active">
+        <!-- VIEW 1: ONBOARDING --><div id="view-onboarding" class="view active">
             <div class="glass-panel" style="text-align:center;">
                 <h2 style="font-size:1.8rem; margin-bottom:15px; background: linear-gradient(to right, #fff, #cbd5e1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Unstick your mind.</h2>
                 <p style="color:#cbd5e1; margin-bottom:30px; line-height:1.6;">
@@ -347,8 +341,7 @@
             </div>
         </div>
 
-        
-<div id="view-dashboard" class="view">
+        <!-- VIEW 2: DASHBOARD --><div id="view-dashboard" class="view">
             <div class="top-nav">
                 <div>
                     <div style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Welcome back</div>
@@ -394,14 +387,11 @@
             </div>
         </div>
 
-        
-<div id="view-wizard" class="view">
+        <!-- VIEW 3: FOCUS WIZARD --><div id="view-wizard" class="view">
             <div class="top-nav">
                 <button onclick="goHome()" class="icon-btn" title="Exit">✕</button>
                 <div style="font-weight:700; color:var(--primary);" id="wizardModeTitle">MODE</div>
-                <div style="width:40px;"></div> 
-
-</div>
+                <div style="width:40px;"></div> <!-- Spacer for alignment --></div>
 
             <div class="glass-panel">
                 <div class="progress-container"><div class="progress-fill" id="progressBar"></div></div>
@@ -416,14 +406,12 @@
             </div>
         </div>
 
-        
-<div id="view-result" class="view">
+        <!-- VIEW 4: RESULT --><div id="view-result" class="view">
             <div class="glass-panel result-card">
                 <div class="result-header">Your Digital Mentor Says:</div>
                 <div class="result-archetype" id="resArchetype">Loading...</div>
                 
-                
-<div class="typewriter-text" id="resBody"><span class="cursor"></span></div>
+                <!-- Typewriter Text Container --><div class="typewriter-text" id="resBody"><span class="cursor"></span></div>
                 
                 <div class="action-box hidden" id="resActionBox">
                     <strong style="color:var(--primary); display:block; margin-bottom:5px;">⚡ TINY NEXT STEP:</strong>
@@ -437,8 +425,7 @@
             </div>
         </div>
 
-        
-<div id="view-saved" class="view">
+        <!-- VIEW 5: SAVED SPARKS --><div id="view-saved" class="view">
             <div class="top-nav">
                 <button onclick="goHome()" class="icon-btn">←</button>
                 <h3 style="margin:0;">Your Spark Library</h3>
@@ -447,20 +434,17 @@
             <div id="savedList" style="padding-bottom:50px;"></div>
         </div>
 
-        
-<footer class="footer-bar">
+        <!-- GLOBAL FOOTER BAR --><footer class="footer-bar">
             <button class="story-btn" onclick="openStory()">Read the Origin Story 📖</button>
             
-            
-<a href="https://ekolitika.framer.website/" target="_blank" class="story-btn">
+            <!-- Applied .story-btn style and link to the right element --><a href="https://ekolitika.framer.website/" target="_blank" class="story-btn">
                 With 💚 for the creative community, made by EKOLiTiKA
             </a>
         </footer>
 
     </div>
 
-    
-<div class="modal-overlay" id="storyModal">
+    <!-- ORIGIN STORY MODAL --><div class="modal-overlay" id="storyModal">
         <div class="modal-content">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                 <h3 style="margin:0; font-size:1.5rem; color:var(--primary);">Born from Struggle</h3>
@@ -534,396 +518,13 @@ let state = {
     answers: []
 };
 
-
-/* --- VIEW MANAGEMENT --- */
-function setView(viewId) {
-    // 1. Remove 'active' from all views
-    document.querySelectorAll('.view').forEach(view => {
-        view.classList.remove('active');
-    });
-    // 2. Add 'active' to the target view. This is where the error occurred
-    // because document.getElementById(viewId) was sometimes null. 
-    // Now that all JS is in one block, this should resolve the issue.
-    const targetView = document.getElementById(viewId);
-    if (targetView) {
-        targetView.classList.add('active');
-    } else {
-        console.error(`Error: View element with ID "${viewId}" not found in the DOM.`);
-    }
-}
-
-function goHome() {
-    state.currentMode = null;
-    state.step = 0;
-    state.answers = [];
-    document.getElementById('optionsArea').innerHTML = '';
-    document.getElementById('textInput').value = '';
-    document.getElementById('textInput').classList.add('hidden');
-    
-    // Ensure the dashboard name is current
-    document.getElementById('dashName').textContent = state.user.name;
-    
-    setView('dashboard');
-}
-
-/* --- ONBOARDING & AUTH --- */
-function onboardUser() {
-    const nameInput = document.getElementById('userName').value.trim();
-    const fieldInput = document.getElementById('userField').value.trim();
-    
-    if (nameInput && fieldInput) {
-        state.user.name = nameInput;
-        state.user.field = fieldInput;
-        localStorage.setItem('cp_user', JSON.stringify(state.user));
-        document.getElementById('dashName').textContent = state.user.name;
-        setView('dashboard');
-    } else {
-        // Use a small temporary message box instead of alert()
-        const onboardForm = document.getElementById('onboardForm');
-        const messageBox = document.createElement('p');
-        messageBox.textContent = "Please enter your name and creative field to start!";
-        messageBox.style.color = 'var(--secondary)';
-        messageBox.style.fontWeight = '700';
-        messageBox.style.marginTop = '-10px';
-        onboardForm.prepend(messageBox);
-        setTimeout(() => messageBox.remove(), 2500);
-    }
-}
-
-function logout() {
-    // Custom modal instead of alert/confirm
-    const modal = document.getElementById('storyModal');
-    document.querySelector('#storyModal .modal-content h3').textContent = 'Confirm Reset';
-    document.querySelector('#storyModal .story-text').innerHTML = `Are you sure you want to reset your profile? You will lose your saved Sparks (locally stored) and return to the onboarding screen.`;
-    document.querySelector('#storyModal .story-text').style.color = 'white';
-    document.querySelector('#storyModal .story-text').style.fontWeight = '700';
-    document.querySelector('#storyModal .modal-content .btn').textContent = 'Yes, Reset';
-    document.querySelector('#storyModal .modal-content .btn').onclick = () => {
-        localStorage.removeItem('cp_user');
-        localStorage.removeItem('cp_sparks');
-        state.user = { name: "", field: "" };
-        closeStory(); 
-        goHome(); 
-        setView('onboarding');
-    };
-    
-    modal.classList.add('open');
-}
-
-
-/* --- WIZARD LOGIC --- */
-function startMode(mode) {
-    state.currentMode = mode;
-    state.step = 0;
-    state.answers = [];
-    document.getElementById('wizardModeTitle').textContent = mode.toUpperCase();
-    document.getElementById('nextBtn').style.opacity = '0.5';
-    document.getElementById('nextBtn').style.pointerEvents = 'none';
-    setView('wizard');
-    displayQuestion();
-}
-
-function displayQuestion() {
-    const mode = state.currentMode;
-    const step = state.step;
-    const totalSteps = content[mode].steps.length;
-    const currentQ = content[mode].steps[step];
-    
-    // Update Progress Bar
-    const progress = ((step + 1) / totalSteps) * 100;
-    document.getElementById('progressBar').style.width = `${progress}%`;
-
-    // Update Question Text
-    document.getElementById('questionText').textContent = currentQ.q;
-    
-    // Handle Input Type
-    const optionsArea = document.getElementById('optionsArea');
-    const textInput = document.getElementById('textInput');
-    
-    optionsArea.innerHTML = '';
-    textInput.classList.add('hidden');
-    textInput.value = '';
-
-    document.getElementById('nextBtn').style.opacity = '0.5';
-    document.getElementById('nextBtn').style.pointerEvents = 'none';
-
-    if (currentQ.type === 'choice') {
-        currentQ.opts.forEach(option => {
-            const btn = document.createElement('button');
-            btn.classList.add('option-btn');
-            btn.textContent = option;
-            btn.onclick = () => selectOption(btn, option);
-            optionsArea.appendChild(btn);
-        });
-    } else if (currentQ.type === 'text') {
-        textInput.classList.remove('hidden');
-        textInput.oninput = checkTextInput;
-    }
-}
-
-function selectOption(selectedBtn, answer) {
-    document.querySelectorAll('.option-btn').forEach(btn => {
-        btn.classList.remove('selected');
-    });
-    selectedBtn.classList.add('selected');
-    state.answers[state.step] = answer;
-    
-    document.getElementById('nextBtn').style.opacity = '1';
-    document.getElementById('nextBtn').style.pointerEvents = 'all';
-}
-
-function checkTextInput() {
-    const textInput = document.getElementById('textInput');
-    if (textInput.value.trim().length > 10) {
-        state.answers[state.step] = textInput.value.trim();
-        document.getElementById('nextBtn').style.opacity = '1';
-        document.getElementById('nextBtn').style.pointerEvents = 'all';
-    } else {
-        document.getElementById('nextBtn').style.opacity = '0.5';
-        document.getElementById('nextBtn').style.pointerEvents = 'none';
-    }
-}
-
-
-function nextStep() {
-    const mode = state.currentMode;
-    const totalSteps = content[mode].steps.length;
-
-    // Save answer from text input if applicable
-    if (content[mode].steps[state.step].type === 'text') {
-        checkTextInput();
-    }
-    
-    // Ensure an answer was selected/entered
-    if (typeof state.answers[state.step] === 'undefined' || state.answers[state.step] === '') {
-         // Use a small temporary message box instead of alert()
-        const questionText = document.getElementById('questionText');
-        questionText.style.color = '#ff6b6b';
-        setTimeout(() => {
-            questionText.style.color = '#fff';
-        }, 1000);
-        return; 
-    }
-    
-    state.step++;
-    
-    if (state.step < totalSteps) {
-        displayQuestion();
-    } else {
-        showResult();
-    }
-}
-
-/* --- RESULT LOGIC --- */
-
-// Simplified text generation based on the state for demonstration purposes
-// In a real application, this is where you would call the Gemini API
-function generateAdvice() {
-    const mode = state.currentMode;
-    const ans = state.answers;
-    
-    let archetype = "The Alchemist";
-    let body = "You have completed the Creative Pulse ritual. Your current answers indicate that you are ready for a powerful change. The following advice is generated based on your inputs.";
-    let action = "Find a quiet space and write down 5 things you love about your current project, no matter how small.";
-
-    if (mode === 'diagnose') {
-        if (ans[0] === "Foggy & Overwhelming") {
-            archetype = "The Navigator";
-            body = "Your biggest block is mental clutter. You aren't out of ideas, you have too many—or too many steps. This leads to decision paralysis. Focus on eliminating choices, not creating new ones. A simple framework will cut through the fog.";
-            action = "Write down every single task related to the project, no matter how tiny, and number them 1 to N. Only do step 1.";
-        } else if (ans[0] === "Empty & Drained") {
-            archetype = "The Wellspring";
-            body = "You are suffering from creative exhaustion. This is not a failure of will, but a sign that your input/output balance is off. You need deep rest and non-work-related input, like consuming media or nature. 'I'm not good enough' is the voice of fatigue.";
-            action = "Take a full 48-hour break from the project. Watch a movie, take a hike, or read a book that has nothing to do with your field.";
-        } else if (ans[0] === "Anxious & Fast") {
-            archetype = "The Regulator";
-            body = "Your block is anxiety, likely stemming from a deadline (real or self-imposed). This speed makes your work shallow. You need constraints to slow down and create quality. You are rushing to finish, not to create well. 'I'm out of time' is a destructive mantra.";
-            action = "Set a 30-minute timer. For the first 15 minutes, do nothing but analyze a piece of work you admire. For the next 15, apply only one element of that analysis to your project.";
-        } else if (ans[0] === "Boring & Repetitive") {
-            archetype = "The Provocateur";
-            body = "The problem is predictability. You are stuck in a rut because you are following rules that no longer serve you. You need a shock to the system, a wild detour, or a total rule-break. Embrace novelty over safety.";
-            action = "Find a piece of art or music that you hate. Spend 1 hour trying to understand why someone might love it. Inject one element of that 'hated' aesthetic into your project.";
-        }
-    } else if (mode === 'inspire') {
-        archetype = "The Muse Seeker";
-        body = `You asked for ${ans[0].toLowerCase()} fuel, which suggests you need to re-engage your curiosity. Since you admire/are jealous of ${ans[1]}, let's dig into that. True inspiration comes from integrating others' work, not copying it.`;
-        action = `Analyze the favorite piece of work from ${ans[1]}. Identify its three core rules (color, tempo, form). Break one of those rules in your own work.`;
-    } else if (mode === 'brainstorm') {
-        archetype = "The Idea Machine";
-        body = `You chose the ${ans[0].toLowerCase()} constraint to force novelty, and you identified the core problem as: "${ans[1]}". Now, we must use your three terrible ideas to reveal one truly good one. Terrible ideas are the soil for genius.`;
-        action = `Take the one 'terrible' idea that made you cringe the most. Flip its premise completely. (Example: If the terrible idea was 'Use only red', the flipped idea is 'Use no red'). That's your next step.`;
-    } else if (mode === 'organize') {
-        archetype = "The Architect";
-        body = `With your current task load (${ans[0]}), it's no surprise you feel guilty about: "${ans[1]}". Guilt is often a sign of complexity, not procrastination. The solution is simplicity and visible progress.`;
-        action = `Your smallest step is: "${ans[2]}". Do only that step right now. Do not check your email, do not look at social media. When it is done, you are done for the day.`;
-    } else if (mode === 'experiment') {
-        archetype = "The Risk Taker";
-        body = `You feel the risk is ${ans[0].toLowerCase()}, but you've accepted the worst realistic outcome is: "${ans[1]}". The true block is fear of the unknown, not the risk itself. You have to externalize the experiment so it's not a 'failure,' but a 'test'.`;
-        action = `Go perform the experiment, but rename it 'Version 0.1'. Tell someone you trust that you are trying a test and that the goal is simply to collect data, not succeed.`;
-    }
-    
-    return { archetype, body, action };
-}
-
-function typeWriter(text, elementId, callback) {
-    const element = document.getElementById(elementId);
-    let i = 0;
-    
-    // Clear previous content and add cursor span
-    element.innerHTML = '<span class="cursor"></span>';
-    const cursor = element.querySelector('.cursor');
-
-    function typing() {
-        if (i < text.length) {
-            cursor.before(text.charAt(i));
-            i++;
-            setTimeout(typing, 30); // Typing speed
-        } else {
-            cursor.remove(); // Remove cursor when typing is done
-            if (callback) {
-                callback();
-            }
-        }
-    }
-    typing();
-}
-
-function showResult() {
-    const { archetype, body, action } = generateAdvice();
-    
-    document.getElementById('resArchetype').textContent = archetype;
-    document.getElementById('resAction').textContent = action;
-    
-    document.getElementById('resBody').innerHTML = '';
-    document.getElementById('resActionBox').classList.add('hidden');
-    document.getElementById('resButtons').classList.add('hidden');
-    
-    setView('result');
-    
-    // Animate advice body text
-    typeWriter(body, 'resBody', () => {
-        // Show action box and buttons after typing finishes
-        document.getElementById('resActionBox').classList.remove('hidden');
-        setTimeout(() => {
-            document.getElementById('resButtons').classList.remove('hidden');
-            document.getElementById('resButtons').style.display = 'flex';
-        }, 500); // Slight delay for the buttons to appear
-    });
-}
-
-/* --- SAVE SPARK LOGIC (LocalStorage) --- */
-function getSparks() {
-    const sparksJson = localStorage.getItem('cp_sparks');
-    return sparksJson ? JSON.parse(sparksJson) : [];
-}
-
-function saveSparks(sparks) {
-    localStorage.setItem('cp_sparks', JSON.stringify(sparks));
-}
-
-function saveResult() {
-    const { archetype, body, action } = generateAdvice(); // Regenerate advice from current state
-    const sparks = getSparks();
-    
-    const newSpark = {
-        id: Date.now(),
-        mode: state.currentMode.charAt(0).toUpperCase() + state.currentMode.slice(1),
-        archetype: archetype,
-        advice: body,
-        action: action,
-        date: new Date().toLocaleDateString()
-    };
-    
-    sparks.unshift(newSpark); // Add to the front
-    saveSparks(sparks);
-    
-    // Change button text to confirm save
-    const saveBtn = document.querySelector('#resButtons .btn:first-child');
-    saveBtn.textContent = 'Spark Saved! ✅';
-    saveBtn.disabled = true;
-    setTimeout(() => {
-        saveBtn.textContent = 'Save this Spark 💾';
-        saveBtn.disabled = false;
-    }, 2000);
-}
-
-function showSaved() {
-    setView('saved');
-    const sparks = getSparks();
-    const list = document.getElementById('savedList');
-    list.innerHTML = '';
-
-    if (sparks.length === 0) {
-        list.innerHTML = '<div class="glass-panel" style="text-align:center;"><p style="color:var(--text-muted);">You haven\'t saved any Sparks yet! Use one of the modes to find advice.</p></div>';
-        return;
-    }
-    
-    sparks.forEach(spark => {
-        const item = document.createElement('div');
-        item.classList.add('spark-item');
-        item.innerHTML = `
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <span style="font-weight:700; color:var(--primary); font-size:1.1rem;">${spark.archetype} (${spark.mode})</span>
-                <span style="font-size:0.8rem; color:var(--text-muted);">${spark.date}</span>
-            </div>
-            <p style="font-size:0.9rem; line-height:1.5; color:#cbd5e1; margin-bottom:15px;">${spark.advice}</p>
-            <div style="background:rgba(255,255,255,0.1); padding:10px; border-radius:10px; font-weight:600; font-size:0.95rem;">
-                ⚡ ACTION: ${spark.action}
-            </div>
-        `;
-        list.appendChild(item);
-    });
-}
-
-/* --- MODAL LOGIC --- */
-function openStory() {
-    const modal = document.getElementById('storyModal');
-    // Reset modal content for the actual story
-    document.querySelector('#storyModal .modal-content h3').textContent = 'Born from Struggle';
-    document.querySelector('#storyModal .story-text').innerHTML = `
-        In 2025, a team joined <a href="https://ekolitika.framer.website/project/the-creative-mess" target="_blank" class="story-highlight" style="text-decoration: underline;">The Creative Mess</a>—an Erasmus+ course that proved creativity isn't magic. It's a cycle: brainstorm, organize, rest, inspire, experiment, repeat.
-        The problem? Most tools feed you empty motivation or treat creativity like a factory line. Neither helps when you're actually stuck.
-        So we built <span class="story-highlight">Creative Pulse</span>. A free tool that diagnoses your block, tells you what you actually need, and gives you real feedback—not fluff.
-        From stuck to unstuck. Idea to action. Exhaustion to rhythm.
-    `;
-    document.querySelector('#storyModal .story-text').style.color = '';
-    document.querySelector('#storyModal .story-text').style.fontWeight = '';
-    document.querySelector('#storyModal .modal-content .btn').textContent = 'Got it!';
-    document.querySelector('#storyModal .modal-content .btn').onclick = closeStory;
-    modal.classList.add('open');
-}
-
-function closeStory() {
-    document.getElementById('storyModal').classList.remove('open');
-}
-
 /* --- INIT --- */
 window.onload = () => {
     const savedUser = localStorage.getItem('cp_user');
     if (savedUser) {
         state.user = JSON.parse(savedUser);
-        // setView is now guaranteed to be defined
-        setView('dashboard'); 
-        const dashNameElement = document.getElementById('dashName');
-        if (dashNameElement) {
-            dashNameElement.textContent = state.user.name;
-        } else {
-             console.error("Dashboard name element not found.");
-        }
+        setView('dashboard');
+        document.getElementById('dashName').textContent = state.user.name;
     } else {
         setView('onboarding');
     }
-    
-    // Setup event listeners
-    const onboardForm = document.getElementById('onboardForm');
-    if (onboardForm) {
-        onboardForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            onboardUser();
-        });
-    } else {
-        console.error("Onboarding form element not found.");
-    }
-};
-
-</script>
