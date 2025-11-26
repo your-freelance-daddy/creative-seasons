@@ -1,444 +1,571 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Creative Pulse - EKOLITIKA</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(130deg,#1a1d28 30%,#7c3aed 110%);
-      min-height:100vh; margin:0;
-      display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
-      padding:0;
-    }
-    .header{text-align:center;margin-top:32px;margin-bottom:6px}
-    .logo-img{
-      width:206px;margin:0 auto 11px auto;filter:grayscale(.25) brightness(1.14);
-      cursor:pointer;transition:filter 0.19s;
-    }
-    .logo-img:hover {filter:drop-shadow(0 0 12px #a855f7) brightness(1.24);}
-    h1{font-size:43px;color:#7c3aed;font-weight:900;margin-bottom:10px;letter-spacing:-.5px;}
-    .mode-back-btn{
-      margin:7px auto 0 auto;background:linear-gradient(92deg,#a855f7 70%,#7c3aed 100%);
-      color:#fff;font-size:17px;font-weight:600;
-      border:none;padding:8px 23px 8px 23px;border-radius:27px;outline:none;
-      box-shadow:0 2px 8px #c084fc15, 0 0 0 #2220;
-      display:block;cursor:pointer;transition:filter 0.13s,box-shadow 0.17s;
-      letter-spacing:.02em;
-    }
-    .mode-back-btn:active,.mode-back-btn:focus{filter:brightness(1.12) drop-shadow(0 0 5px #a855f7ee);}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>Creative Pulse | EKOLITIKA</title>
+    <style>
+        :root {
+            --primary: #a855f7;
+            --primary-glow: #a855f788;
+            --secondary: #ec4899;
+            --bg-dark: #0f172a;
+            --glass-bg: rgba(255, 255, 255, 0.07);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+        }
 
-    .tagline{
-      font-size:17px;background:linear-gradient(135deg,#a855f7,#9f1239);color:white;
-      padding:12px 33px;border-radius:27px;display:inline-block;width:fit-content;margin-bottom:22px;
-    }
-    .personalize-section{
-      background: linear-gradient(117deg, #2a254d 0%, #412269 100%);
-      border-radius:18px;max-width:430px;
-      box-shadow:0 10px 34px #0001;
-      padding:41px 32px 34px 32px;margin:0 auto 25px auto;
-      display:flex;flex-direction:column;align-items:center; border:2.5px solid #7c3aed88;position:relative;
-    }
-    .personalize-section-title{
-      color:#fff;font-size:1.41em;letter-spacing:.01em;font-weight:700;margin-bottom:8px;text-align:center;
-    }
-    .personalize-section-exp{
-      color:#c6bfff;font-size:16.3px;margin-bottom:23px;text-align:center;line-height:1.6;
-    }
-    .personalize-form{width:99%;display:flex;flex-direction:column;gap:18px;align-items:center;}
-    .input-label{color:#ecd1ff;font-weight:500;font-size:15px;margin-bottom:4px;}
-    .input{
-      font-size:17px;padding:10px 13px;border-radius:7px;border:1.6px solid #cbb8ec;
-      background:#f6edff;color:#342577;
-      width:100%;outline:none;transition:box-shadow 0.13s;
-    }
-    .input:focus{box-shadow:0 0 0 2px #b985ee;}
-    .btn{
-      padding:12px 28px;font-size:16px;border:none;border-radius:9px;cursor:pointer;font-weight:600;
-      margin-top:17px;
-      background: linear-gradient(100deg,#a855f7 60%,#7c3aed 100%);
-      color:#fff;
-      box-shadow: 0 2px 8px #a855f732;letter-spacing:.01em;
-      transition:background 0.14s, box-shadow 0.14s;
-    }
-    .btn:hover {background:linear-gradient(120deg,#c084fc,#9333ea);}
-    .mode-select-section{
-      background: linear-gradient(110deg, #ece9fa 40%, #f8e6fa 100%);
-      border-radius:17px;max-width:570px;margin:26px auto 16px auto;
-      padding:27px 32px 19px 32px;box-shadow:0 7px 27px #a855f71c;
-      display:flex;flex-direction:column;align-items:center;
-    }
-    .mode-select-title {
-      color:#7c3aed;font-size:1.45em; font-weight:700; letter-spacing:-.01em; margin-bottom:13px;text-align:center;
-    }
-    .mode-select-exp {color:#4c3380; font-size:16.4px;text-align:center;margin-bottom:18px;}
-    .mode-btns-grid{
-      display:grid;grid-template-columns:1fr 1fr;gap:25px;justify-content:center;margin-bottom:6px;width:100%;
-    }
-    .mode-btn{
-      border:none;cursor:pointer;outline:none;text-align:center;
-      font-family:inherit;display:flex;flex-direction:column;align-items:center;
-      background:linear-gradient(140deg,#fff 32%,#ede7f6 100%);
-      border-radius:15px;box-shadow:0 2px 11px #7c3aed13;transition:transform 0.12s,border 0.12s;
-      border:2.1px solid #ded1ff;min-height:130px;padding:18px 0 9px 0;
-      justify-content:center;
-    }
-    .mode-btn:active,.mode-btn:focus{transform:scale(0.97);border-color:#b985ee;}
-    .mode-icon{font-size:39px;margin-bottom:10px;}
-    .mode-btn-label{color:#7c3aed;font-size:21px;font-weight:650;}
-    .mode-btn-desc{color:#7156a1;font-size:14.3px;margin-top:6px;font-weight:420;}
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Segoe UI', Inter, -apple-system, sans-serif;
+            background: #0f172a;
+            color: var(--text-main);
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-    .mode-card{background:#222;margin:16px auto 24px auto;padding:34px 17px 30px 17px;border-radius:18px;box-shadow:0 4px 22px #0002;max-width:510px;}
-    .mode-title{font-size:22px;color:#7c3aed;font-weight:700;margin-bottom:7px;}
-    .mode-desc{font-size:15px;color:#b0b0b0;line-height:1.67;margin-bottom:16px;}
-    .question-label{color:#fff;font-size:17.1px;font-weight:600;margin-bottom:13px;display:block;}
-    .choice-set{margin:6px 0 14px 0;display:flex;flex-direction:column;gap:9px;}
-    .choice-btn{
-      background:linear-gradient(102deg,#7c3aed16,#f6edff 90%);
-      color:#3a188e;font-weight:500;font-size:16px;padding:11px 19px;
-      border-radius:8px;border:1.7px solid #a855f7cc;cursor:pointer;
-      margin-bottom:3px;text-align:left;
-      transition:background .13s, box-shadow .13s,border-color .12s;
-    }
-    .choice-btn.selected,
-    .choice-btn:active,.choice-btn:focus{
-      background:linear-gradient(90deg,#7c3aed33,#f8fafc 100%);
-      border-color:#7c3aed;font-weight:730;box-shadow:0 0 0 2px #a855f777;
-    }
-    textarea.input{margin-top:7px;}
-    .slider-value{color:#7c3aed;font-weight:bold;margin-left:7px;}
-    .feedback-box{background:#171728e0;border:2px solid #7c3aed;border-radius:13px;margin:27px auto 11px auto;max-width:560px;padding:29px 22px;}
-    .feedback-title{font-weight:bold;color:#7c3aed;margin-bottom:10px;font-size:18px;}
-    .feedback-text{color:#e5e5e5;font-size:16.3px;margin-bottom:8px;font-weight:420;}
-    .restart-btn{margin-top:17px;}
-    .footer{
-      font-size:13.7px;color:#fff;text-align:center;margin-top:40px;
-      background:linear-gradient(97deg, #7c3aed, #a5b4fc 90%);
-      border-radius:15px;
-      padding:21px 21px 17px 21px;
-      font-weight:600;letter-spacing:0.01em;
-      transition:box-shadow 0.17s;box-shadow:0 2px 14px #a855f724;
-    }
-    .footer a {color:#fff;text-decoration:none;}
-    .footer:hover{box-shadow:0 3px 18px #ad87e7aa;background:linear-gradient(100deg, #a855f7 12%, #a5b4fc 100%);}
-    .saved-block{background:#232339;color:#fff;border-radius:10px;padding:17px 12px;margin:15px auto;max-width:445px;}
-    .saved-title{color:#7c3aed;font-size:15px;font-weight:600;margin-bottom:6px;}
-    .story-section{
-      background: linear-gradient(98deg, #fff7fb 25%, #e4eaff 85%);
-      color: #2e2060;
-      border-radius: 25px;
-      box-shadow:0 4px 28px #a855f706;
-      margin:38px auto 40px auto;padding:50px 7vw 50px 7vw;
-      max-width:720px;border:2.8px solid #a855f7;
-      display:flex;flex-direction:column;align-items:center;
-    }
-    .story-title{
-        font-size:22px;
-        color:#9747ff;
-        font-weight:800;
-        margin-bottom:17px;
-        letter-spacing:0;
-        text-align:center;
-    }
-    .story-text{
-        font-size:17.2px;
-        line-height:1.87;
-        color:#342173;
-        font-weight:470;
-        letter-spacing:.0007em;
-        text-align:center;
-        max-width:100vw;
-    }
-    @media(max-width:900px){
-      .mode-btns-grid{grid-template-columns:1fr;}
-      .personalize-section, .story-section{max-width:99vw;padding-left:3vw;padding-right:3vw;}
-      .mode-select-section,.mode-card,.feedback-box,.saved-block{padding:9px;max-width:99vw;}
-    }
-    @media(max-width:600px){
-      h1{font-size:23px;}.logo-img{width:80px;}
-      .story-section{padding:22px 2vw 27px 2vw;}
-      .personalize-section{padding:15px 2vw 16px 2vw;}
-    }
-  </style>
+        /* --- Animated Background --- */
+        .ambient-light {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #0f172a 100%);
+        }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: float 20s infinite ease-in-out;
+        }
+        .orb-1 { width: 300px; height: 300px; background: var(--primary); top: -50px; left: -50px; animation-delay: 0s; }
+        .orb-2 { width: 400px; height: 400px; background: var(--secondary); bottom: -100px; right: -50px; animation-delay: -5s; }
+        .orb-3 { width: 200px; height: 200px; background: #6366f1; top: 40%; left: 60%; animation-delay: -10s; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -30px); }
+        }
+
+        /* --- UI Components --- */
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            margin-top: 10px;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .tagline {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        /* Glass Cards */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), #7c3aed);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+            text-align: center;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(168, 85, 247, 0.5); }
+        .btn:active { transform: scale(0.98); }
+        .btn-secondary { background: rgba(255,255,255,0.1); box-shadow: none; border: 1px solid rgba(255,255,255,0.1); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.2); }
+
+        .btn-icon { font-size: 1.2rem; margin-right: 8px; }
+
+        /* Form Elements */
+        input[type="text"] {
+            width: 100%;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--glass-border);
+            padding: 15px;
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            outline: none;
+        }
+        input[type="text"]:focus { border-color: var(--primary); }
+        
+        label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 0.9rem; color: #e2e8f0; }
+
+        /* --- Views Management --- */
+        .view { display: none; animation: fadeIn 0.4s ease-out; }
+        .view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Dashboard Grid --- */
+        .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .mode-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 140px;
+        }
+        .mode-card:hover { background: rgba(255,255,255,0.1); transform: translateY(-3px); border-color: var(--primary); }
+        .mode-emoji { font-size: 2.5rem; margin-bottom: 10px; }
+        .mode-name { font-weight: 700; color: white; margin-bottom: 4px; }
+        .mode-desc { font-size: 0.75rem; color: var(--text-muted); line-height: 1.3; }
+
+        /* --- Focus Wizard (Question Mode) --- */
+        .progress-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-bottom: 30px; }
+        .progress-fill { height: 100%; background: var(--primary); border-radius: 2px; width: 0%; transition: width 0.3s; }
+        
+        .question-text { font-size: 1.4rem; font-weight: 700; margin-bottom: 25px; line-height: 1.4; }
+        .option-btn {
+            display: block; width: 100%; text-align: left;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            padding: 18px 20px; margin-bottom: 12px;
+            border-radius: 12px; color: #cbd5e1;
+            cursor: pointer; transition: 0.2s;
+            font-size: 1rem;
+        }
+        .option-btn:hover { background: rgba(168, 85, 247, 0.15); border-color: var(--primary); color: white; }
+        .option-btn.selected { background: var(--primary); border-color: var(--primary); color: white; }
+
+        /* --- Result Card --- */
+        .result-card { border-top: 4px solid var(--primary); }
+        .result-header { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); margin-bottom: 10px; font-weight: 700; }
+        .result-body { font-size: 1.1rem; line-height: 1.6; color: #e2e8f0; margin-bottom: 25px; }
+        .result-archetype { font-size: 1.8rem; font-weight: 800; margin-bottom: 15px; color: white; }
+        .action-box { background: rgba(168, 85, 247, 0.1); border-left: 3px solid var(--primary); padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        
+        /* --- Saved Sparks --- */
+        .spark-item { padding: 15px; background: rgba(0,0,0,0.2); border-radius: 12px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.05); }
+        .spark-date { font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 5px; }
+
+        .hidden { display: none; }
+    </style>
 </head>
 <body>
-<div class="header">
-  <a href="https://ekolitika.framer.website/" target="_blank" tabindex="-1">
-    <img src="https://framerusercontent.com/images/NhZAoGoxBJzZIPWRIXCzVkkNuDA.png?scale-down-to=512" class="logo-img" alt="EKOLITIKA Logo"/>
-  </a>
-  <h1>Creative Pulse</h1>
-  <div class="tagline">Spark ideas. Shape them. Make them real.</div>
-</div>
-<button class="mode-back-btn" id="toModesBtn" style="display:none;" onclick="toModes()">← Back to Modes</button>
-<div class="personalize-section" id="personalizeArea">
-  <div class="personalize-section-title">Personalize Your Journey</div>
-  <div class="personalize-section-exp">
-    Share a few things so we can personalize all five Creative Pulse modes.<br>
-    <b>You'll get tailored feedback in any creative step you need.<br>Choose one, or try them all!</b>
-  </div>
-  <form class="personalize-form" onsubmit="event.preventDefault();startJourney();">
-    <label class="input-label" for="username">Name or nickname</label>
-    <input class="input" type="text" id="username" placeholder="e.g. Sam, Li, Alex" maxlength="32" autocomplete="off"/>
-    <label class="input-label" for="creativeField">Creative field/interest</label>
-    <input class="input" type="text" id="creativeField" placeholder="e.g. design, teaching, writing..." maxlength="40" autocomplete="off"/>
-    <label class="input-label" for="challengeDesc">Your creative challenge</label>
-    <input class="input" type="text" id="challengeDesc" placeholder="Where are you most stuck or want to grow?" maxlength="90" autocomplete="off"/>
-    <button class="btn" type="submit">Personalize &amp; See Modes</button>
-  </form>
-</div>
-<div id="modeSelection" class="mode-select-section" style="display:none;">
-  <div class="mode-select-title">Choose a Creative Mode</div>
-  <div class="mode-select-exp">
-    Each mode tackles a phase in creativity. Jump in anywhere—AI-powered, personalized feedback in every mode!
-  </div>
-  <div class="mode-btns-grid" id="modeBtns"></div>
-  <div class="saved-block" id="savesBox" style="display:none;">
-    <div class="saved-title">Your saved sparks</div>
-    <div id="saves"></div>
-  </div>
-</div>
-<div id="mainContent" style="display:none;">
-  <div id="modeCard" class="mode-card" style="display:none;"></div>
-  <div id="feedbackContainer" style="display:none;">
-    <div class="feedback-box">
-      <div class="feedback-title">Your Feedback</div>
-      <div class="feedback-text" id="personalFeedback"></div>
-      <button class="btn btn-p restart-btn" onclick="toModes()">Back to Modes</button>
-      <button class="btn btn-p restart-btn" onclick="copyResult()">Copy Feedback</button>
-      <button class="btn restart-btn" style="background:#a855f7;color:#fff" onclick="saveSpark()">Save Spark</button>
+
+    <div class="ambient-light">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
     </div>
-  </div>
-</div>
-<div class="story-section">
-  <div class="story-title">Born from Real Creative Struggle</div>
-  <div class="story-text">
-    In 2025, a team joined The Creative Mess—an Erasmus+ course that proved creativity isn't magic. It's a cycle: brainstorm, organize, rest, inspire, experiment, repeat.
-    <br><br>
-    The problem: Most tools feed you empty motivation or treat creativity like a factory line. Neither helps when you're actually stuck.
-    <br><br>
-    So we built Creative Pulse.
-    A free tool that diagnoses your block, tells you what you actually need, and gives you real feedback—not fluff.
-    <br><br>
-    For designers, educators, changemakers, anyone who creates. Creativity as a sustainable practice, not burnout waiting to happen.
-    <br><br>
-    From stuck to unstuck. Idea to action. Exhaustion to rhythm.
-    <br>
-    Built by EKOLiTiKA - an NGO learning sustainability from nature and applying circular thinking to creativity, community, and change.
-  </div>
-</div>
-<div class="footer">
-  <a href="https://ekolitika.framer.website/" target="_blank">Made with 💚 by EKOLiTiKA 2025</a>
-</div>
+
+    <div class="container">
+        <header class="header">
+            <div class="logo-text">Creative Pulse</div>
+            <div class="tagline">An EKOLITIKA Project</div>
+        </header>
+
+        <div id="view-onboarding" class="view active">
+            <div class="glass-panel">
+                <h2 style="font-size:1.8rem; margin-bottom:10px;">Unstick your mind.</h2>
+                <p style="color:#cbd5e1; margin-bottom:30px; line-height:1.6;">
+                    A free digital mentor for creators. No fluff, just practical steps to get you moving again.<br><br>
+                    <em style="font-size:0.9rem; opacity:0.7;">100% Free • Private • No Login Required</em>
+                </p>
+                <form id="onboardForm">
+                    <label>What should we call you?</label>
+                    <input type="text" id="userName" placeholder="e.g., Alex, Sam..." required autocomplete="off">
+                    
+                    <label>What's your creative field?</label>
+                    <input type="text" id="userField" placeholder="e.g., Design, Writing, Music..." required autocomplete="off">
+
+                    <button type="submit" class="btn">Start Journey &rarr;</button>
+                </form>
+            </div>
+            <div style="text-align:center; font-size:0.8rem; opacity:0.5; margin-top:20px;">
+                Born from "The Creative Mess" Erasmus+ Course
+            </div>
+        </div>
+
+        <div id="view-dashboard" class="view">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 style="margin:0;">Hello, <span id="dashName" style="color:var(--primary);">Creator</span>.</h3>
+                <button onclick="logout()" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.8rem;">Reset</button>
+            </div>
+
+            <div class="glass-panel" style="padding:20px;">
+                <label style="margin-bottom:15px; display:block;">How can we help today?</label>
+                <div class="mode-grid">
+                    <div class="mode-card" onclick="startMode('diagnose')">
+                        <div class="mode-emoji">🩺</div>
+                        <div class="mode-name">Diagnose</div>
+                        <div class="mode-desc">Find out why you're stuck.</div>
+                    </div>
+                    <div class="mode-card" onclick="startMode('inspire')">
+                        <div class="mode-emoji">✨</div>
+                        <div class="mode-name">Inspire</div>
+                        <div class="mode-desc">Refill your creative well.</div>
+                    </div>
+                    <div class="mode-card" onclick="startMode('brainstorm')">
+                        <div class="mode-emoji">🌪️</div>
+                        <div class="mode-name">Brainstorm</div>
+                        <div class="mode-desc">Generate wild ideas fast.</div>
+                    </div>
+                    <div class="mode-card" onclick="startMode('organize')">
+                        <div class="mode-emoji">📦</div>
+                        <div class="mode-name">Organize</div>
+                        <div class="mode-desc">Make chaos actionable.</div>
+                    </div>
+                    <div class="mode-card" onclick="startMode('experiment')">
+                        <div class="mode-emoji">🧪</div>
+                        <div class="mode-name">Experiment</div>
+                        <div class="mode-desc">Test ideas safely.</div>
+                    </div>
+                    <div class="mode-card" style="border-style:dashed; opacity:0.7;" onclick="showSaved()">
+                        <div class="mode-emoji">📂</div>
+                        <div class="mode-name">My Sparks</div>
+                        <div class="mode-desc">View your saved advice.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-wizard" class="view">
+            <button onclick="goHome()" style="background:none; border:none; color:var(--text-muted); margin-bottom:10px; cursor:pointer;">&larr; Exit</button>
+            <div class="glass-panel">
+                <div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div>
+                <div id="questionContainer">
+                    <div id="questionText" class="question-text">Question goes here...</div>
+                    <div id="optionsArea"></div>
+                    <textarea id="textInput" class="hidden" rows="4" style="width:100%; background:rgba(0,0,0,0.2); border:1px solid var(--glass-border); padding:15px; border-radius:12px; color:white; font-family:inherit; margin-bottom:15px; resize:none;"></textarea>
+                </div>
+                <button id="nextBtn" class="btn" style="margin-top:10px;" onclick="nextStep()">Continue</button>
+            </div>
+        </div>
+
+        <div id="view-result" class="view">
+            <div class="glass-panel result-card">
+                <div class="result-header">Your Personal Prescription</div>
+                <div class="result-archetype" id="resArchetype">The Result Title</div>
+                <div class="result-body" id="resBody">
+                    Advice text...
+                </div>
+                <div class="action-box">
+                    <strong>⚡ Tiny Next Step:</strong><br>
+                    <span id="resAction">Action...</span>
+                </div>
+                <div style="display:flex; gap:10px;">
+                    <button class="btn" onclick="saveResult()">Save Spark 💾</button>
+                    <button class="btn btn-secondary" onclick="goHome()">Done</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-saved" class="view">
+            <button onclick="goHome()" style="background:none; border:none; color:var(--text-muted); margin-bottom:10px; cursor:pointer;">&larr; Back</button>
+            <h2 style="margin-bottom:20px;">Your Spark Library</h2>
+            <div id="savedList"></div>
+        </div>
+
+    </div>
+
 <script>
-const modes = {
-  diagnose: {
-    icon:"🩺", label:"Diagnose", desc:"Find your current creative block and get tailored steps.",
-    questions: [
-      { q: "Right now, what does your creative block feel like?", type: "choice", c: [
-        "I have too many ideas and can't focus",
-        "I'm completely blank",
-        "I know what to do but can't start",
-        "I'm burned out and uninspired",
-        "I'm stuck on one problem"
-      ]},
-      { q: "What's been draining your creative energy lately?", type: "text" },
-      { q: "When you imagine breaking through this, what does that look like?", type: "text" },
-      { q: "Pick something you've already tried that didn't work.", type: "choice", c:[
-        "Waiting for inspiration", "Making endless to-do lists", "Getting feedback from wrong people", "Trying to work without breaks", "Jumping between projects", "Letting it bottle up"
-      ]}
-    ]
-  },
-  inspire: {
-    icon:"✨", label:"Inspire", desc:"Refuel when you’re low. Rediscover the spark.",
-    questions: [
-      { q: "Choose your creative fuel for today:", type:"choice", c:[
-        "New perspectives","Permission to rest","A reminder of why I started","Examples of what's possible","A creative challenge"
-      ]},
-      { q: "Describe a moment when you felt most creatively alive.", type: "text" },
-      { q: "What’s one thing, person, or project that recently lit you up?", type:"choice",c:[
-        "A friend's brave project","Something on YouTube or TikTok","Someone in my field","A story or book","Nature or a random moment"
-      ]},
-      { q: "If you had zero pressure and total freedom, what would you create just for fun?", type: "text" }
-    ]
-  },
-  brainstorm: {
-    icon:"💡", label:"Brainstorm", desc:"Blow open challenges & think wild—no judgment.",
-    questions: [
-      { q: "Pick the energy for this brainstorm:",type:"choice",c:[
-        "Bold","Curious","Playful","Rebellious","Careful, but determined"
-      ]},
-      { q:"What creative challenge do you want to crack wide open?",type:"text"},
-      { q:"What would make this brainstorm session a wild success?", type:"text"},
-      { q:"What's the most ridiculous, impractical, or rule-breaking idea you can think of?", type:"text"}
-    ]
-  },
-  organize: {
-    icon:"📦", label:"Organize", desc:"Shape and filter ideas into clear, tiny next steps.",
-    questions: [
-      {q:"About how many ideas are swirling right now?",type:"choice",c:["1–2","3–5","6–8","9–13","14 or more"]},
-      {q:"Your gut: which idea begs to move forward?",type:"text"},
-      {q:"What would make that one idea ‘ready’ for you?",type:"text"},
-      {q:"Pick your next step:",type:"choice",c:[
-        "Sketch or outline it","Test or research a small piece","Tell someone about it","Sleep on it and return","Find a collaborator"
-      ]}
-    ]
-  },
-  experiment: {
-    icon:"🚀",label:"Experiment",desc:"Test, learn, and move from plan to real-world results.",
-    questions:[
-      {q:"Pick a way you're comfortable & safe testing this idea:",type:"choice",c:[
-        "Solo dry run","Share with one friend","Post anonymously","Prototype with scraps","Write or record a voice memo just for me"
-      ]},
-      {q:"What's the tiniest version of this idea you could test this week?",type:"text"},
-      {q:"What are you most afraid will happen if you try this?",type:"text"},
-      {q:"How will you celebrate trying—even if it flops?",type:"text"}
-    ]
-  }
-};
-let userProfile = {}, answers = {}, curMode = null, curQ = 0, curA = [], saves = [];
-// --- PERSONALIZE & MODES ---
-function startJourney() {
-  const name = document.getElementById('username').value || "Friend";
-  const field = document.getElementById('creativeField').value || "creativity";
-  const challenge = document.getElementById('challengeDesc').value || "my creative process";
-  userProfile = { name, field, challenge };
-  answers = {};
-  document.getElementById('personalizeArea').style.display = 'none';
-  renderModes();
-  document.getElementById('modeSelection').style.display = 'flex';
-  document.getElementById('toModesBtn').style.display = "none";
-  renderSaves();
-}
-function renderModes() {
-  const grid = document.getElementById('modeBtns');
-  grid.innerHTML = "";
-  Object.keys(modes).forEach((mode, i) => {
-    const d = modes[mode];
-    grid.innerHTML += `
-      <button class="mode-btn" onclick="launchMode('${mode}')" tabindex="0">
-        <span class="mode-icon">${d.icon}</span>
-        <span class="mode-btn-label">${d.label}</span>
-        <span class="mode-btn-desc">${d.desc}</span>
-      </button>
-    `;
-  });
-}
-// --- MODE EXECUTION ---
-function launchMode(mode) {
-  curMode = mode; curQ = 0; curA = [];
-  document.getElementById('modeSelection').style.display = "none";
-  document.getElementById('mainContent').style.display = "block";
-  document.getElementById('toModesBtn').style.display = "block";
-  showCard();
-}
-function showCard() {
-  const cd = document.getElementById('modeCard');
-  const d = modes[curMode];
-  cd.style.display = "block";
-  let html = `<div class="mode-title">${d.icon} ${d.title}</div><div class="mode-desc">${d.desc}</div>`;
-  let q = d.questions[curQ];
-  html += `<label class="question-label">${q.q}</label>`;
-  if(q.type==="choice") {
-    html += `<div class="choice-set" id="choiceSet">`;
-    q.c.forEach((opt,j)=>{
-      html += `<button type="button" class="choice-btn" onclick="selectChoice(${j})" id="choiceBtn${j}" tabindex="0">${opt}</button>`;
-    });
-    html += "</div>";
-    html += `<input type="hidden" class="input" id="qinput" value="">`;
-  } else if(q.type==="slider") {
-    let dflt = q.def||q.min;
-    html += `<input type="range" id="qinput" min="${q.min}" max="${q.max}" value="${dflt}" step="${q.step||1}"
-      oninput="document.getElementById('slideval').innerText=this.value;"><span class="slider-value" id="slideval">${dflt}</span>`;
-  } else {
-    html += `<textarea class="input" id="qinput" aria-label="${q.q}" rows="3" required placeholder="Type here..."></textarea>`;
-  }
-  html += `<br><button class="btn" style="margin-top:14px;" onclick="submitAnswer()">Next</button>`;
-  cd.innerHTML = html;
-  document.getElementById('feedbackContainer').style.display="none";
-}
-window.selectChoice = function(idx) {
-  var all = document.querySelectorAll("#choiceSet .choice-btn");
-  all.forEach(btn=>btn.classList.remove("selected"));
-  all[idx].classList.add("selected");
-  document.getElementById('qinput').value = modes[curMode].questions[curQ].c[idx];
+/* --- DATA & CONTENT ENGINE --- */
+const content = {
+    diagnose: {
+        steps: [
+            { q: "How does your 'stuckness' feel physically?", type:"choice", opts: ["Heavy/Exhausted", "Anxious/Buzzing", "Empty/Blank", "Frustrated/Tight"] },
+            { q: "If your project could talk, what would it say?", type:"choice", opts: ["'You're not good enough'", "'I'm too complicated'", "'Why are you ignoring me?'", "'I'm boring'"] },
+            { q: "What's the one tiny thing blocking you?", type:"text" }
+        ]
+    },
+    inspire: {
+        steps: [
+            { q: "What is your creative tank running on?", type:"choice", opts: ["Fumes (Empty)", "Adrenaline (Panic)", "Routine (Boredom)", "Chaos (Distraction)"] },
+            { q: "What's a piece of art/media that recently made you jealous?", type:"text" },
+            { q: "Choose a permission slip for today:", type:"choice", opts: ["Permission to be bad", "Permission to do nothing", "Permission to copy (to learn)", "Permission to quit early"] }
+        ]
+    },
+    brainstorm: {
+        steps: [
+            { q: "Set the constraint:", type:"choice", opts: ["If I had $0 budget", "If I had to finish in 1 hour", "If it had to be ugly", "If I were an alien"] },
+            { q: "What is the problem you are solving?", type:"text" },
+            { q: "Write 3 terrible ideas (fast). Go!", type:"text" }
+        ]
+    },
+    organize: {
+        steps: [
+            { q: "How many open loops are in your head?", type:"choice", opts: ["1-3 (Manageable)", "4-10 (Messy)", "10+ (Chaos)", "I lost count"] },
+            { q: "Which one task scares you the most?", type:"text" },
+            { q: "What does 'Finished' look like for this week?", type:"text" }
+        ]
+    },
+    experiment: {
+        steps: [
+            { q: "What's the risk level?", type:"choice", opts: ["Private (Just me)", "Low (A friend)", "Medium (Socials)", "High (Launch)"] },
+            { q: "What's the worst meaningful thing that could happen?", type:"text" },
+            { q: "How will you reward yourself for trying?", type:"text" }
+        ]
+    }
 };
 
-function submitAnswer() {
-  let d = modes[curMode];
-  let qData = d.questions[curQ], val;
-  if(qData.type==="slider") { val=document.getElementById('qinput').value;}
-  else if(qData.type==="choice") {
-    val = document.getElementById('qinput').value.trim();
-    if(!val) { alert("Please select one option."); return; }
-  }
-  else { val = document.getElementById('qinput').value.trim(); }
-  if(!val){alert("Answer required.");return;}
-  curA.push(val);
-  curQ++;
-  if(curQ<d.questions.length){showCard();}
-  else{finishMode();}
-}
-function finishMode() {
-  answers[curMode] = [...curA];
-  document.getElementById('modeCard').style.display="none";
-  generateFeedback(curMode,curA);
-}
-// --- PSEUDO-AI FEEDBACK ---
-function generateFeedback(mode,ans) {
-  let you=userProfile.name,field=userProfile.field,userChallenge=userProfile.challenge;
-  let creativeMessage = "";
-  // Short demo of what a real AI call would inject
-  switch(mode){
-    case "diagnose":{
-      creativeMessage = `🌱 <b>Creative Mentor Insight:</b> I get why "${ans[0]}" hits hard. The story you shared—<em>"${ans[2]}"</em>—is key: try working backwards from that vision, not forwards from the current block. Instead of <b>${ans[3] || "what didn't work"}</b>, experiment with its opposite (e.g. if you "waited", now act immediately in 10 min bursts).`;
-      break;
+/* --- STATE MANAGEMENT --- */
+let state = {
+    user: { name: "", field: "" },
+    history: [],
+    currentMode: null,
+    step: 0,
+    answers: []
+};
+
+/* --- INIT --- */
+window.onload = () => {
+    const savedUser = localStorage.getItem('cp_user');
+    if (savedUser) {
+        state.user = JSON.parse(savedUser);
+        document.getElementById('dashName').innerText = state.user.name;
+        switchView('view-dashboard');
+    } else {
+        switchView('view-onboarding');
     }
-    case "inspire":
-      creativeMessage = `✨ <b>Creative Spark:</b> For "${ans[0]}" as fuel, try curating a moodboard or playlist just for this week. Your most-alive moment was <em>"${ans[1]}"</em>—recreate a tiny piece of that environment in your work zone or routine, even symbolically.`;
-      break;
-    case "brainstorm":
-      creativeMessage = `🔥 <b>Creative Strategy:</b> Use your "${ans[0]}" energy as a lens. Tackle "${ans[1]}" by doing a 5-min "no-bad-ideas" sketch/voice note, then set it aside overnight. Invite a friend for a "ridiculous idea" duel—your <em>"${ans[3]}"</em> might be their favorite!`;
-      break;
-    case "organize":
-      creativeMessage = `📦 <b>Clarity Move:</b> For ${ans[0]} ideas, do a "keep-toss-maybe" exercise, then commit to "${ans[1]}" first. "Ready" means personal fit—so tweak your idea until you feel a "yes" in your gut. Celebrate completing "${ans[3] || '(your next step)'}" right after you do it—tiny wins build momentum.`;
-      break;
-    case "experiment":
-      creativeMessage = `🚀 <b>Courage Move:</b> For "${ans[0]}", keep it low stakes (private, playful, or absurdly small). Your fear (<em>"${ans[2]}"</em>) is the best teacher—write out what's the <b>worst realistic</b> outcome and test that small first. Celebrate all learning, not just "success". Reward yourself!`;
-      break;
-    default:creativeMessage="";
-  }
-  document.getElementById('personalFeedback').innerHTML = `Hi <b>${you}</b>,<br>
-    <span style="color:#a855f7;font-weight:600;font-size:1.07em">${modes[mode].label}</span> takeaways for your <b style="color:#7c3aed">${field}</b>:
-    <div style="margin:10px 0 13px 0"><em>Your current challenge:</em> "${userChallenge}"</div>
-    <div>${creativeMessage}</div>
-    <div style="color:#d0d0c0;font-size:0.97em;margin-top:15px;">To keep momentum: try a small action based on this feedback in the next 24h—even if it's just writing down your insights!
-    </div>`;
-  document.getElementById('feedbackContainer').style.display = "block";
+    loadHistory();
+};
+
+/* --- NAVIGATION --- */
+function switchView(viewId) {
+    document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+    document.getElementById(viewId).classList.add('active');
+    window.scrollTo(0,0);
 }
-// ---
-function toModes(){
-  document.getElementById('feedbackContainer').style.display="none";
-  document.getElementById('mainContent').style.display="none";
-  document.getElementById('modeSelection').style.display="flex";
-  document.getElementById('toModesBtn').style.display = "none";
+
+function goHome() {
+    switchView('view-dashboard');
 }
-function copyResult() {
-  let txt = document.getElementById('personalFeedback').innerText;
-  navigator.clipboard.writeText(txt);
-  alert("Feedback copied!");
+
+function logout() {
+    if(confirm("Reset your profile? This won't delete saved sparks.")) {
+        localStorage.removeItem('cp_user');
+        location.reload();
+    }
 }
-function saveSpark() {
-  let fb = document.getElementById('personalFeedback').innerText;
-  saves.push(fb);
-  renderSaves();
-  alert("Saved!");
+
+/* --- ONBOARDING --- */
+document.getElementById('onboardForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('userName').value;
+    const field = document.getElementById('userField').value;
+    if(name && field) {
+        state.user = { name, field };
+        localStorage.setItem('cp_user', JSON.stringify(state.user));
+        document.getElementById('dashName').innerText = name;
+        switchView('view-dashboard');
+    }
+});
+
+/* --- MODE WIZARD LOGIC --- */
+function startMode(mode) {
+    state.currentMode = mode;
+    state.step = 0;
+    state.answers = [];
+    switchView('view-wizard');
+    renderStep();
 }
-function renderSaves() {
-  let sb=document.getElementById('saves'); if(!sb) return;
-  sb.innerHTML = saves.map((a,i)=>`<div style="margin:13px 0;"><b>Spark #${i+1}:</b><br>${a}</div>`).join('');
-  var boxes = document.querySelectorAll("#savesBox");
-  boxes.forEach(b=>{b.style.display=saves.length?"block":"none";});
+
+function renderStep() {
+    const modeData = content[state.currentMode];
+    const qData = modeData.steps[state.step];
+    
+    // Progress
+    const pct = ((state.step) / modeData.steps.length) * 100;
+    document.getElementById('progressBar').style.width = pct + "%";
+
+    // Text
+    document.getElementById('questionText').innerText = qData.q;
+    
+    // Inputs
+    const optsArea = document.getElementById('optionsArea');
+    const textArea = document.getElementById('textInput');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    optsArea.innerHTML = "";
+    textArea.classList.add('hidden');
+    textArea.value = "";
+    nextBtn.disabled = true;
+    nextBtn.style.opacity = "0.5";
+
+    if (qData.type === "choice") {
+        optsArea.classList.remove('hidden');
+        qData.opts.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = "option-btn";
+            btn.innerText = opt;
+            btn.onclick = () => {
+                document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                nextBtn.disabled = false;
+                nextBtn.style.opacity = "1";
+                // Auto-save val temporarily
+                textArea.value = opt; 
+            };
+            optsArea.appendChild(btn);
+        });
+    } else {
+        textArea.classList.remove('hidden');
+        textArea.focus();
+        textArea.oninput = () => {
+            if(textArea.value.length > 2) {
+                nextBtn.disabled = false;
+                nextBtn.style.opacity = "1";
+            }
+        };
+    }
+}
+
+function nextStep() {
+    const val = document.getElementById('textInput').value;
+    state.answers.push(val);
+    
+    state.step++;
+    if (state.step < content[state.currentMode].steps.length) {
+        renderStep();
+    } else {
+        generateResult();
+    }
+}
+
+/* --- THE LOGIC ENGINE (GENERATOR) --- */
+function generateResult() {
+    const mode = state.currentMode;
+    const ans = state.answers;
+    const user = state.user;
+    
+    let title = "";
+    let body = "";
+    let action = "";
+
+    // logic engine: Maps input patterns to archetypes
+    if (mode === 'diagnose') {
+        if (ans[0].includes("Heavy") || ans[0].includes("Empty")) {
+            title = "The Empty Well";
+            body = `You are trying to draw water from a dry well, ${user.name}. The feeling of heaviness isn't laziness—it's a biological signal to stop outputting. Your "${ans[2]}" block is likely a symptom of burnout, not lack of skill.`;
+            action = "Do strictly zero creative work for 24 hours. Input only (books, walks, sleep).";
+        } else {
+            title = "Analysis Paralysis";
+            body = `Your energy is high but scattered. You are over-intellectualizing the process. When your project says "${ans[1]}", it's actually asking for simplification.`;
+            action = "Set a timer for 10 minutes. Do the 'ugly version' of the next step. Quantity over quality.";
+        }
+    } 
+    else if (mode === 'inspire') {
+        title = "The Spark Hunter";
+        body = `You're running on ${ans[0]}, which is not sustainable. Inspiration isn't magic; it's a discipline. You chose "${ans[2]}"—lean into that hard.`;
+        action = "Curate 3 images or songs that match the 'vibe' of what you want to make. Do nothing else.";
+    }
+    else if (mode === 'brainstorm') {
+        title = "The Chaos Pilot";
+        body = `Constraints breed creativity. By thinking about "${ans[0]}", you tricked your brain into bypassing its internal critic. The terrible ideas you wrote? One of them is the seed of genius.`;
+        action = "Pick the most ridiculous idea you wrote. Find one realistic aspect of it and sketch it out.";
+    }
+    else if (mode === 'organize') {
+        title = "The Essentialist";
+        body = `You are carrying too much cognitive load. ${ans[0]} open loops is a recipe for anxiety. Your intuition knows that "${ans[1]}" is the beast you need to slay.`;
+        action = "Ignore everything else. Write the first 3 sub-steps for that scary task. Do step 1 now.";
+    }
+    else if (mode === 'experiment') {
+        title = "The Scientist";
+        body = `Fear is data. You identified that the worst outcome is "${ans[1]}". Usually, when we write it down, it looks smaller. You are testing a hypothesis, not your self-worth.`;
+        action = "Run the test. Then, regardless of the result, trigger your reward: " + ans[2];
+    }
+
+    // Render Result
+    document.getElementById('resArchetype').innerText = title;
+    document.getElementById('resBody').innerText = body;
+    document.getElementById('resAction').innerText = action;
+    
+    switchView('view-result');
+}
+
+/* --- SAVING SYSTEM --- */
+function saveResult() {
+    const spark = {
+        title: document.getElementById('resArchetype').innerText,
+        action: document.getElementById('resAction').innerText,
+        date: new Date().toLocaleDateString(),
+        mode: state.currentMode
+    };
+    
+    let history = JSON.parse(localStorage.getItem('cp_history') || "[]");
+    history.unshift(spark);
+    localStorage.setItem('cp_history', JSON.stringify(history));
+    
+    alert("Spark saved to your library!");
+}
+
+function loadHistory() {
+    const history = JSON.parse(localStorage.getItem('cp_history') || "[]");
+    const container = document.getElementById('savedList');
+    container.innerHTML = "";
+    
+    if(history.length === 0) {
+        container.innerHTML = "<div style='opacity:0.6; text-align:center;'>No saved sparks yet. Go explore a mode!</div>";
+        return;
+    }
+
+    history.forEach(item => {
+        const div = document.createElement('div');
+        div.className = "spark-item";
+        div.innerHTML = `
+            <span class="spark-date">${item.date} • ${item.mode.toUpperCase()}</span>
+            <div style="font-weight:700; color:var(--primary); margin-bottom:5px;">${item.title}</div>
+            <div style="font-size:0.9rem;">${item.action}</div>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function showSaved() {
+    loadHistory();
+    switchView('view-saved');
 }
 </script>
 </body>
