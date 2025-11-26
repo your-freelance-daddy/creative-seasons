@@ -86,7 +86,7 @@
         }
         .logo-img:hover { transform: scale(1.05) rotate(-2deg); }
         
-        /* UPDATED: Platform Title Style - Dark Text with Bigger White Glow */
+        /* UPDATED: Platform Title Style - Gradient Dark Purple, sharp dark stroke, white glow */
         .platform-title {
             font-family: 'Caprasimo', cursive;
             font-size: 3rem; 
@@ -94,22 +94,19 @@
             margin-top: 10px;
             margin-bottom: 25px;
             
-            /* Dark purple text color, almost background */
-            color: #1e1b4b; 
+            /* Dark purple gradient for the text fill */
+            background: linear-gradient(135deg, #3b0764, #581c87);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             
-            /* Ensure no unwanted background/stroke effects */
-            background: none;
-            -webkit-background-clip: unset;
-            -webkit-text-fill-color: unset;
-            -webkit-text-stroke: none; 
+            /* ADJUSTED: Extremely fine 0.1px stroke in the darkest purple shade for an elegant, sharp edge */
+            -webkit-text-stroke: 0.1px #3b0764; 
             
             letter-spacing: 1.5px;
             
-            /* Bigger, rich white glow */
-            text-shadow: 
-                0 0 10px rgba(255, 255, 255, 0.8), /* Inner bright core glow, slightly bigger */
-                0 0 25px rgba(255, 255, 255, 0.6), /* Wider, semi-transparent glow */
-                0 0 45px rgba(255, 255, 255, 0.4); /* Even wider, softer halo */
+            /* Tighter, sharper white glow */
+            text-shadow: 0 0 4px #ffffff, /* Tight, bright core */
+                         0 0 10px rgba(255, 255, 255, 0.7); /* Soft halo */
         }
 
         /* --- Glass Cards & General Components --- */
@@ -476,7 +473,7 @@ const content = {
     diagnose: {
         steps: [
             { q: "Right now, how does your creative block feel?", type:"choice", opts: ["Foggy & Overwhelming", "Empty & Drained", "Anxious & Fast", "Boring & Repetitive"] },
-            { q: "What is the story you are telling yourself?", type:"choice", opts: ["'I'm not good enough'", "'I'm out of time'", "'This idea is stupid'", "'I'm don't know where to start'"] },
+            { q: "What is the story you are telling yourself?", type:"choice", opts: ["'I'm not good enough'", "'I'm out of time'", "'This idea is stupid'", "'I don't know where to start'"] },
             { q: "Describe the specific project or problem in one sentence:", type:"text" }
         ]
     },
@@ -528,3 +525,328 @@ window.onload = () => {
     } else {
         setView('onboarding');
     }
+    
+    // Setup event listeners
+    document.getElementById('onboardForm').addEventListener('submit', onboardUser);
+    
+    // Check if the auth token is available (for persistence, using a placeholder for now)
+    // NOTE: In a real environment, we would integrate Firebase/Firestore here.
+    // For this demonstration, we rely on localStorage for the user profile.
+
+    loadSavedSparksFromStorage();
+};
+
+/* --- VIEW MANAGEMENT --- */
+function setView(viewId) {
+    document.querySelectorAll('.view').forEach(view => {
+        view.classList.remove('active');
+    });
+    document.getElementById(`view-${viewId}`).classList.add('active');
+}
+
+/* --- AUTH & PROFILE --- */
+function onboardUser(event) {
+    event.preventDefault();
+    state.user.name = document.getElementById('userName').value.trim() || "Creative Soul";
+    state.user.field = document.getElementById('userField').value.trim() || "a Project";
+    
+    localStorage.setItem('cp_user', JSON.stringify(state.user));
+    document.getElementById('dashName').textContent = state.user.name;
+    setView('dashboard');
+}
+
+function logout() {
+    localStorage.removeItem('cp_user');
+    localStorage.removeItem('cp_sparks');
+    state.user = { name: "", field: "" };
+    setView('onboarding');
+}
+
+function goHome() {
+    state.currentMode = null;
+    setView('dashboard');
+}
+
+/* --- WIZARD LOGIC --- */
+function startMode(mode) {
+    state.currentMode = mode;
+    state.step = 0;
+    state.answers = [];
+    document.getElementById('wizardModeTitle').textContent = mode.toUpperCase();
+    setView('wizard');
+    renderStep();
+}
+
+function renderStep() {
+    const modeData = content[state.currentMode];
+    const currentStep = modeData.steps[state.step];
+    const totalSteps = modeData.steps.length;
+    
+    // Update Progress Bar
+    const progress = (state.step / totalSteps) * 100;
+    document.getElementById('progressBar').style.width = `${progress}%`;
+    
+    // Update Question
+    document.getElementById('questionText').textContent = currentStep.q;
+    
+    const optionsArea = document.getElementById('optionsArea');
+    const textInput = document.getElementById('textInput');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    optionsArea.innerHTML = '';
+    textInput.classList.add('hidden');
+    nextBtn.style.opacity = 0.5;
+    nextBtn.style.pointerEvents = 'none';
+
+    if (currentStep.type === 'choice') {
+        currentStep.opts.forEach((option, index) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.textContent = option;
+            btn.onclick = () => selectOption(option, btn);
+            optionsArea.appendChild(btn);
+        });
+    } else if (currentStep.type === 'text') {
+        textInput.classList.remove('hidden');
+        textInput.value = '';
+        textInput.oninput = checkTextInput;
+    }
+}
+
+function selectOption(value, element) {
+    // Clear previous selection
+    document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
+    
+    // Set new selection
+    element.classList.add('selected');
+    state.answers[state.step] = value;
+    
+    // Enable button
+    document.getElementById('nextBtn').style.opacity = 1;
+    document.getElementById('nextBtn').style.pointerEvents = 'auto';
+}
+
+function checkTextInput() {
+    const textInput = document.getElementById('textInput');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    if (textInput.value.trim().length > 5) {
+        state.answers[state.step] = textInput.value.trim();
+        nextBtn.style.opacity = 1;
+        nextBtn.style.pointerEvents = 'auto';
+    } else {
+        nextBtn.style.opacity = 0.5;
+        nextBtn.style.pointerEvents = 'none';
+    }
+}
+
+async function nextStep() {
+    const modeData = content[state.currentMode];
+    
+    if (state.step < modeData.steps.length - 1) {
+        state.step++;
+        renderStep();
+    } else {
+        // Last step completed, generate result
+        document.getElementById('progressBar').style.width = '100%';
+        await generateResult();
+    }
+}
+
+/* --- RESULT GENERATION (LLM Mock) --- */
+async function generateResult() {
+    setView('result');
+    const resArchetypeEl = document.getElementById('resArchetype');
+    const resBodyEl = document.getElementById('resBody');
+    const resActionEl = document.getElementById('resAction');
+    const resActionBoxEl = document.getElementById('resActionBox');
+    const resButtonsEl = document.getElementById('resButtons');
+    
+    resArchetypeEl.textContent = 'Analyzing Pulse...';
+    resBodyEl.textContent = '';
+    resActionBoxEl.classList.add('hidden');
+    resButtonsEl.classList.add('hidden');
+
+    const mode = state.currentMode;
+    const answers = state.answers;
+
+    // Mock LLM generation based on mode and answers
+    let archetype = '';
+    let bodyText = '';
+    let action = '';
+
+    const answersSummary = answers.map((ans, i) => `${content[mode].steps[i].q}: ${ans}`).join('\n');
+    
+    // --- Mock Logic ---
+    if (mode === 'diagnose') {
+        if (answers[0].includes('Foggy')) {
+            archetype = 'The Overthinker';
+            bodyText = `Your creative pulse is showing signs of high cognitive load. The 'Foggy & Overwhelming' feeling combined with the specific story you're telling yourself suggests you're stuck in a loop of self-criticism and indecision. Your project, "${answers[2]}", is likely being strangled by unnecessary complexity before you even start.`;
+            action = 'Write down the three simplest, most basic requirements for your project. Discard anything that doesn\'t fit.';
+        } else if (answers[0].includes('Empty')) {
+            archetype = 'The Burnout';
+            bodyText = `Your system is running on fumes. The 'Empty & Drained' feeling clearly indicates a lack of recovery. This isn't a creative problem; it's an energy problem. Pushing harder will only make the results worse and the block longer. You need a dedicated, guilt-free disconnect.`;
+            action = 'Close all project files for 3 hours. Do something purely sensorial: cook, listen to music, or take a walk outside.';
+        } else {
+            archetype = 'The Procrastinator';
+            bodyText = `The anxiety, speed, or boredom you're feeling is a classic symptom of resistance. You're either avoiding a painful starting point or hiding from potential success. The problem isn't the project itself—it's the emotional weight you've assigned to it.`;
+            action = 'Use a timer for 10 minutes. Work on the project, but promise yourself that you will stop when the timer ends. No exceptions.';
+        }
+    } else if (mode === 'inspire') {
+        archetype = 'The Visionary Seeker';
+        bodyText = `You are actively searching for a spark. The best inspiration isn't found by looking at your current field, but by radically shifting your focus. Since you mentioned being jealous of ${answers[1]}, break down *why*—is it their freedom, output, or style? Your inspiration lies in stealing their 'why', not their 'what'.`;
+        action = `Research a creator working in a totally different medium (e.g., if you're a designer, study a chef). Apply one of their fundamental principles to your work today.`;
+    } else if (mode === 'brainstorm') {
+        archetype = 'The Idea Alchemist';
+        bodyText = `You embraced the constraint: ${answers[0]}. This is excellent. Brainstorming isn't about finding the *right* answer; it's about forcing out many *possible* answers. Your worst ideas (${answers[2]}) often hold the key to the best ones, by clarifying what you want to avoid. The core problem of "${answers[1]}" is ready to be dismantled.`;
+        action = `Take one of your 'terrible' ideas and ask: "What if it was 10% less terrible?" Repeat 5 times until it's actually viable.`;
+    } else if (mode === 'organize') {
+        archetype = 'The Task Master';
+        bodyText = `Your brain is running a full operating system without a good file manager. You have ${answers[0]} tabs open, leading to 'analysis paralysis.' The guilt over "${answers[1]}" is a massive energy leak. By focusing on your smallest first step: "${answers[2]}", you cut the energy leak and prove to yourself to yourself the mountain is just a pile of dirt.`;
+        action = `Do the absolute smallest first step: "${answers[2]}". Do it right now, then take a 5-minute break.`;
+    } else if (mode === 'experiment') {
+        archetype = 'The Calculated Risk-Taker';
+        bodyText = `You understand the fear—it feels ${answers[0]}. But the worst realistic outcome you identified shows you that the stakes are survivable. Experimentation is just low-stakes failure. Since you plan to celebrate by "${answers[2]}", ensure the process itself is celebrated, not just the outcome.`;
+        action = 'Design a very cheap, 30-minute test that only aims to prove one hypothesis wrong. Start that test immediately.';
+    }
+
+    // Simulate Typewriter Effect
+    await typeWriter(resBodyEl, bodyText);
+
+    // Finalize result view
+    resArchetypeEl.textContent = archetype;
+    resActionEl.textContent = action;
+    resActionBoxEl.classList.remove('hidden');
+    resButtonsEl.classList.remove('hidden');
+
+    // Store the raw result data for saving
+    state.lastResult = {
+        mode: mode,
+        archetype: archetype,
+        advice: bodyText,
+        action: action,
+        timestamp: Date.now(),
+        answers: answersSummary
+    };
+}
+
+// --- UTILITIES ---
+
+function typeWriter(element, text) {
+    return new Promise(resolve => {
+        let i = 0;
+        element.innerHTML = '<span class="cursor"></span>'; // Start with just the cursor
+        const cursor = element.querySelector('.cursor');
+        
+        const speed = 20; // Typing speed in ms
+        
+        function type() {
+            if (i < text.length) {
+                // Append the next character before the cursor
+                cursor.insertAdjacentText('beforebegin', text.charAt(i));
+                i++;
+                setTimeout(type, speed);
+            } else {
+                // Typing finished
+                cursor.remove(); // Remove the cursor element after typing is done
+                resolve();
+            }
+        }
+        type();
+    });
+}
+
+function openStory() {
+    document.getElementById('storyModal').classList.add('open');
+}
+
+function closeStory() {
+    document.getElementById('storyModal').classList.remove('open');
+}
+
+/* --- SPARK STORAGE --- */
+function getSavedSparks() {
+    const sparks = localStorage.getItem('cp_sparks');
+    return sparks ? JSON.parse(sparks) : [];
+}
+
+function saveResult() {
+    if (!state.lastResult) return;
+    
+    const sparks = getSavedSparks();
+    sparks.unshift(state.lastResult); // Add to the beginning
+    
+    localStorage.setItem('cp_sparks', JSON.stringify(sparks));
+    
+    // Simple message box replacement for alert
+    const saveBtn = document.querySelector('#resButtons button.btn:first-child');
+    saveBtn.textContent = 'Saved! ✅';
+    saveBtn.disabled = true;
+    setTimeout(() => {
+        saveBtn.textContent = 'Save this Spark 💾';
+        saveBtn.disabled = false;
+    }, 2000);
+    
+    state.lastResult = null; // Prevent double saving
+}
+
+function showSaved() {
+    setView('saved');
+    loadSavedSparksFromStorage();
+}
+
+function loadSavedSparksFromStorage() {
+    const sparks = getSavedSparks();
+    const savedListEl = document.getElementById('savedList');
+    savedListEl.innerHTML = '';
+    
+    if (sparks.length === 0) {
+        savedListEl.innerHTML = '<p style="text-align:center; color:var(--text-muted); margin-top:50px;">You haven\'t saved any Sparks yet. Finish a mode and click "Save this Spark!"</p>';
+        return;
+    }
+
+    sparks.forEach((spark, index) => {
+        const date = new Date(spark.timestamp).toLocaleDateString();
+        const modeEmoji = {
+            diagnose: '🩺',
+            inspire: '✨',
+            brainstorm: '💡',
+            organize: '📦',
+            experiment: '🚀'
+        }[spark.mode] || '⚡';
+        
+        const sparkItem = document.createElement('div');
+        sparkItem.className = 'spark-item';
+        sparkItem.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <h4 style="margin:0; color:white; font-size:1.1rem;">${modeEmoji} ${spark.archetype}</h4>
+                <small style="color:var(--text-muted);">${date}</small>
+            </div>
+            <p style="font-size:0.95rem; color:#cbd5e1; line-height:1.4; margin-bottom:15px;">
+                <span style="font-weight:700; color:var(--primary);">Action:</span> ${spark.action}
+            </p>
+            <details style="font-size:0.85rem; color:var(--text-muted);">
+                <summary>View Full Advice</summary>
+                <p style="margin-top:10px; padding:5px 0; border-top:1px solid rgba(255,255,255,0.05);">${spark.advice}</p>
+                <div style="margin-top:10px; padding-top:10px; border-top:1px dashed rgba(255,255,255,0.05);">
+                    <strong>Your Answers:</strong>
+                    <pre style="white-space: pre-wrap; margin: 5px 0; color:#94a3b8; font-size:0.8rem; background:rgba(0,0,0,0.2); padding:10px; border-radius:8px;">${spark.answers}</pre>
+                </div>
+            </details>
+            <button onclick="deleteSpark(${index})" style="background:none; border:none; color:#f87171; cursor:pointer; font-size:0.8rem; margin-top:10px; float:right;">Delete</button>
+        `;
+        savedListEl.appendChild(sparkItem);
+    });
+}
+
+function deleteSpark(indexToDelete) {
+    // Replaced alert/confirm with a custom check (since custom modals are not implemented)
+    // NOTE: In a production app, a custom confirmation modal would be used here.
+    if (confirm("Are you sure you want to delete this Spark?")) { 
+        let sparks = getSavedSparks();
+        sparks.splice(indexToDelete, 1);
+        localStorage.setItem('cp_sparks', JSON.stringify(sparks));
+        loadSavedSparksFromStorage(); // Refresh the list
+    }
+}
+</script>
