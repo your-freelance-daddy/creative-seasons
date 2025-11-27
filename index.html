@@ -1,322 +1,963 @@
+27.11.2025 13:30
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>Creative Pulse</title>
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Caprasimo&display=swap');
-    :root {
-        --primary: #a855f7;
-        --primary-glow: #a855f788;
-        --secondary: #ec4899;
-        --bg-dark: #0f172a;
-        --glass-bg: rgba(255, 255, 255, 0.08);
-        --glass-border: rgba(255, 255, 255, 0.15);
-        --text-main: #ffffff;
-        --text-muted: #94a3b8;
-    }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    body {
-        font-family: 'Segoe UI', Inter, -apple-system, sans-serif;
-        background: #0f172a;
-        color: var(--text-main);
-        margin: 0;
-        min-height: 100vh;
-        overflow-x: hidden;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .ambient-light { position: fixed; top:0; left:0; width:100vw; height:100vh; z-index:-1; background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #0f172a 100%); }
-    .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.6; animation: float 20s infinite ease-in-out; }
-    .orb-1 { width: 300px; height: 300px; background: var(--primary); top:-50px; left:-50px; animation-delay:0s; }
-    .orb-2 { width: 400px; height: 400px; background: var(--secondary); bottom:-100px; right:-50px; animation-delay:-5s; }
-    .orb-3 { width: 200px; height: 200px; background: #6366f1; top:40%; left:60%; animation-delay:-10s; }
-    @keyframes float {0%,100%{transform:translate(0,0);}50%{transform:translate(30px,-30px);}}
-    .container { width:100%; max-width:600px; padding:20px; z-index:1; display:flex; flex-direction:column; min-height:100vh; position:relative; }
-    .header { text-align:center; margin-bottom:10px; margin-top:15px; display:flex; flex-direction:column; align-items:center; }
-    .logo-img { width:180px; height:auto; filter:brightness(1.2); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
-    .logo-img:hover { transform: scale(1.05) rotate(-2deg); }
-    .platform-title { font-family:'Caprasimo', cursive; font-size:3rem; font-weight:800; margin-top:10px; margin-bottom:25px; color:#1e1b4b; letter-spacing:1.5px; text-shadow:0 0 10px rgba(255,255,255,0.8),0 0 25px rgba(255,255,255,0.6),0 0 45px rgba(255,255,255,0.4); }
-    .glass-panel { background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border:1px solid var(--glass-border); border-radius:24px; padding:28px; box-shadow:0 8px 32px rgba(0,0,0,0.2); margin-bottom:20px; transition: transform 0.2s ease, opacity 0.3s ease; position:relative; overflow:hidden; }
-    .glass-panel::after { content:''; position:absolute; top:0; left:-100%; width:50%; height:100%; background:linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent); transform: skewX(-25deg); transition:0.5s; pointer-events:none; }
-    .glass-panel:hover::after { left:150%; transition:0.7s; }
-    .btn { background:linear-gradient(135deg, var(--primary), #7c3aed); color:white; border:none; padding:16px 32px; border-radius:16px; font-size:1rem; font-weight:700; cursor:pointer; width:100%; transition:all 0.2s cubic-bezier(0.34,1.56,0.64,1); box-shadow:0 4px 15px rgba(168,85,247,0.3); display:inline-flex; justify-content:center; align-items:center; gap:8px; text-decoration:none; }
-    .btn:hover { transform:translateY(-3px) scale(1.02); box-shadow:0 8px 25px rgba(168,85,247,0.5); }
-    .btn:active { transform:scale(0.96); }
-    .btn-secondary { background: rgba(255,255,255,0.1); box-shadow:none; border:1px solid rgba(255,255,255,0.1); }
-    .btn-secondary:hover { background: rgba(255,255,255,0.2); transform:translateY(-2px); }
-    .icon-btn { background: rgba(255,255,255,0.1); border:1px solid var(--glass-border); color: var(--text-muted); width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:0.2s; font-size:1.2rem; }
-    .icon-btn:hover { background: rgba(236,72,153,0.2); color:white; border-color:#ec4899; transform:rotate(10deg); }
-    .story-btn { background: rgba(255,255,255,0.15); border:1px solid var(--glass-border); color:#fff; font-size:0.85rem; cursor:pointer; padding:10px 15px; border-radius:12px; transition:all 0.3s; display:inline-block; text-decoration:none; font-weight:600; }
-    .story-btn:hover { opacity:1; color:white; border-color:var(--primary); background: rgba(168,85,247,0.2); transform:translateY(-2px); }
-    .footer-bar { display:flex; flex-direction:column; gap:10px; align-items:center; width:100%; max-width:600px; padding:0 20px; margin-top:auto; margin-bottom:10px; }
-    .footer-bar .story-btn { max-width:300px; width:100%; text-align:center; }
-    .view { display:none; animation: fadeIn 0.4s cubic-bezier(0.2,0.8,0.2,1); }
-    .view.active { display:block; }
-    @keyframes fadeIn { from { opacity:0; transform:translateY(15px) scale(0.98); } to { opacity:1; transform:translateY(0) scale(1); } }
-    .mode-grid { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
-    .mode-card { background:linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02)); border:1px solid var(--glass-border); border-radius:20px; padding:20px 15px; text-align:center; cursor:pointer; transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1); display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:145px; position:relative; }
-    .mode-card:hover { background: rgba(255,255,255,0.12); transform: translateY(-5px) scale(1.02); border-color: var(--primary); box-shadow: 0 10px 30px -10px rgba(168,85,247,0.4); }
-    .mode-emoji { font-size:2.8rem; margin-bottom:12px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
-    .mode-name { font-weight:800; color:white; margin-bottom:5px; font-size:1.1rem; }
-    .mode-desc { font-size:0.75rem; color:#cbd5e1; line-height:1.4; max-width:90%; }
-    .progress-container { width:100%; height:6px; background: rgba(255,255,255,0.1); border-radius:10px; margin-bottom:30px; overflow:hidden; }
-    .progress-fill { height:100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); border-radius:10px; width:0%; transition: width 0.5s cubic-bezier(0.2,0.8,0.2,1); box-shadow:0 0 10px var(--primary); }
-    .question-text { font-size:1.5rem; font-weight:800; margin-bottom:25px; line-height:1.35; color:#fff; text-shadow:0 2px 10px rgba(0,0,0,0.3); }
-    .option-btn { display:flex; align-items:center; width:100%; text-align:left; background: rgba(255,255,255,0.03); border:1px solid var(--glass-border); padding:18px 22px; margin-bottom:12px; border-radius:16px; color:#cbd5e1; cursor:pointer; transition:0.2s; font-size:1rem; font-weight:500; }
-    .option-btn:hover { background: rgba(168,85,247,0.15); border-color:var(--primary); color:white; padding-left:26px; }
-    .option-btn.selected { background: linear-gradient(90deg, var(--primary), #9333ea); border-color:var(--primary); color:white; font-weight:700; box-shadow:0 4px 15px rgba(168,85,247,0.4); transform: scale(1.01); }
-    .result-card { border-top:5px solid var(--primary); }
-    .result-header { font-size:0.85rem; text-transform:uppercase; letter-spacing:2px; color:var(--secondary); margin-bottom:15px; font-weight:800; }
-    .result-archetype { font-size:2rem; font-weight:900; margin-bottom:20px; background:linear-gradient(135deg, #fff, #e9d5ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-    .typewriter-text { font-size:1.15rem; line-height:1.7; color:#e2e8f0; margin-bottom:30px; border-left:2px solid var(--glass-border); padding-left:15px; }
-    .cursor::after { content:'|'; animation: blink 1s infinite; }
-    @keyframes blink {50%{opacity:0;}}
-    .action-box { background: rgba(168,85,247,0.15); border:1px solid rgba(168,85,247,0.3); padding:20px; border-radius:16px; margin-bottom:25px; }
-    .modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index:100; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:0.3s; }
-    .modal-overlay.open { opacity:1; pointer-events:all; }
-    .modal-content { background:#1e1b4b; border:2px solid var(--primary); width:90%; max-width:500px; max-height:85vh; overflow-y:auto; border-radius:24px; padding:30px; transform:translateY(20px); transition:0.3s; box-shadow:0 0 40px rgba(168,85,247,0.4); }
-    .modal-overlay.open .modal-content { transform:translateY(0); }
-    .story-text { font-size:1rem; line-height:1.7; color:#cbd5e1; margin-bottom:15px; }
-    .story-highlight { color: var(--primary); font-weight:700; }
-    .hidden { display:none; }
-    .top-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; }
-    input[type="text"], textarea { width:100%; background: rgba(0,0,0,0.3); border:1px solid var(--glass-border); padding:16px; border-radius:14px; color:white; font-size:1rem; margin-bottom:18px; outline:none; transition:0.2s; font-family:inherit; }
-    input[type="text"]:focus, textarea:focus { border-color:var(--primary); background: rgba(0,0,0,0.5); box-shadow:0 0 0 3px rgba(168,85,247,0.2); }
-    label { display:block; margin-bottom:8px; font-weight:600; font-size:0.9rem; color:#e9d5ff; }
-</style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>Creative Pulse</title>
+    <style>
+        /* Import Caprasimo font */
+        @import url('https://fonts.googleapis.com/css2?family=Caprasimo&display=swap');
+
+        :root {
+            --primary: #a855f7;
+            --primary-glow: #a855f788;
+            --secondary: #ec4899;
+            --bg-dark: #0f172a;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Segoe UI', Inter, -apple-system, sans-serif;
+            background: #0f172a;
+            color: var(--text-main);
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- Animated Background --- */
+        .ambient-light {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #0f172a 100%);
+        }
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: float 20s infinite ease-in-out;
+        }
+        .orb-1 { width: 300px; height: 300px; background: var(--primary); top: -50px; left: -50px; animation-delay: 0s; }
+        .orb-2 { width: 400px; height: 400px; background: var(--secondary); bottom: -100px; right: -50px; animation-delay: -5s; }
+        .orb-3 { width: 200px; height: 200px; background: #6366f1; top: 40%; left: 60%; animation-delay: -10s; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -30px); }
+        }
+
+        /* --- UI Layout --- */
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* --- Header & Logo --- */
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .logo-img {
+            width: 180px;
+            height: auto;
+            filter: brightness(1.2); 
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .logo-img:hover { transform: scale(1.05) rotate(-2deg); }
+        
+        .platform-title {
+            font-family: 'Caprasimo', cursive;
+            font-size: 3rem; 
+            font-weight: 800;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            color: #1e1b4b; 
+            letter-spacing: 1.5px;
+            text-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.8),
+                0 0 25px rgba(255, 255, 255, 0.6),
+                0 0 45px rgba(255, 255, 255, 0.4);
+        }
+
+        /* --- Glass Cards & General Components --- */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            transition: transform 0.2s ease, opacity 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-panel::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
+            transform: skewX(-25deg); transition: 0.5s; pointer-events: none;
+        }
+        .glass-panel:hover::after { left: 150%; transition: 0.7s; }
+
+        /* --- Buttons --- */
+        .btn {
+            background: linear-gradient(135deg, var(--primary), #7c3aed);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+            display: inline-flex; justify-content: center; align-items: center; gap: 8px;
+            text-decoration: none;
+        }
+        .btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 25px rgba(168, 85, 247, 0.5); }
+        .btn:active { transform: scale(0.96); }
+        
+        .btn-secondary { background: rgba(255,255,255,0.1); box-shadow: none; border: 1px solid rgba(255,255,255,0.1); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+
+        .icon-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            width: 40px; height: 40px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.2s;
+            font-size: 1.2rem;
+        }
+        .icon-btn:hover { background: rgba(236, 72, 153, 0.2); color: white; border-color: #ec4899; transform: rotate(10deg); }
+
+        .story-btn {
+            background: rgba(255, 255, 255, 0.15); 
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            font-size: 0.85rem;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 12px;
+            transition: all 0.3s;
+            display: inline-block;
+            text-decoration: none;
+            font-weight: 600;
+            /* FIX: Removed white-space: nowrap to allow text wrapping on mobile */
+        }
+        .story-btn:hover { 
+            opacity: 1; 
+            color: white; 
+            border-color: var(--primary);
+            background: rgba(168, 85, 247, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* --- Footer Bar FIX for Mobile --- */
+        .footer-bar {
+            display: flex;
+            flex-direction: column; /* FORCES VERTICAL STACKING */
+            gap: 10px; 
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            padding: 0 20px;
+            margin-top: auto;
+            margin-bottom: 10px;
+        }
+        /* Ensure buttons within the footer bar have a reasonable maximum width */
+        .footer-bar .story-btn {
+            max-width: 300px;
+            width: 100%; /* Ensure they stretch to max-width */
+            text-align: center;
+        }
+
+
+        /* --- Other Elements --- */
+        .view { display: none; animation: fadeIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        
+        .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .mode-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 145px;
+            position: relative;
+        }
+        .mode-card:hover { 
+            background: rgba(255,255,255,0.12); 
+            transform: translateY(-5px) scale(1.02); 
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px -10px rgba(168, 85, 247, 0.4);
+        }
+        .mode-emoji { font-size: 2.8rem; margin-bottom: 12px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
+        .mode-name { font-weight: 800; color: white; margin-bottom: 5px; font-size: 1.1rem; }
+        .mode-desc { font-size: 0.75rem; color: #cbd5e1; line-height: 1.4; max-width: 90%; }
+        
+        .progress-container { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-bottom: 30px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); border-radius: 10px; width: 0%; transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); box-shadow: 0 0 10px var(--primary); }
+        
+        .question-text { font-size: 1.5rem; font-weight: 800; margin-bottom: 25px; line-height: 1.35; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        .option-btn {
+            display: flex; align-items: center; width: 100%; text-align: left;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--glass-border);
+            padding: 18px 22px; margin-bottom: 12px;
+            border-radius: 16px; color: #cbd5e1;
+            cursor: pointer; transition: 0.2s;
+            font-size: 1rem; font-weight: 500;
+        }
+        .option-btn:hover { background: rgba(168, 85, 247, 0.15); border-color: var(--primary); color: white; padding-left: 26px; }
+        .option-btn.selected { background: linear-gradient(90deg, var(--primary), #9333ea); border-color: var(--primary); color: white; font-weight: 700; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4); transform: scale(1.01); }
+        
+        .result-card { border-top: 5px solid var(--primary); }
+        .result-header { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; color: var(--secondary); margin-bottom: 15px; font-weight: 800; }
+        .result-archetype { font-size: 2rem; font-weight: 900; margin-bottom: 20px; background: linear-gradient(135deg, #fff, #e9d5ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .typewriter-text { font-size: 1.15rem; line-height: 1.7; color: #e2e8f0; margin-bottom: 30px; border-left: 2px solid var(--glass-border); padding-left: 15px; }
+        .cursor::after { content: '|'; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        .action-box { background: rgba(168, 85, 247, 0.15); border: 1px solid rgba(168, 85, 247, 0.3); padding: 20px; border-radius: 16px; margin-bottom: 25px; }
+        
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+            z-index: 100; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: 0.3s;
+        }
+        .modal-overlay.open { opacity: 1; pointer-events: all; }
+        .modal-content {
+            background: #1e1b4b;
+            border: 2px solid var(--primary);
+            width: 90%; max-width: 500px; max-height: 85vh; overflow-y: auto;
+            border-radius: 24px; padding: 30px;
+            transform: translateY(20px); transition: 0.3s;
+            box-shadow: 0 0 40px rgba(168, 85, 247, 0.4);
+        }
+        .modal-overlay.open .modal-content { transform: translateY(0); }
+        .story-text { font-size: 1rem; line-height: 1.7; color: #cbd5e1; margin-bottom: 15px; }
+        .story-highlight { color: var(--primary); font-weight: 700; }
+        
+        .hidden { display: none; }
+        .top-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; }
+        
+        /* Form elements */
+        input[type="text"], textarea {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
+            padding: 16px;
+            border-radius: 14px;
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 18px;
+            outline: none;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+        input[type="text"]:focus, textarea:focus { border-color: var(--primary); background: rgba(0,0,0,0.5); box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2); }
+        label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; color: #e9d5ff; }
+
+    </style>
 </head>
 <body>
-<div class="ambient-light">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-</div>
-<div class="container">
-<header class="header">
-<a href="https://ekolitika.framer.website/" target="_blank">
-    <img src="https://framerusercontent.com/images/NhZAoGoxBJzZIPWRIXCzVkkNuDA.png?scale-down-to=512" alt="EKOLITIKA Logo" class="logo-img">
-</a>
-<div class="platform-title">Creative Pulse</div>
-</header>
 
-<!-- Onboarding -->
-<div id="view-onboarding" class="view active">
-    <div class="glass-panel" style="text-align:center;">
-        <h2 style="font-size:1.8rem; margin-bottom:15px; background: linear-gradient(to right,#fff,#cbd5e1); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Unstick your mind.</h2>
-        <p style="color:#cbd5e1; margin-bottom:30px; line-height:1.6;">
-            A digital mentor for the creative community.<br>
-            Diagnose blocks, find inspiration, and get actionable advice.
-        </p>
-        <form id="onboardForm" style="text-align:left;">
-            <label>Your Name / Nickname</label>
-            <input type="text" id="userName" placeholder="e.g. Alex, Sam..." required autocomplete="off">
-            <label>Your Creative Field</label>
-            <input type="text" id="userField" placeholder="e.g. Design, Education, Music..." required autocomplete="off">
-            <button type="submit" class="btn">Start Your Journey 🚀</button>
-        </form>
-    </div>
-</div>
-
-<!-- Dashboard -->
-<div id="view-dashboard" class="view">
-    <div class="top-nav">
-        <div>
-            <div style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Welcome back</div>
-            <div style="font-size:1.4rem; font-weight:700;" id="dashName">Creator</div>
-        </div>
-        <button onclick="logout()" class="icon-btn" title="Reset Profile">⏻</button>
-    </div>
-    <div class="glass-panel" style="padding:20px 20px 30px 20px;">
-        <div style="text-align:center; margin-bottom:20px; font-weight:600; color:#e2e8f0;">Choose your mode</div>
-        <div class="mode-grid">
-            <div class="mode-card" onclick="startMode('diagnose')"><div class="mode-emoji">🩺</div><div class="mode-name">Diagnose</div><div class="mode-desc">Identify exactly why you are stuck.</div></div>
-            <div class="mode-card" onclick="startMode('inspire')"><div class="mode-emoji">✨</div><div class="mode-name">Inspire</div><div class="mode-desc">Refuel your creative energy tank.</div></div>
-            <div class="mode-card" onclick="startMode('brainstorm')"><div class="mode-emoji">💡</div><div class="mode-name">Brainstorm</div><div class="mode-desc">Break rules and think wild.</div></div>
-            <div class="mode-card" onclick="startMode('organize')"><div class="mode-emoji">📦</div><div class="mode-name">Organize</div><div class="mode-desc">Turn chaos into tiny steps.</div></div>
-            <div class="mode-card" onclick="startMode('experiment')"><div class="mode-emoji">🚀</div><div class="mode-name">Experiment</div><div class="mode-desc">Test ideas without fear.</div></div>
-            <div class="mode-card" style="border-style:dashed; opacity:0.8;" onclick="alertModal('Download Your Sparks','To save your results, use the <b>Download Spark as PDF 📄</b> button on the results screen. This keeps your data private and secure on your device!')"><div class="mode-emoji">💾</div><div class="mode-name">Saved Sparks</div><div class="mode-desc">Access past insights.</div></div>
-        </div>
-    </div>
-</div>
-
-<!-- Wizard/Questionnaire -->
-<div id="view-wizard" class="view">
-    <div class="glass-panel">
-        <div class="progress-container"><div class="progress-fill" id="progressFill"></div></div>
-        <div class="question-text" id="questionText">Question goes here</div>
-        <div id="optionsContainer"></div>
-    </div>
-</div>
-
-<!-- Results -->
-<div id="view-results" class="view">
-    <div class="glass-panel result-card">
-        <div class="result-header">Your Creative Pulse</div>
-        <div class="result-archetype" id="resArchetype">Archetype</div>
-        <div class="typewriter-text" id="resBody"></div>
-        <div class="action-box" id="resActionBox">
-            <strong>Next Step:</strong> <span id="resAction"></span>
-        </div>
-        <button class="btn" onclick="downloadSparkPDF()">Download Spark as PDF 📄</button>
-        <button class="btn btn-secondary" onclick="goToDashboard()">Back to Dashboard 🏠</button>
-    </div>
-</div>
-
-<!-- Story Modal -->
-<div class="modal-overlay" id="storyModal">
-    <div class="modal-content">
-        <button class="icon-btn" onclick="closeStory()" style="position:absolute;top:15px;right:15px;">✖</button>
-        <h3 style="margin-bottom:20px; color:#fff; text-align:center;">Story Mode</h3>
-        <div class="story-text">
-            <p>Here is your creative journey and context. Each answer you gave is reflected in your Spark. Your path is unique, <span class="story-highlight">never generic</span>.</p>
-        </div>
-    </div>
-</div>
-
-<footer class="footer-bar">
-    <a href="#" class="story-btn" onclick="openStory()">View Spark Story 📖</a>
-</footer>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script>
-    const TYPING_SPEED = 25;
-    let currentMode = '';
-    let currentStep = 0;
-    let userProfile = { name:'', field:'' };
-    let userAnswers = [];
-    const questions = [
-        { question:"What’s your current creative mood?", options:["Excited 🌟","Frustrated 😤","Confused 🤔","Curious 🧐","Energetic ⚡"] },
-        { question:"Where do you usually get stuck?", options:["Planning","Execution","Ideas","Motivation","Collaboration"] },
-        { question:"How much time can you commit today?", options:["5-10 min","10-20 min","20-40 min","1+ hour"] },
-        { question:"Do you prefer structured advice or free-flowing ideas?", options:["Structured","Free-flowing","Mixed"] }
-    ];
-
-    const archetypes = [
-        {name:"The Visionary", pattern:["Excited","Curious","Energetic"], advice:"You have big ideas but need clarity on execution.", action:"Pick one idea and prototype it today."},
-        {name:"The Analyst", pattern:["Confused","Structured"], advice:"You need structure to make progress.", action:"Break tasks into 3 actionable steps."},
-        {name:"The Rebel", pattern:["Frustrated","Free-flowing"], advice:"Rules are boring you; channel energy into experimentation.", action:"Try one wild idea without fear of failure."},
-        {name:"The Collaborator", pattern:["Collaboration"], advice:"You thrive with peers.", action:"Share your ideas with someone for feedback."},
-        {name:"The Quick Spark", pattern:["5-10 min","10-20 min"], advice:"Short bursts work best.", action:"Use micro-sessions to advance your ideas."}
-    ];
-
-    function showView(viewId){
-        document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-        document.getElementById(viewId).classList.add('active');
-    }
-
-    function goToDashboard(){
-        showView('view-dashboard');
-    }
-
-    function logout(){
-        localStorage.clear();
-        location.reload();
-    }
-
-    function startMode(mode){
-        currentMode = mode;
-        currentStep = 0;
-        userAnswers = [];
-        showView('view-wizard');
-        renderQuestion();
-    }
-
-    function renderQuestion(){
-        const q = questions[currentStep];
-        document.getElementById('questionText').innerText = q.question;
-        const container = document.getElementById('optionsContainer');
-        container.innerHTML='';
-        q.options.forEach(opt=>{
-            const btn = document.createElement('button');
-            btn.className='option-btn';
-            btn.innerText=opt;
-            btn.onclick=()=>selectAnswer(opt);
-            container.appendChild(btn);
-        });
-        document.getElementById('progressFill').style.width = `${(currentStep/questions.length)*100}%`;
-    }
-
-    function selectAnswer(answer){
-        userAnswers[currentStep]=answer;
-        currentStep++;
-        if(currentStep<questions.length) renderQuestion();
-        else showResults();
-    }
-
-    function showResults(){
-        const matched = archetypes.map(a=>{
-            let score=0;
-            a.pattern.forEach(p=>{ if(userAnswers.includes(p)) score++; });
-            return {...a, score};
-        }).sort((a,b)=>b.score-a.score)[0];
-
-        const result = matched || {name:"Creative Explorer", advice:"Your journey is unique. Keep exploring!", action:"Try a small creative experiment today.", fullContext:questions.map((q,i)=>({question:q.question,answer:userAnswers[i]})), mode:currentMode};
-        localStorage.setItem('currentResult',JSON.stringify(result));
-        document.getElementById('resArchetype').innerText=result.name;
-        document.getElementById('resAction').textContent=result.action;
-        document.getElementById('resActionBox').classList.remove('hidden');
-        typeWriter(document.getElementById('resBody'), result.advice);
-        showView('view-results');
-    }
-
-    function typeWriter(element,text){
-        let i=0;
-        element.innerHTML='';
-        (function type(){
-            if(i<text.length){
-                element.innerHTML=text.substring(0,i+1)+'<span class="cursor"></span>';
-                i++; setTimeout(type,TYPING_SPEED);
-            }else{ element.innerHTML=text; }
-        })();
-    }
-
-    window.downloadSparkPDF=function(){
-        const currentResult=localStorage.getItem('currentResult');
-        if(!currentResult)return alert("No result available to download.");
-        const element=document.createElement('div');
-        const resultData=JSON.parse(currentResult);
-        let html=`<h1 style="color:#9333ea;">Creative Pulse Result</h1>`;
-        html+=`<h2>${resultData.name}</h2>`;
-        html+=`<p>${resultData.advice}</p>`;
-        html+=`<h3>Next Step:</h3><p>${resultData.action}</p>`;
-        html+=`<h3>Context:</h3><ul>`;
-        resultData.fullContext.forEach(q=>{html+=`<li><b>${q.question}</b><br>${q.answer}</li>`;});
-        html+=`</ul>`;
-        element.innerHTML=html;
-        html2pdf().from(element).save(`${resultData.mode}_spark.pdf`);
-    }
-
-    window.openStory=function(){document.getElementById('storyModal').classList.add('open');}
-    window.closeStory=function(){document.getElementById('storyModal').classList.remove('open');}
     
-    document.getElementById('onboardForm').addEventListener('submit',e=>{
-        e.preventDefault();
-        userProfile.name=document.getElementById('userName').value.trim();
-        userProfile.field=document.getElementById('userField').value.trim();
-        localStorage.setItem('userProfile',JSON.stringify(userProfile));
-        document.getElementById('dashName').innerText=userProfile.name;
-        goToDashboard();
-    });
+<div class="ambient-light">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
 
-    // On load, check for stored profile
-    window.onload=function(){
-        const savedProfile = localStorage.getItem('userProfile');
-        if(savedProfile){
-            userProfile = JSON.parse(savedProfile);
-            document.getElementById('dashName').innerText=userProfile.name;
-            goToDashboard();
+    
+<div class="container">
+        
+        
+<header class="header">
+            
+<a href="https://ekolitika.framer.website/" target="_blank">
+                <img src="https://framerusercontent.com/images/NhZAoGoxBJzZIPWRIXCzVkkNuDA.png?scale-down-to=512" alt="EKOLITIKA Logo" class="logo-img">
+            </a>
+            
+<div class="platform-title">Creative Pulse</div>
+        </header>
+
+        
+<div id="view-onboarding" class="view active">
+            <div class="glass-panel" style="text-align:center;">
+                <h2 style="font-size:1.8rem; margin-bottom:15px; background: linear-gradient(to right, #fff, #cbd5e1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Unstick your mind.</h2>
+                <p style="color:#cbd5e1; margin-bottom:30px; line-height:1.6;">
+                    A digital mentor for the creative community.<br>
+                    Diagnose blocks, find inspiration, and get actionable advice.
+                </p>
+                <form id="onboardForm" style="text-align:left;">
+                    <label>Your Name / Nickname</label>
+                    <input type="text" id="userName" placeholder="e.g. Alex, Sam..." required autocomplete="off">
+                    
+                    <label>Your Creative Field</label>
+                    <input type="text" id="userField" placeholder="e.g. Design, Education, Music..." required autocomplete="off">
+
+                    <button type="submit" class="btn">Start Your Journey 🚀</button>
+                </form>
+            </div>
+        </div>
+
+        
+<div id="view-dashboard" class="view">
+            <div class="top-nav">
+                <div>
+                    <div style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Welcome back</div>
+                    <div style="font-size:1.4rem; font-weight:700;" id="dashName">Creator</div>
+                </div>
+                <button onclick="logout()" class="icon-btn" title="Reset Profile">⏻</button>
+            </div>
+
+            <div class="glass-panel" style="padding:20px 20px 30px 20px;">
+                <div style="text-align:center; margin-bottom:20px; font-weight:600; color:#e2e8f0;">Choose your mode</div>
+                <div class="mode-grid">
+                    <div class="mode-card" onclick="startMode('diagnose')">
+                        <div class="mode-emoji">🩺</div>
+                        <div class="mode-name">Diagnose</div>
+                        <div class="mode-desc">Identify exactly why you are stuck.</div>
+                    </div>
+                    <div class="mode-card" onclick="startMode('inspire')">
+                        <div class="mode-emoji">✨</div>
+                        <div class="mode-name">Inspire</div>
+                        <div class="mode-desc">Refuel your creative energy tank.</div>
+                    </div>
+                    <div class="mode-card" onclick="startMode('brainstorm')">
+                        <div class="mode-emoji">💡</div>
+                        <div class="mode-name">Brainstorm</div>
+                        <div class="mode-desc">Break rules and think wild.</div>
+                    </div>
+                    <div class="mode-card" onclick="startMode('organize')">
+                        <div class="mode-emoji">📦</div>
+                        <div class="mode-name">Organize</div>
+                        <div class="mode-desc">Turn chaos into tiny steps.</div>
+                    </div>
+                    <div class="mode-card" onclick="startMode('experiment')">
+                        <div class="mode-emoji">🚀</div>
+                        <div class="mode-name">Experiment</div>
+                        <div class="mode-desc">Test ideas without fear.</div>
+                    </div>
+                    <div class="mode-card" style="border-style:dashed; opacity:0.8;" onclick="alertModal('Download Your Sparks','To save your results, use the <b>Download Spark as PDF 📄</b> button on the results screen. This keeps your data private and secure on your device!')">
+                        <div class="mode-emoji">⬇️</div>
+                        <div class="mode-name">Download Info</div>
+                        <div class="mode-desc">Saving is now handled by PDF downloads.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+<div id="view-wizard" class="view">
+            <div class="top-nav">
+                <button onclick="goHome()" class="icon-btn" title="Exit">✕</button>
+                <div style="font-weight:700; color:var(--primary);" id="wizardModeTitle">MODE</div>
+                <div style="width:40px;"></div> 
+
+</div>
+
+            <div class="glass-panel">
+                <div class="progress-container"><div class="progress-fill" id="progressBar"></div></div>
+                
+                <div id="questionContainer">
+                    <div id="questionText" class="question-text">Question goes here...</div>
+                    <div id="optionsArea"></div>
+                    <textarea id="textInput" class="hidden" rows="3" placeholder="Type your thoughts here..."></textarea>
+                </div>
+                
+                <button id="nextBtn" class="btn" style="margin-top:15px; opacity:0.5; pointer-events:none;" onclick="nextStep()">Continue &rarr;</button>
+            </div>
+        </div>
+
+        
+<div id="view-result" class="view">
+            <div class="glass-panel result-card">
+                <div class="result-header">Your Digital Mentor Says:</div>
+                <div class="result-archetype" id="resArchetype">Loading...</div>
+                
+                
+<div class="typewriter-text" id="resBody"><span class="cursor"></span></div>
+                
+                <div class="action-box hidden" id="resActionBox">
+                    <strong style="color:var(--primary); display:block; margin-bottom:5px;">⚡ TINY NEXT STEP:</strong>
+                    <span id="resAction" style="font-size:1.1rem; font-weight:600; color:white;">Action...</span>
+                </div>
+                
+                <div class="hidden" id="resButtons" style="display:flex; flex-direction:column; gap:10px;">
+                    <button class="btn" onclick="downloadSparkPDF()">Download Spark as PDF 📄</button>
+                    <button class="btn btn-secondary" onclick="goHome()">Back to Modes</button>
+                </div>
+            </div>
+        </div>
+
+        
+<footer class="footer-bar">
+            <button class="story-btn" onclick="openStory()">Read the Origin Story 📖</button>
+            
+            
+<a href="https://ekolitika.framer.website/" target="_blank" class="story-btn">
+                With 💚 for the creative community, made by EKOLiTiKA
+            </a>
+        </footer>
+
+    </div>
+
+    
+<div class="modal-overlay" id="storyModal">
+        <div class="modal-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 style="margin:0; font-size:1.5rem; color:var(--primary);">Born from Struggle</h3>
+                <button onclick="closeStory()" class="icon-btn">✕</button>
+            </div>
+            
+            <div id="storyContent" style="margin-bottom: 20px;">
+                </div>
+            
+            <div style="margin-top:30px; padding-top:20px; border-top:1px solid var(--glass-border); text-align:center; font-size:0.9rem; color:#cbd5e1;">
+                Built by <b>EKOLiTiKA</b> — an NGO learning sustainability from nature and applying circular thinking to creativity.
+            </div>
+            <button class="btn" style="margin-top:20px;" onclick="closeStory()">Got it!</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script>
+    
+    const content = {
+        diagnose: {
+            steps: [
+                { q: "Right now, how does your creative block feel?", type:"choice", opts: ["Foggy & Overwhelming", "Empty & Drained", "Anxious & Fast", "Boring & Repetitive"] },
+                { q: "What is the story you are telling yourself?", type:"choice", opts: ["'I'm not good enough'", "'I'm out of time'", "'This idea is stupid'", "'I'm don't know where to start'"] },
+                { q: "Describe the specific project or problem in one sentence:", type:"text" }
+            ],
+            archetypes: {
+                "Foggy & Overwhelming": {
+                    archetype: "The Overwhelmed Navigator",
+                    advice: "Your issue is likely structural—too many paths open, no clear destination. You need to narrow your focus and create strict boundaries to reduce cognitive load. Stop starting new things.",
+                    action: "Pick one (and only one) task to complete today. Break that task down into 3-5 sub-steps."
+                },
+                "Empty & Drained": {
+                    archetype: "The Burnt-Out Well",
+                    advice: "Your well is dry. This is not a productivity problem; it's a depletion problem. The cure is not more work, but genuine rest, input, and zero expectation play. You must detach your identity from output.",
+                    action: "Schedule 30 minutes of non-productive, non-screen time today (e.g., listening to music, sketching a random object, walking outside)."
+                },
+                "Anxious & Fast": {
+                    archetype: "The Perfectionist Paralytic",
+                    advice: "You are stuck because the gap between your aspiration and your current output feels immense. This anxiety leads to procrastination. You need to create an ugly first draft, fast. Perfectionism is a fear of vulnerability.",
+                    action: "Set a 10-minute timer and produce the worst possible version of your work. Do not edit, judge, or stop until the timer ends."
+                },
+                "Boring & Repetitive": {
+                    archetype: "The Stale Routine",
+                    advice: "Your process has become mechanical, and your work reflects it. You've solved the same problem too many times. The solution is to introduce novelty, a new constraint, or a completely foreign input to disrupt your pattern recognition.",
+                    action: "Find one piece of art/music/design outside your usual genre and try to identify three core principles you could steal."
+                }
+            }
+        },
+        inspire: {
+            steps: [
+                { q: "What kind of fuel do you need?", type:"choice", opts: ["Soft comfort (Rest)", "Hard truth (Kick)", "New input (Awe)", "Just a distraction"] },
+                { q: "Who is an artist or creator you are jealous of right now?", type:"text" },
+                { q: "If you couldn't fail, what would you make today?", type:"text" }
+            ],
+            archetypes: {
+                "Soft comfort (Rest)": {
+                    archetype: "The Compassionate Gardener",
+                    advice: "You don't need inspiration; you need validation. Give yourself permission to pause. Inspiration thrives in the space *after* the effort, not during it. Treat yourself like your best client.",
+                    action: "Write a short note of self-compassion, acknowledging your current effort, then close your work for 30 minutes without guilt."
+                },
+                "Hard truth (Kick)": {
+                    archetype: "The Bold Challenger",
+                    advice: "You know what needs to be done, but you're avoiding the difficult choice or task. The hard truth is that resistance is the measure of the importance of your task. Stop looking for shortcuts and embrace the grind.",
+                    action: "Identify the one task you dread most. Tell one person you'll complete it by the end of the day."
+                },
+                "New input (Awe)": {
+                    archetype: "The Curious Alchemist",
+                    advice: "Your mind is craving cross-pollination. Break out of your usual sources. Find inspiration in a completely unrelated field—science, history, nature—and try to map its principles to your creative challenge.",
+                    action: "Search for 'oldest living thing' or 'most complex natural structure' and spend 15 minutes thinking about how it operates. Apply its rules to your project."
+                },
+                "Just a distraction": {
+                    archetype: "The Playful Saboteur",
+                    advice: "Distraction isn't avoidance; it's often the mind's way of processing. Embrace the 'distraction' that is low-stakes and fun. This is where serendipity hides. Don't fight it, integrate it.",
+                    action: "Spend 20 minutes doing something completely unrelated to your project that you enjoy, but set a firm timer."
+                }
+            }
+        },
+        brainstorm: {
+             steps: [
+                { q: "Pick a constraint to force creativity:", type:"choice", opts: ["Explain it to a 5-year-old", "Do it with $0 budget", "Make the 'evil' version", "Finish it in 15 minutes"] },
+                { q: "What is the core problem you want to solve?", type:"text" },
+                { q: "Write down 3 terrible, silly, or illegal ideas. Go.", type:"text" }
+            ],
+            archetypes: {
+                "Explain it to a 5-year-old": {
+                    archetype: "The Clarity Simplifier",
+                    advice: "The best ideas are often the clearest. By simplifying, you strip away layers of complexity that hide the core value. You must find the single, universal truth in your work.",
+                    action: "Write a one-sentence, non-jargon explanation of your project. If you can't, you haven't simplified enough."
+                },
+                "Do it with $0 budget": {
+                    archetype: "The Resourceful Inventor",
+                    advice: "Budget constraints force innovation and prioritize concept over polish. This reveals the project's true essence. You are learning to substitute cost with cleverness.",
+                    action: "List the three most expensive/resource-intensive elements of your idea. Now, find three completely free alternatives for each."
+                },
+                "Make the 'evil' version": {
+                    archetype: "The Shadow Artist",
+                    advice: "Exploring the opposite perspective (the 'evil' or destructive version) highlights the purpose and integrity of the original idea. This negative space often reveals powerful, hidden solutions.",
+                    action: "Imagine your project was designed to fail its audience. Write down the first three steps you would take to achieve that failure."
+                },
+                "Finish it in 15 minutes": {
+                    archetype: "The Speed Curator",
+                    advice: "Extreme time constraints prioritize execution over deliberation. You are fighting the urge to overthink. This rapid prototyping generates raw, unjudged material you can refine later.",
+                    action: "Do a 15-minute 'stream of consciousness' brain dump about your topic. Do not lift your pen/fingers. Quantity over quality."
+                }
+            }
+        },
+        organize: {
+             steps: [
+                { q: "How many tabs/tasks are open in your brain?", type:"choice", opts: ["1-3 (Clean)", "4-10 (Cluttered)", "10+ (Disaster)", "System overload"] },
+                { q: "Which single task is making you feeling guilty?", type:"text" },
+                { q: "What is the absolute smallest first step?", type:"text" }
+            ],
+            archetypes: {
+                "1-3 (Clean)": {
+                    archetype: "The Focused Builder",
+                    advice: "Your structure is generally sound, but you might be over-optimizing. You need to inject momentum. The focus is now on disciplined, incremental execution.",
+                    action: "Commit to working on your project for 25 minutes (Pomodoro technique) right now, ignoring all other notifications."
+                },
+                "4-10 (Cluttered)": {
+                    archetype: "The Prioritizing Architect",
+                    advice: "The problem isn't complexity, it's poor prioritization. You must ruthlessly identify the 20% of tasks that will deliver 80% of the value. Stop multi-tasking and sequence your work.",
+                    action: "List your 10 open tasks. Erase 5 of them immediately (they were never important). Sequence the remaining 5."
+                },
+                "10+ (Disaster)": {
+                    archetype: "The Chaos Commander",
+                    advice: "You are overwhelmed by quantity. Your first project is not the creative one, but the organizational one. You need an 'information triage' to sort, discard, and contain the sprawl.",
+                    action: "Spend 20 minutes creating only *one* list (in a notebook, or app) of every single project/idea/task you feel obligated to do. Do not do any of them yet."
+                },
+                "System overload": {
+                    archetype: "The Mental Detox",
+                    advice: "Your brain is exhausted from holding too much information. You are burning energy on remembering, not creating. Externalize everything to a trusted system, then step away.",
+                    action: "Clear your desk/screen completely. Then, capture the first 3 things that come to mind related to your project and immediately stop."
+                }
+            }
+        },
+        experiment: {
+             steps: [
+                { q: "How risky does this feel?", type:"choice", opts: ["Terrifying", "Uncomfortable", "Exciting", "Safe"] },
+                { q: "What is the worst REALISTIC outcome?", type:"text" },
+                { q: "What is the smallest thing you can test or change right now?", type:"text" }
+            ],
+            archetypes: {
+                "Terrifying": {
+                    archetype: "The Calculated Leaper",
+                    advice: "The risk feels high because you've attached too much weight to the single outcome. De-risk by designing micro-experiments that fail small, fast, and cheaply. The goal is learning, not success.",
+                    action: "Design a test that takes less than an hour, the results of which you will ignore if they're negative. (Example: a single social media post, a 5-minute prototype)."
+                },
+                "Uncomfortable": {
+                    archetype: "The Edge Walker",
+                    advice: "You are in the optimal zone—just past comfortable, but not paralyzing. Lean into this friction. Friction generates heat, and heat forges innovation. Increase the intensity slightly.",
+                    action: "Identify the element of your project you are most unsure about. Immediately start working on *that* element for 15 minutes."
+                },
+                "Exciting": {
+                    archetype: "The High-Velocity Prototyper",
+                    advice: "Energy is high, but risk management is needed. Channel this excitement into disciplined, fast-paced execution. Avoid over-scoping. Focus on a Minimum Viable Test (MVT).",
+                    action: "Before you start, clearly define the single metric of success for your next hour of work (e.g., 'finish chapter 1 outline', 'get 5 feedback responses')."
+                },
+                "Safe": {
+                    archetype: "The Iterative Improver",
+                    advice: "You are likely refining something that is already good, but not great. To find the next leap, you must intentionally break something. Introduce an element that feels wrong or awkward.",
+                    action: "Choose a design/process principle you live by (e.g., 'always minimalist'). For 30 minutes, violate that principle ruthlessly and see what happens."
+                }
+            }
+        }
+    };
+
+    let userProfile = {};
+    let currentMode = null;
+    let currentStep = 0;
+    let answers = [];
+    const TYPING_SPEED = 20;
+
+    // --- Helper Functions ---
+
+    function setView(viewId) {
+        document.querySelectorAll('.view').forEach(view => {
+            view.classList.remove('active');
+        });
+        const targetView = document.getElementById(`view-${viewId}`);
+        if (targetView) {
+            targetView.classList.add('active');
+        } else {
+             console.error(`Error: View element with ID "view-${viewId}" not found in the DOM.`);
         }
     }
 
-    function alertModal(title, message){
-        document.getElementById('storyModal').classList.add('open');
-        const modalContent=document.querySelector('#storyModal .modal-content');
-        modalContent.querySelector('h3').innerHTML=title;
-        modalContent.querySelector('.story-text').innerHTML=message;
+    window.alertModal = function(title, bodyHTML) {
+        const modal = document.getElementById('storyModal');
+        modal.querySelector('h3').textContent = title;
+        modal.querySelector('#storyContent').innerHTML = bodyHTML; 
+        modal.querySelector('.btn').textContent = "Close";
+        modal.querySelector('.btn').onclick = window.closeStory; 
+        modal.classList.add('open');
     }
+
+    // --- Onboarding & Profile Management ---
+
+    function loadProfile() {
+        const profile = localStorage.getItem('userProfile');
+        userProfile = profile ? JSON.parse(profile) : {};
+    }
+
+    function saveProfile() {
+        localStorage.setItem('userProfile', JSON.stringify(userProfile));
+    }
+
+    window.onboardUser = function() {
+        loadProfile();
+        const initialView = userProfile.name ? 'dashboard' : 'onboarding';
+        
+        if (initialView === 'dashboard') {
+            document.getElementById('dashName').textContent = userProfile.name;
+            setView('dashboard');
+        } else {
+            setView('onboarding');
+        }
+    }
+
+    window.goHome = function() {
+        currentMode = null;
+        currentStep = 0;
+        answers = [];
+        setView('dashboard');
+    }
+
+    window.logout = function() {
+        localStorage.removeItem('userProfile');
+        localStorage.removeItem('currentResult'); 
+        userProfile = {};
+        goHome();
+    }
+
+    document.getElementById('onboardForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        userProfile.name = document.getElementById('userName').value.trim();
+        userProfile.field = document.getElementById('userField').value.trim();
+        saveProfile();
+        window.onboardUser();
+    });
+
+    // Initialize on page load
+    window.addEventListener('load', () => window.onboardUser());
+
+
+    // --- Mode & Wizard Flow ---
+
+    window.startMode = function(mode) {
+        currentMode = mode;
+        currentStep = 0;
+        answers = [];
+        document.getElementById('wizardModeTitle').textContent = mode.toUpperCase();
+        loadStep(currentStep);
+        setView('wizard');
+    }
+
+    function loadStep(stepIndex) {
+        const modeData = content[currentMode];
+        if (!modeData) return;
+
+        const totalSteps = modeData.steps.length;
+        const step = modeData.steps[stepIndex];
+
+        const progress = ((stepIndex + 1) / totalSteps) * 100;
+        document.getElementById('progressBar').style.width = `${progress}%`;
+
+        document.getElementById('questionText').textContent = step.q;
+        
+        const nextBtn = document.getElementById('nextBtn');
+        const optionsArea = document.getElementById('optionsArea');
+        const textInput = document.getElementById('textInput');
+        
+        optionsArea.innerHTML = '';
+        textInput.value = '';
+        textInput.classList.add('hidden');
+        nextBtn.style.opacity = 0.5;
+        nextBtn.style.pointerEvents = 'none';
+
+        if (step.type === 'choice') {
+            optionsArea.style.display = 'block';
+            step.opts.forEach(option => {
+                const btn = document.createElement('div');
+                btn.className = 'option-btn';
+                btn.textContent = option;
+                btn.onclick = () => selectOption(option, btn);
+                optionsArea.appendChild(btn);
+            });
+        } else if (step.type === 'text') {
+            optionsArea.style.display = 'none';
+            textInput.classList.remove('hidden');
+            textInput.oninput = () => {
+                if (textInput.value.trim().length > 5) {
+                    nextBtn.style.opacity = 1;
+                    nextBtn.style.pointerEvents = 'auto';
+                } else {
+                    nextBtn.style.opacity = 0.5;
+                    nextBtn.style.pointerEvents = 'none';
+                }
+            };
+        }
+    }
+
+    function selectOption(option, selectedBtn) {
+        document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
+        selectedBtn.classList.add('selected');
+        answers[currentStep] = option;
+        
+        const nextBtn = document.getElementById('nextBtn');
+        nextBtn.style.opacity = 1;
+        nextBtn.style.pointerEvents = 'auto';
+    }
+
+    window.nextStep = function() {
+        const step = content[currentMode].steps[currentStep];
+        let answer;
+
+        if (step.type === 'choice') {
+            answer = answers[currentStep];
+        } else if (step.type === 'text') {
+            answer = document.getElementById('textInput').value.trim();
+        }
+
+        if (!answer) {
+            alertModal("Hold On!", "Please provide an answer before continuing.");
+            return;
+        }
+
+        answers[currentStep] = answer;
+        currentStep++;
+
+        if (currentStep < content[currentMode].steps.length) {
+            loadStep(currentStep);
+        } else {
+            generateResult();
+        }
+    }
+    
+    // --- Result Generation & Typewriter ---
+
+    function generateResult() {
+        setView('result');
+        const modeData = content[currentMode];
+        const keyAnswer = answers[0];
+        
+        let result = modeData.archetypes[keyAnswer] || {
+            archetype: "The Insight Generator",
+            advice: "Based on your unique inputs, we see a blend of challenges. The core advice is to reduce complexity and prioritize radical self-care. Your biggest hurdle is internal expectation.",
+            action: "Write down three things you accomplished last week (no matter how small) to counteract the voice of self-doubt."
+        };
+        
+        // Save result locally to be ready for PDF creation
+        const currentResult = {
+            mode: currentMode,
+            archetype: result.archetype,
+            advice: result.advice,
+            action: result.action,
+            // Save the full question/answer context
+            fullContext: answers.map((a, i) => ({
+                question: modeData.steps[i].q,
+                answer: a
+            }))
+        };
+        localStorage.setItem('currentResult', JSON.stringify(currentResult));
+
+        // Update DOM
+        document.getElementById('resArchetype').textContent = result.archetype;
+        document.getElementById('resAction').textContent = result.action;
+        document.getElementById('resActionBox').classList.remove('hidden');
+        document.getElementById('resButtons').classList.remove('hidden');
+
+        // Typewriter effect
+        const resBodyEl = document.getElementById('resBody');
+        resBodyEl.textContent = ''; 
+        typewriter(resBodyEl, result.advice);
+    }
+
+    function typewriter(element, text, i = 0) {
+        if (i < text.length) {
+            element.innerHTML = text.substring(0, i + 1) + '<span class="cursor"></span>';
+            setTimeout(() => typewriter(element, text, i + 1), TYPING_SPEED);
+        } else {
+            element.innerHTML = text;
+        }
+    }
+
+    // --- PDF Download Functionality (New Feature) ---
+    
+    window.downloadSparkPDF = function() {
+        const data = JSON.parse(localStorage.getItem('currentResult'));
+        if (!data || !data.fullContext) {
+            alertModal("Error", "No complete result found to download. Please run a creative mode first.");
+            return;
+        }
+
+        // --- 1. Construct the PDF Content HTML with Robust Internal Styles ---
+        let htmlContent = `
+            <div id="pdf-content-wrapper" style="padding: 25px; font-family: 'Segoe UI', sans-serif; background: #1e1b4b; color: white; max-width: 750px; margin: 0 auto;">
+                <style>
+                    /* Minimal, PDF-friendly styles */
+                    .pdf-h1 { color: #a855f7; font-family: 'Caprasimo', cursive; text-align: center; border-bottom: 2px solid #a855f7; padding-bottom: 10px; margin-bottom: 15px; }
+                    .pdf-subtitle { text-align: center; color: #cbd5e1; font-size: 0.9rem; margin-bottom: 25px; }
+                    .pdf-main-card { background: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(255, 255, 255, 0.15); }
+                    .pdf-mode { font-size: 1.5rem; color: #ec4899; margin-top: 0; text-transform:uppercase; }
+                    .pdf-archetype { font-size: 2rem; font-weight: 900; color: #fff; margin: 10px 0; border-bottom: 3px double #e9d5ff; padding-bottom: 5px; } 
+                    .pdf-advice-box { margin-bottom: 30px; padding: 15px; background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
+                    .pdf-advice-h4 { color: #a855f7; margin-bottom: 10px; font-size: 1.2rem; }
+                    .pdf-advice-p { line-height: 1.6; font-size: 1rem; color: #e2e8f0; }
+                    .pdf-action-step { margin-top: 20px; padding: 15px; background: rgba(168, 85, 247, 0.15); border-radius: 8px; }
+                    .pdf-context-h4 { color: #cbd5e1; margin-bottom: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 5px; }
+                    /* FIX: Added word-break/overflow-wrap to ensure long user answers break inside the box */
+                    .pdf-qa-block { 
+                        margin-bottom: 15px; background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px; 
+                        overflow-wrap: break-word; word-wrap: break-word; -ms-word-break: break-all; word-break: break-word; 
+                    }
+                    .pdf-qa-q { margin: 0; font-weight: 600; color: #94a3b8; font-size: 0.9rem; }
+                    .pdf-qa-q-text { margin-top: 5px; margin-bottom: 10px; color: #fff; font-weight: 700; font-size: 1rem; }
+                    .pdf-qa-a { margin: 0; font-weight: 600; color: #94a3b8; font-size: 0.9rem; }
+                    .pdf-qa-a-text { margin-top: 5px; margin-bottom: 0; color: #e2e8f0; font-style: italic; }
+                </style>
+                
+                <h1 class="pdf-h1">Creative Pulse Spark Report</h1>
+                <p class="pdf-subtitle">
+                    Generated on: ${new Date().toLocaleDateString()}
+                </p>
+
+                <div class="pdf-main-card">
+                    <h2 class="pdf-mode">Mode: ${data.mode.toUpperCase()}</h2>
+                    <h3 class="pdf-archetype">${data.archetype}</h3>
+                </div>
+
+                <div class="pdf-advice-box">
+                    <h4 class="pdf-advice-h4">⚡ Your Digital Mentor's Advice:</h4>
+                    <p class="pdf-advice-p">${data.advice}</p>
+                    <div class="pdf-action-step">
+                        <h5 style="color: #ff99ff; margin-top: 0; margin-bottom: 5px; font-size: 0.9rem;">TINY NEXT STEP:</h5>
+                        <p style="font-size: 1.1rem; font-weight: 700; color: white; margin: 0;">${data.action}</p>
+                    </div>
+                </div>
+
+                <h4 class="pdf-context-h4">Your Context & Input:</h4>
+        `;
+
+        data.fullContext.forEach((item, index) => {
+            // Sanitize input to prevent breaking HTML
+            const sanitizedAnswer = item.answer.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            
+            htmlContent += `
+                <div class="pdf-qa-block">
+                    <p class="pdf-qa-q">Question ${index + 1}:</p>
+                    <p class="pdf-qa-q-text">${item.question}</p>
+                    <p class="pdf-qa-a">Your Answer:</p>
+                    <p class="pdf-qa-a-text">"${sanitizedAnswer}"</p>
+                </div>
+            `;
+        });
+
+        htmlContent += `
+                <p style="text-align: center; margin-top: 40px; font-size: 0.8rem; color: #94a3b8;">
+                    Creative Pulse is a project by EKOLiTiKA.
+                </p>
+            </div>
+        `;
+        
+        // --- 2. Generate PDF using html2pdf.js ---
+        const worker = html2pdf().set({
+            margin: [10, 10, 10, 10], 
+            filename: `${data.mode}_spark_${new Date().toISOString().substring(0,10)}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { 
+                scale: 2, 
+                logging: false, 
+                dpi: 192, 
+                letterRendering: true,
+            },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        });
+
+        worker.from(htmlContent).save();
+
+        alertModal("Download Initiated! 📥", "Your **Creative Pulse Spark Report** is being generated and should download shortly. Check your downloads folder!");
+    }
+
+
+    // --- Story/Modal Functions ---
+
+    window.openStory = function() {
+        const modal = document.getElementById('storyModal');
+        modal.querySelector('h3').textContent = "Born from Struggle";
+        
+        modal.querySelector('#storyContent').innerHTML = `
+            <p class="story-text">
+                In 2025, a team joined <a href="https://ekolitika.framer.website/project/the-creative-mess" target="_blank" class="story-highlight" style="text-decoration: underline;">The Creative Mess</a>—an Erasmus+ course that proved creativity isn't magic. It's a cycle: brainstorm, organize, rest, inspire, experiment, repeat.
+            </p>
+            <p class="story-text">
+                The problem? Most tools feed you empty motivation or treat creativity like a factory line. Neither helps when you're actually stuck.
+            </p>
+            <p class="story-text">
+                So we built <span class="story-highlight">Creative Pulse</span>. A free tool that diagnoses your block, tells you what you actually need, and gives you real feedback—not fluff.
+            </p>
+            <p class="story-text">
+                From stuck to unstuck. Idea to action. Exhaustion to rhythm.
+            </p>
+        `;
+        
+        modal.querySelector('.btn').textContent = "Got it!";
+        modal.querySelector('.btn').onclick = window.closeStory;
+        modal.classList.add('open');
+    }
+
+    window.closeStory = function() {
+        document.getElementById('storyModal').classList.remove('open');
+    }
+
 </script>
+
 </body>
 </html>
+
