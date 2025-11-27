@@ -86,30 +86,18 @@
         }
         .logo-img:hover { transform: scale(1.05) rotate(-2deg); }
         
-        /* UPDATED: Platform Title Style - Dark Text with Bigger White Glow */
         .platform-title {
             font-family: 'Caprasimo', cursive;
             font-size: 3rem; 
-            font-weight: 800; /* Max boldness */
+            font-weight: 800;
             margin-top: 10px;
             margin-bottom: 25px;
-            
-            /* Dark purple text color, almost background */
             color: #1e1b4b; 
-            
-            /* Ensure no unwanted background/stroke effects */
-            background: none;
-            -webkit-background-clip: unset;
-            -webkit-text-fill-color: unset;
-            -webkit-text-stroke: none; 
-            
             letter-spacing: 1.5px;
-            
-            /* Bigger, rich white glow */
             text-shadow: 
-                0 0 10px rgba(255, 255, 255, 0.8), /* Inner bright core glow, slightly bigger */
-                0 0 25px rgba(255, 255, 255, 0.6), /* Wider, semi-transparent glow */
-                0 0 45px rgba(255, 255, 255, 0.4); /* Even wider, softer halo */
+                0 0 10px rgba(255, 255, 255, 0.8),
+                0 0 25px rgba(255, 255, 255, 0.6),
+                0 0 45px rgba(255, 255, 255, 0.4);
         }
 
         /* --- Glass Cards & General Components --- */
@@ -167,7 +155,6 @@
         }
         .icon-btn:hover { background: rgba(236, 72, 153, 0.2); color: white; border-color: #ec4899; transform: rotate(10deg); }
 
-        /* Existing Story Button Style */
         .story-btn {
             background: rgba(255, 255, 255, 0.15); 
             border: 1px solid var(--glass-border);
@@ -180,7 +167,7 @@
             display: inline-block;
             text-decoration: none;
             font-weight: 600;
-            white-space: nowrap; /* Prevent text wrap for the long footer button */
+            white-space: nowrap;
         }
         .story-btn:hover { 
             opacity: 1; 
@@ -199,7 +186,7 @@
             width: 100%;
             max-width: 600px;
             padding: 0 20px;
-            margin-top: auto; /* Push to bottom of container */
+            margin-top: auto;
             margin-bottom: 10px;
         }
 
@@ -468,19 +455,7 @@
             </div>
             
             <div id="storyContent" style="margin-bottom: 20px;">
-                <p class="story-text">
-                    In 2025, a team joined <a href="https://ekolitika.framer.website/project/the-creative-mess" target="_blank" class="story-highlight" style="text-decoration: underline;">The Creative Mess</a>—an Erasmus+ course that proved creativity isn't magic. It's a cycle: brainstorm, organize, rest, inspire, experiment, repeat.
-                </p>
-                <p class="story-text">
-                    The problem? Most tools feed you empty motivation or treat creativity like a factory line. Neither helps when you're actually stuck.
-                </p>
-                <p class="story-text">
-                    So we built <span class="story-highlight">Creative Pulse</span>. A free tool that diagnoses your block, tells you what you actually need, and gives you real feedback—not fluff.
-                </p>
-                <p class="story-text">
-                    From stuck to unstuck. Idea to action. Exhaustion to rhythm.
-                </p>
-            </div>
+                </div>
             
             <div style="margin-top:30px; padding-top:20px; border-top:1px solid var(--glass-border); text-align:center; font-size:0.9rem; color:#cbd5e1;">
                 Built by <b>EKOLiTiKA</b> — an NGO learning sustainability from nature and applying circular thinking to creativity.
@@ -492,207 +467,138 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, addDoc, onSnapshot, collection, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, addDoc, onSnapshot, collection, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         
-        // setLogLevel('Debug'); // Uncomment for debugging
-        
-        let app, db, auth;
-        let userId;
-
-        // Global environment variables provided by Canvas
+        // Configuration placeholder (MUST be here if you expect Firebase to work)
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
         const FIREBASE_COLLECTION = 'sparks';
 
-        // Initialize Firebase
-        if (Object.keys(firebaseConfig).length > 0) {
-            app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            auth = getAuth(app);
-        } else {
-            console.error("Firebase configuration is missing. Data persistence will not work.");
-        }
+        // --- CORE DATA STORE OBJECT ---
+        const DataStore = {
+            app: null,
+            db: null,
+            auth: null,
+            userId: null,
+            isInitialized: false,
 
-        /**
-         * Authenticates the user and sets up the listener.
-         */
-        async function authenticateAndSetup() {
-            if (!auth) {
-                console.error("Firebase Auth not initialized.");
-                return;
-            }
-
-            try {
-                if (initialAuthToken) {
-                    await signInWithCustomToken(auth, initialAuthToken);
-                } else {
-                    await signInAnonymously(auth);
-                }
-            } catch (error) {
-                console.error("Firebase sign-in failed:", error);
-            }
-
-            // Set up Auth State Listener
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
-                    userId = user.uid;
-                    // Check local storage for onboarding status
-                    onboardUser();
-                    // Start listening for saved data
-                    if (db) {
-                        // We no longer call setupSavedDataListener here, 
-                        // as it will be called explicitly by window.showSaved() when the user navigates there.
+            init: async function() {
+                if (Object.keys(firebaseConfig).length > 0) {
+                    try {
+                        this.app = initializeApp(firebaseConfig);
+                        this.db = getFirestore(this.app);
+                        this.auth = getAuth(this.app);
+                        this.isInitialized = true;
+                        
+                        // Start Authentication
+                        onAuthStateChanged(this.auth, (user) => {
+                            if (user) {
+                                this.userId = user.uid;
+                                console.log("Firebase Auth Success. User ID:", this.userId);
+                            } else {
+                                console.log("Attempting Anonymous Sign-in...");
+                                (initialAuthToken 
+                                    ? signInWithCustomToken(this.auth, initialAuthToken) 
+                                    : signInAnonymously(this.auth))
+                                .catch(e => console.error("Anonymous Sign-in Failed:", e));
+                            }
+                        });
+                    } catch (e) {
+                        console.error("Firebase Init Failed (Check Config):", e);
                     }
                 } else {
-                    console.log("User signed out or failed to sign in.");
-                    // If sign-in failed, still try to onboard based on localStorage
-                    onboardUser();
+                    console.warn("Firebase configuration is missing. Saving will be disabled.");
                 }
-            });
-        }
+                
+                // Always onboard user based on local storage profile
+                window.onboardUser(); 
+            },
 
-        /**
-         * Gets the correct path for a user's private collection.
-         * @param {string} collectionName
-         * @returns {import("firebase/firestore").CollectionReference}
-         */
-        function getUserCollection(collectionName) {
-            if (!db || !userId) {
-                console.error("Database or User ID not available for collection path.");
-                return null;
-            }
-            // Path: /artifacts/{appId}/users/{userId}/sparks
-            return collection(db, `artifacts/${appId}/users/${userId}/${collectionName}`);
-        }
-
-        // --- Data Management Functions (Exports for window object) ---
-
-        window.saveResult = async function() {
-            const resultData = JSON.parse(localStorage.getItem('currentResult'));
-            if (!resultData || !userId || !db) {
-                // This is the error seen in the screenshot. The check is correct.
-                alertModal("Error", "Cannot save. Please ensure you are logged in and have a current result.");
-                return;
-            }
-
-            try {
-                const collectionRef = getUserCollection(FIREBASE_COLLECTION);
-                await addDoc(collectionRef, {
-                    mode: resultData.mode,
-                    archetype: resultData.archetype,
-                    advice: resultData.advice,
-                    action: resultData.action,
-                    timestamp: new Date().toISOString()
-                });
-                alertModal("Saved!", `Your spark, '${resultData.archetype}', has been saved to your library.`);
-            } catch (e) {
-                console.error("Error adding document: ", e);
-                alertModal("Error", "Failed to save the spark. Check console for details.");
-            }
-        }
-
-        let unsubscribeSavedData = null;
-
-        /**
-         * Sets up real-time listener for the user's saved sparks.
-         */
-        function setupSavedDataListener() {
-            if (unsubscribeSavedData) {
-                unsubscribeSavedData(); // Detach previous listener
-            }
-            
-            // Check if user is authenticated before creating a reference
-            if (!userId) {
-                document.getElementById('savedList').innerHTML = '<p style="color:#f87171; text-align:center; padding: 20px;">Please log in or wait for authentication to load your sparks.</p>';
-                return;
-            }
-            
-            const collectionRef = getUserCollection(FIREBASE_COLLECTION);
-            if (!collectionRef) return;
-
-            // Query to fetch up to 20 latest sparks
-            const q = query(collectionRef, orderBy("timestamp", "desc"), limit(20));
-
-            unsubscribeSavedData = onSnapshot(q, (snapshot) => {
-                const savedSparks = [];
-                snapshot.forEach((doc) => {
-                    savedSparks.push({ id: doc.id, ...doc.data() });
-                });
-                // Update the global state/DOM here
-                window.displaySavedSparks(savedSparks); 
-            }, (error) => {
-                console.error("Error listening to saved sparks:", error);
-                // If there's a permission error, it usually means the user is not authenticated according to rules.
-                if (error.code === 'permission-denied') {
-                     document.getElementById('savedList').innerHTML = '<p style="color:#f87171; text-align:center; padding: 20px;">Could not load sparks: Authentication or permissions issue.</p>';
+            getUserCollection: function(collectionName) {
+                if (!this.db || !this.userId) {
+                    return null;
                 }
-            });
-        }
-        
-        // Ensure the unsubscribe function is available globally on window cleanup
-        window.unsubscribeSavedData = () => {
-             if (unsubscribeSavedData) {
-                unsubscribeSavedData();
-                unsubscribeSavedData = null;
-            }
+                // Path: /artifacts/{appId}/users/{userId}/sparks
+                return collection(this.db, `artifacts/${appId}/users/${this.userId}/${collectionName}`);
+            },
+
+            saveSpark: async function(sparkData) {
+                if (!this.isInitialized || !this.userId) {
+                    window.alertModal("Error ❌", "Cannot save. Database features are currently unavailable, or user authentication is still pending. Try again in a moment, or check your console for Firebase Config errors.");
+                    return false;
+                }
+
+                try {
+                    const collectionRef = this.getUserCollection(FIREBASE_COLLECTION);
+                    await addDoc(collectionRef, {
+                        ...sparkData,
+                        timestamp: new Date().toISOString()
+                    });
+                    window.alertModal("Saved! 💾", `Your spark, '${sparkData.archetype}', has been saved to your library.`);
+                    return true;
+                } catch (e) {
+                    console.error("Error adding document: ", e);
+                    window.alertModal("Error 🚨", `Failed to save the spark: ${e.message}`);
+                    return false;
+                }
+            },
+            
+            // Set up real-time listener for the user's saved sparks.
+            setupSavedDataListener: function(callback) {
+                // Clear existing listener if any
+                if (this.unsubscribeSavedData) {
+                    this.unsubscribeSavedData();
+                    this.unsubscribeSavedData = null;
+                }
+                
+                if (!this.isInitialized || !this.userId) {
+                    // This message is shown immediately if saving is impossible
+                    callback([]);
+                    const listEl = document.getElementById('savedList');
+                    if (listEl) {
+                        listEl.innerHTML = '<p style="color:#f87171; text-align:center; padding: 20px;">Database features are unavailable. Please ensure your Firebase config is set up and your connection is stable.</p>';
+                    }
+                    return;
+                }
+                
+                const collectionRef = this.getUserCollection(FIREBASE_COLLECTION);
+                if (!collectionRef) return;
+
+                const q = query(collectionRef, orderBy("timestamp", "desc"), limit(20));
+
+                this.unsubscribeSavedData = onSnapshot(q, (snapshot) => {
+                    const savedSparks = [];
+                    snapshot.forEach((doc) => {
+                        savedSparks.push({ id: doc.id, ...doc.data() });
+                    });
+                    callback(savedSparks); 
+                }, (error) => {
+                    console.error("Error listening to saved sparks:", error);
+                    const listEl = document.getElementById('savedList');
+                    if (listEl) {
+                        listEl.innerHTML = `<p style="color:#f87171; text-align:center; padding: 20px;">Error loading sparks: ${error.message}</p>`;
+                    }
+                });
+            },
+
+            // Allows the general script to stop the listener when changing views
+            unsubscribeSavedData: null,
         };
 
-        // Initialize on load
-        window.onload = authenticateAndSetup;
-
-        // Export the display function for the listener
-        window.displaySavedSparks = function(sparks) {
-            const listEl = document.getElementById('savedList');
-            listEl.innerHTML = ''; // Clear previous content
-
-            if (sparks.length === 0) {
-                listEl.innerHTML = `
-                    <div class="glass-panel" style="text-align:center; opacity:0.7;">
-                        <div style="font-size:3rem; margin-bottom:15px;">🧐</div>
-                        <p style="color:#cbd5e1;">Your Spark Library is empty. Go through a mode (Diagnose, Inspire, etc.) and click 'Save this Spark' to add something here!</p>
-                    </div>
-                `;
-                return;
-            }
-
-            sparks.forEach(spark => {
-                const date = new Date(spark.timestamp).toLocaleDateString();
-                const modeName = spark.mode.charAt(0).toUpperCase() + spark.mode.slice(1);
-                const sparkItem = document.createElement('div');
-                sparkItem.className = 'spark-item';
-                sparkItem.innerHTML = `
-                    <div style="font-size:0.8rem; color:var(--secondary); font-weight:700; display:flex; justify-content:space-between; margin-bottom:5px;">
-                        <span>${modeName} Result</span> 
-                        <span>${date}</span>
-                    </div>
-                    <div style="font-size:1.4rem; font-weight:800; color:white; margin-bottom:10px;">${spark.archetype}</div>
-                    <div style="font-size:0.9rem; color:#cbd5e1;">
-                        <strong style="color:var(--primary);">Advice:</strong> ${spark.advice.substring(0, 100)}...
-                    </div>
-                    <div style="font-size:0.9rem; color:#cbd5e1; margin-top:5px;">
-                        <strong style="color:#ec4899;">Action:</strong> ${spark.action}
-                    </div>
-                `;
-                sparkItem.onclick = () => alertModal(
-                    `${modeName}: ${spark.archetype}`, 
-                    `<p class="story-text">${spark.advice}</p><p class="story-text" style="margin-top:15px; color:var(--primary); font-weight:700;">Tiny Next Step: ${spark.action}</p>`
-                );
-                listEl.appendChild(sparkItem);
-            });
-        }
+        // EXPOSE THE PUBLIC INTERFACE TO THE WINDOW OBJECT
+        window.DataStore = DataStore;
         
-        // FIX: Export setupSavedDataListener to the global window object.
-        // This is necessary because the showSaved function (defined outside this module) 
-        // needs to access it to start the data fetch.
-        window.setupSavedDataListener = setupSavedDataListener;
-
+        // Start initialization
+        window.addEventListener('load', () => DataStore.init());
     </script>
 
 <script>
-    /* --- DATA & CONTENT --- */
+    /* * All functions here now interact with the DataStore object exposed by the module.
+    * This resolves the scope and access issues that caused the saving errors.
+    */
+    
     const content = {
         diagnose: {
             steps: [
@@ -845,13 +751,10 @@
     let currentMode = null;
     let currentStep = 0;
     let answers = [];
+    const TYPING_SPEED = 20;
 
     // --- Helper Functions ---
 
-    /**
-     * Switches the currently active view based on the ID.
-     * @param {string} viewId The base ID (e.g., 'dashboard', 'onboarding').
-     */
     function setView(viewId) {
         document.querySelectorAll('.view').forEach(view => {
             view.classList.remove('active');
@@ -864,18 +767,12 @@
         }
     }
 
-    /**
-     * Shows a custom modal/alert message.
-     * @param {string} title 
-     * @param {string} bodyHTML 
-     */
-    function alertModal(title, bodyHTML) {
+    window.alertModal = function(title, bodyHTML) {
         const modal = document.getElementById('storyModal');
         modal.querySelector('h3').textContent = title;
-        // Target the new container
         modal.querySelector('#storyContent').innerHTML = bodyHTML; 
         modal.querySelector('.btn').textContent = "Close";
-        modal.querySelector('.btn').onclick = closeStory; // Use closeStory logic
+        modal.querySelector('.btn').onclick = window.closeStory; 
         modal.classList.add('open');
     }
 
@@ -883,22 +780,17 @@
 
     function loadProfile() {
         const profile = localStorage.getItem('userProfile');
-        if (profile) {
-            userProfile = JSON.parse(profile);
-        } else {
-            userProfile = {};
-        }
+        userProfile = profile ? JSON.parse(profile) : {};
     }
 
     function saveProfile() {
         localStorage.setItem('userProfile', JSON.stringify(userProfile));
     }
 
-    function onboardUser() {
+    window.onboardUser = function() {
         loadProfile();
         const initialView = userProfile.name ? 'dashboard' : 'onboarding';
         
-        // FIX: Use the correct prefixed IDs when setting the view
         if (initialView === 'dashboard') {
             document.getElementById('dashName').textContent = userProfile.name;
             setView('dashboard');
@@ -912,17 +804,17 @@
         currentStep = 0;
         answers = [];
         setView('dashboard');
-        // If coming from saved sparks view, ensure the listener is not running unnecessarily
-        if (window.unsubscribeSavedData) {
-            window.unsubscribeSavedData();
+        // Stop the real-time listener when leaving the saved view
+        if (window.DataStore && window.DataStore.unsubscribeSavedData) {
+            window.DataStore.unsubscribeSavedData();
         }
     }
 
     window.logout = function() {
         localStorage.removeItem('userProfile');
-        localStorage.removeItem('savedSparks'); // Clear local data on logout for a clean start
+        localStorage.removeItem('currentResult'); 
         userProfile = {};
-        goHome(); // This will automatically transition to the onboarding view
+        goHome();
     }
 
     document.getElementById('onboardForm').addEventListener('submit', function(e) {
@@ -930,7 +822,7 @@
         userProfile.name = document.getElementById('userName').value.trim();
         userProfile.field = document.getElementById('userField').value.trim();
         saveProfile();
-        onboardUser();
+        window.onboardUser();
     });
 
     // --- Mode & Wizard Flow ---
@@ -951,18 +843,15 @@
         const totalSteps = modeData.steps.length;
         const step = modeData.steps[stepIndex];
 
-        // Update progress bar
         const progress = ((stepIndex + 1) / totalSteps) * 100;
         document.getElementById('progressBar').style.width = `${progress}%`;
 
-        // Update question
         document.getElementById('questionText').textContent = step.q;
         
         const nextBtn = document.getElementById('nextBtn');
         const optionsArea = document.getElementById('optionsArea');
         const textInput = document.getElementById('textInput');
         
-        // Reset inputs
         optionsArea.innerHTML = '';
         textInput.value = '';
         textInput.classList.add('hidden');
@@ -978,20 +867,9 @@
                 btn.onclick = () => selectOption(option, btn);
                 optionsArea.appendChild(btn);
             });
-            // If a choice question, enable next button immediately (selection is the answer)
-            // NOTE: The original code enabled next button on selection, but this block 
-            // set it to 1/auto on load. Reverting to original intent where selection enables it.
-            // Keeping the style changes as they are for now, assuming selectOption handles the enable logic.
-            // Oh wait, selectOption only stores the answer, not enables the button.
-            // The next button needs to be enabled once *any* selection is made, which happens inside selectOption.
-            // We can leave nextBtn at 0.5/none and let selectOption handle it.
-            nextBtn.style.opacity = 0.5;
-            nextBtn.style.pointerEvents = 'none';
-
         } else if (step.type === 'text') {
             optionsArea.style.display = 'none';
             textInput.classList.remove('hidden');
-            // Check for input to enable next button
             textInput.oninput = () => {
                 if (textInput.value.trim().length > 5) {
                     nextBtn.style.opacity = 1;
@@ -1005,14 +883,10 @@
     }
 
     function selectOption(option, selectedBtn) {
-        // Clear previous selections
         document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
-        // Select the new one
         selectedBtn.classList.add('selected');
-        // Store the answer temporarily
         answers[currentStep] = option;
         
-        // Enable the next button on selection for choice questions
         const nextBtn = document.getElementById('nextBtn');
         nextBtn.style.opacity = 1;
         nextBtn.style.pointerEvents = 'auto';
@@ -1045,30 +919,26 @@
     
     // --- Result Generation ---
 
-    const TYPING_SPEED = 20; // ms per character
-
     function generateResult() {
         setView('result');
         const modeData = content[currentMode];
-        
-        // Logic to determine Archetype (Using the answer from the first step)
         const keyAnswer = answers[0];
+        
         let result = modeData.archetypes[keyAnswer] || {
             archetype: "The Insight Generator",
             advice: "Based on your unique inputs, we see a blend of challenges. The core advice is to reduce complexity and prioritize radical self-care. Your biggest hurdle is internal expectation.",
             action: "Write down three things you accomplished last week (no matter how small) to counteract the voice of self-doubt."
         };
         
-        // Append user's last input for context in the advice (optional)
         const lastInput = answers[answers.length - 1];
-        result.advice += ` (Context: ${lastInput})`;
         
         // Save result locally to be ready for saving to Firestore
         const currentResult = {
             mode: currentMode,
             archetype: result.archetype,
             advice: result.advice,
-            action: result.action
+            action: result.action,
+            context: lastInput // Save last input for better context
         };
         localStorage.setItem('currentResult', JSON.stringify(currentResult));
 
@@ -1080,7 +950,7 @@
 
         // Typewriter effect
         const resBodyEl = document.getElementById('resBody');
-        resBodyEl.textContent = ''; // Clear content
+        resBodyEl.textContent = ''; 
         typewriter(resBodyEl, result.advice);
     }
 
@@ -1089,17 +959,80 @@
             element.innerHTML = text.substring(0, i + 1) + '<span class="cursor"></span>';
             setTimeout(() => typewriter(element, text, i + 1), TYPING_SPEED);
         } else {
-            element.innerHTML = text; // Final text without cursor
+            element.innerHTML = text;
         }
     }
 
+    // --- Saving and Library ---
+
+    window.saveResult = function() {
+        const resultData = JSON.parse(localStorage.getItem('currentResult'));
+        if (!resultData) {
+            alertModal("Error", "No result found to save. Please run a diagnosis first.");
+            return;
+        }
+        
+        // **CRITICAL FIX**: Calling the saveSpark function from the DataStore module
+        window.DataStore.saveSpark(resultData);
+    }
+
+    window.showSaved = function() {
+        setView('saved');
+        const listEl = document.getElementById('savedList');
+        listEl.innerHTML = '<div style="text-align:center; color:#94a3b8; padding:20px;">Checking for sparks...</div>';
+        
+        // **CRITICAL FIX**: Calling the setup listener from the DataStore module
+        if (window.DataStore) {
+            window.DataStore.setupSavedDataListener(window.displaySavedSparks);
+        }
+    }
+
+    window.displaySavedSparks = function(sparks) {
+        const listEl = document.getElementById('savedList');
+        listEl.innerHTML = '';
+
+        if (sparks.length === 0) {
+            listEl.innerHTML = `
+                <div class="glass-panel" style="text-align:center; opacity:0.7;">
+                    <div style="font-size:3rem; margin-bottom:15px;">🧐</div>
+                    <p style="color:#cbd5e1;">Your Spark Library is empty. Go through a mode and click 'Save this Spark'!</p>
+                </div>
+            `;
+            return;
+        }
+
+        sparks.forEach(spark => {
+            const date = new Date(spark.timestamp).toLocaleDateString();
+            const modeName = spark.mode.charAt(0).toUpperCase() + spark.mode.slice(1);
+            const sparkItem = document.createElement('div');
+            sparkItem.className = 'spark-item';
+            sparkItem.innerHTML = `
+                <div style="font-size:0.8rem; color:var(--secondary); font-weight:700; display:flex; justify-content:space-between; margin-bottom:5px;">
+                    <span>${modeName} Result</span> 
+                    <span>${date}</span>
+                </div>
+                <div style="font-size:1.4rem; font-weight:800; color:white; margin-bottom:10px;">${spark.archetype}</div>
+                <div style="font-size:0.9rem; color:#cbd5e1;">
+                    <strong style="color:var(--primary);">Advice:</strong> ${spark.advice.substring(0, 100)}...
+                </div>
+                <div style="font-size:0.9rem; color:#cbd5e1; margin-top:5px;">
+                    <strong style="color:#ec4899;">Action:</strong> ${spark.action}
+                </div>
+            `;
+            sparkItem.onclick = () => alertModal(
+                `${modeName}: ${spark.archetype}`, 
+                `<p class="story-text">${spark.advice}</p><p class="story-text" style="margin-top:15px; color:var(--primary); font-weight:700;">Tiny Next Step: ${spark.action}</p>`
+            );
+            listEl.appendChild(sparkItem);
+        });
+    }
+
     // --- Story/Modal Functions ---
+
     window.openStory = function() {
         const modal = document.getElementById('storyModal');
-        // Reset to story content
         modal.querySelector('h3').textContent = "Born from Struggle";
         
-        // Inject the full, correct story into the dedicated content area
         modal.querySelector('#storyContent').innerHTML = `
             <p class="story-text">
                 In 2025, a team joined <a href="https://ekolitika.framer.website/project/the-creative-mess" target="_blank" class="story-highlight" style="text-decoration: underline;">The Creative Mess</a>—an Erasmus+ course that proved creativity isn't magic. It's a cycle: brainstorm, organize, rest, inspire, experiment, repeat.
@@ -1116,30 +1049,13 @@
         `;
         
         modal.querySelector('.btn').textContent = "Got it!";
-        modal.querySelector('.btn').onclick = closeStory;
+        modal.querySelector('.btn').onclick = window.closeStory;
         modal.classList.add('open');
     }
 
     window.closeStory = function() {
         document.getElementById('storyModal').classList.remove('open');
     }
-    
-    // --- Saved Sparks View ---
-    window.showSaved = function() {
-        // The real-time listener is set up in authenticateAndSetup and calls displaySavedSparks()
-        // We just need to ensure we switch to the view.
-        
-        // FIX: Now that setupSavedDataListener is explicitly exposed to window 
-        // by the module script, this check should work, resolving the "Database features are unavailable" error.
-        if (typeof window.setupSavedDataListener === 'function') {
-            window.setupSavedDataListener();
-        } else {
-            // Fallback for extreme cases where the module fails to load entirely
-            document.getElementById('savedList').innerHTML = '<p style="color:#f87171; text-align:center; padding: 20px;">Database features are unavailable. Please check the console.</p>';
-        }
-        setView('saved');
-    }
-
 
 </script>
 
