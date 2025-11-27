@@ -177,17 +177,23 @@
             transform: translateY(-2px);
         }
 
-        /* --- Footer Bar --- */
+        /* --- Footer Bar FIX for Mobile --- */
         .footer-bar {
             display: flex;
-            justify-content: center; 
-            gap: 20px; 
+            flex-direction: column; /* FORCES VERTICAL STACKING */
+            gap: 10px; 
             align-items: center;
             width: 100%;
             max-width: 600px;
             padding: 0 20px;
             margin-top: auto;
             margin-bottom: 10px;
+        }
+        /* Ensure buttons within the footer bar have a reasonable maximum width */
+        .footer-bar .story-btn {
+            max-width: 300px;
+            width: 100%; /* Ensure they stretch to max-width */
+            text-align: center;
         }
 
 
@@ -266,9 +272,6 @@
         .modal-overlay.open .modal-content { transform: translateY(0); }
         .story-text { font-size: 1rem; line-height: 1.7; color: #cbd5e1; margin-bottom: 15px; }
         .story-highlight { color: var(--primary); font-weight: 700; }
-        
-        .spark-item { padding: 20px; background: rgba(0,0,0,0.25); border-radius: 16px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.05); transition: 0.2s; }
-        .spark-item:hover { border-color: var(--primary-glow); background: rgba(0,0,0,0.4); }
         
         .hidden { display: none; }
         .top-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; }
@@ -372,10 +375,10 @@
                         <div class="mode-name">Experiment</div>
                         <div class="mode-desc">Test ideas without fear.</div>
                     </div>
-                    <div class="mode-card" style="border-style:dashed; opacity:0.8;" onclick="showSaved()">
-                        <div class="mode-emoji">⚡</div>
-                        <div class="mode-name">My Sparks</div>
-                        <div class="mode-desc">Library of saved advice.</div>
+                    <div class="mode-card" style="border-style:dashed; opacity:0.8;" onclick="alertModal('Download Your Sparks','To save your results, use the <b>Download Spark as PDF 📄</b> button on the results screen. This keeps your data private and secure on your device!')">
+                        <div class="mode-emoji">⬇️</div>
+                        <div class="mode-name">Download Info</div>
+                        <div class="mode-desc">Saving is now handled by PDF downloads.</div>
                     </div>
                 </div>
             </div>
@@ -418,24 +421,13 @@
                 </div>
                 
                 <div class="hidden" id="resButtons" style="display:flex; flex-direction:column; gap:10px;">
-                    <button class="btn" onclick="saveResult()">Save this Spark 💾</button>
+                    <button class="btn" onclick="downloadSparkPDF()">Download Spark as PDF 📄</button>
                     <button class="btn btn-secondary" onclick="goHome()">Back to Modes</button>
                 </div>
             </div>
         </div>
 
-        
-<div id="view-saved" class="view">
-            <div class="top-nav">
-                <button onclick="goHome()" class="icon-btn">←</button>
-                <h3 style="margin:0;">Your Spark Library</h3>
-                <div style="width:40px;"></div>
-            </div>
-            <div id="savedList" style="padding-bottom:50px;"></div>
-        </div>
-
-        
-<footer class="footer-bar">
+        <footer class="footer-bar">
             <button class="story-btn" onclick="openStory()">Read the Origin Story 📖</button>
             
             
@@ -464,140 +456,9 @@
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, addDoc, onSnapshot, collection, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        
-        // Configuration placeholder (MUST be here if you expect Firebase to work)
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-        const FIREBASE_COLLECTION = 'sparks';
-
-        // --- CORE DATA STORE OBJECT ---
-        const DataStore = {
-            app: null,
-            db: null,
-            auth: null,
-            userId: null,
-            isInitialized: false,
-
-            init: async function() {
-                if (Object.keys(firebaseConfig).length > 0) {
-                    try {
-                        this.app = initializeApp(firebaseConfig);
-                        this.db = getFirestore(this.app);
-                        this.auth = getAuth(this.app);
-                        this.isInitialized = true;
-                        
-                        // Start Authentication
-                        onAuthStateChanged(this.auth, (user) => {
-                            if (user) {
-                                this.userId = user.uid;
-                                console.log("Firebase Auth Success. User ID:", this.userId);
-                            } else {
-                                console.log("Attempting Anonymous Sign-in...");
-                                (initialAuthToken 
-                                    ? signInWithCustomToken(this.auth, initialAuthToken) 
-                                    : signInAnonymously(this.auth))
-                                .catch(e => console.error("Anonymous Sign-in Failed:", e));
-                            }
-                        });
-                    } catch (e) {
-                        console.error("Firebase Init Failed (Check Config):", e);
-                    }
-                } else {
-                    console.warn("Firebase configuration is missing. Saving will be disabled.");
-                }
-                
-                // Always onboard user based on local storage profile
-                window.onboardUser(); 
-            },
-
-            getUserCollection: function(collectionName) {
-                if (!this.db || !this.userId) {
-                    return null;
-                }
-                // Path: /artifacts/{appId}/users/{userId}/sparks
-                return collection(this.db, `artifacts/${appId}/users/${this.userId}/${collectionName}`);
-            },
-
-            saveSpark: async function(sparkData) {
-                if (!this.isInitialized || !this.userId) {
-                    window.alertModal("Error ❌", "Cannot save. Database features are currently unavailable, or user authentication is still pending. Try again in a moment, or check your console for Firebase Config errors.");
-                    return false;
-                }
-
-                try {
-                    const collectionRef = this.getUserCollection(FIREBASE_COLLECTION);
-                    await addDoc(collectionRef, {
-                        ...sparkData,
-                        timestamp: new Date().toISOString()
-                    });
-                    window.alertModal("Saved! 💾", `Your spark, '${sparkData.archetype}', has been saved to your library.`);
-                    return true;
-                } catch (e) {
-                    console.error("Error adding document: ", e);
-                    window.alertModal("Error 🚨", `Failed to save the spark: ${e.message}`);
-                    return false;
-                }
-            },
-            
-            // Set up real-time listener for the user's saved sparks.
-            setupSavedDataListener: function(callback) {
-                // Clear existing listener if any
-                if (this.unsubscribeSavedData) {
-                    this.unsubscribeSavedData();
-                    this.unsubscribeSavedData = null;
-                }
-                
-                if (!this.isInitialized || !this.userId) {
-                    // This message is shown immediately if saving is impossible
-                    callback([]);
-                    const listEl = document.getElementById('savedList');
-                    if (listEl) {
-                        listEl.innerHTML = '<p style="color:#f87171; text-align:center; padding: 20px;">Database features are unavailable. Please ensure your Firebase config is set up and your connection is stable.</p>';
-                    }
-                    return;
-                }
-                
-                const collectionRef = this.getUserCollection(FIREBASE_COLLECTION);
-                if (!collectionRef) return;
-
-                const q = query(collectionRef, orderBy("timestamp", "desc"), limit(20));
-
-                this.unsubscribeSavedData = onSnapshot(q, (snapshot) => {
-                    const savedSparks = [];
-                    snapshot.forEach((doc) => {
-                        savedSparks.push({ id: doc.id, ...doc.data() });
-                    });
-                    callback(savedSparks); 
-                }, (error) => {
-                    console.error("Error listening to saved sparks:", error);
-                    const listEl = document.getElementById('savedList');
-                    if (listEl) {
-                        listEl.innerHTML = `<p style="color:#f87171; text-align:center; padding: 20px;">Error loading sparks: ${error.message}</p>`;
-                    }
-                });
-            },
-
-            // Allows the general script to stop the listener when changing views
-            unsubscribeSavedData: null,
-        };
-
-        // EXPOSE THE PUBLIC INTERFACE TO THE WINDOW OBJECT
-        window.DataStore = DataStore;
-        
-        // Start initialization
-        window.addEventListener('load', () => DataStore.init());
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <script>
-    /* * All functions here now interact with the DataStore object exposed by the module.
-    * This resolves the scope and access issues that caused the saving errors.
-    */
     
     const content = {
         diagnose: {
@@ -804,10 +665,6 @@
         currentStep = 0;
         answers = [];
         setView('dashboard');
-        // Stop the real-time listener when leaving the saved view
-        if (window.DataStore && window.DataStore.unsubscribeSavedData) {
-            window.DataStore.unsubscribeSavedData();
-        }
     }
 
     window.logout = function() {
@@ -824,6 +681,10 @@
         saveProfile();
         window.onboardUser();
     });
+
+    // Initialize on page load
+    window.addEventListener('load', () => window.onboardUser());
+
 
     // --- Mode & Wizard Flow ---
 
@@ -917,7 +778,7 @@
         }
     }
     
-    // --- Result Generation ---
+    // --- Result Generation & Typewriter ---
 
     function generateResult() {
         setView('result');
@@ -930,15 +791,17 @@
             action: "Write down three things you accomplished last week (no matter how small) to counteract the voice of self-doubt."
         };
         
-        const lastInput = answers[answers.length - 1];
-        
-        // Save result locally to be ready for saving to Firestore
+        // Save result locally to be ready for PDF creation
         const currentResult = {
             mode: currentMode,
             archetype: result.archetype,
             advice: result.advice,
             action: result.action,
-            context: lastInput // Save last input for better context
+            // Save the full question/answer context
+            fullContext: answers.map((a, i) => ({
+                question: modeData.steps[i].q,
+                answer: a
+            }))
         };
         localStorage.setItem('currentResult', JSON.stringify(currentResult));
 
@@ -963,69 +826,75 @@
         }
     }
 
-    // --- Saving and Library ---
-
-    window.saveResult = function() {
-        const resultData = JSON.parse(localStorage.getItem('currentResult'));
-        if (!resultData) {
-            alertModal("Error", "No result found to save. Please run a diagnosis first.");
-            return;
-        }
-        
-        // **CRITICAL FIX**: Calling the saveSpark function from the DataStore module
-        window.DataStore.saveSpark(resultData);
-    }
-
-    window.showSaved = function() {
-        setView('saved');
-        const listEl = document.getElementById('savedList');
-        listEl.innerHTML = '<div style="text-align:center; color:#94a3b8; padding:20px;">Checking for sparks...</div>';
-        
-        // **CRITICAL FIX**: Calling the setup listener from the DataStore module
-        if (window.DataStore) {
-            window.DataStore.setupSavedDataListener(window.displaySavedSparks);
-        }
-    }
-
-    window.displaySavedSparks = function(sparks) {
-        const listEl = document.getElementById('savedList');
-        listEl.innerHTML = '';
-
-        if (sparks.length === 0) {
-            listEl.innerHTML = `
-                <div class="glass-panel" style="text-align:center; opacity:0.7;">
-                    <div style="font-size:3rem; margin-bottom:15px;">🧐</div>
-                    <p style="color:#cbd5e1;">Your Spark Library is empty. Go through a mode and click 'Save this Spark'!</p>
-                </div>
-            `;
+    // --- PDF Download Functionality (New Feature) ---
+    
+    window.downloadSparkPDF = function() {
+        const data = JSON.parse(localStorage.getItem('currentResult'));
+        if (!data || !data.fullContext) {
+            alertModal("Error", "No complete result found to download. Please run a creative mode first.");
             return;
         }
 
-        sparks.forEach(spark => {
-            const date = new Date(spark.timestamp).toLocaleDateString();
-            const modeName = spark.mode.charAt(0).toUpperCase() + spark.mode.slice(1);
-            const sparkItem = document.createElement('div');
-            sparkItem.className = 'spark-item';
-            sparkItem.innerHTML = `
-                <div style="font-size:0.8rem; color:var(--secondary); font-weight:700; display:flex; justify-content:space-between; margin-bottom:5px;">
-                    <span>${modeName} Result</span> 
-                    <span>${date}</span>
+        // --- 1. Construct the PDF Content HTML with Inline Styles for Theme ---
+        let htmlContent = `
+            <div style="padding: 20px; font-family: 'Segoe UI', sans-serif; background: #1e1b4b; color: white; border-radius: 10px; max-width: 750px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                <h1 style="color: #a855f7; font-family: 'Caprasimo', cursive; text-align: center; border-bottom: 2px solid #a855f7; padding-bottom: 10px;">Creative Pulse Spark Report</h1>
+                <p style="text-align: center; color: #cbd5e1; font-size: 0.9rem; margin-bottom: 25px;">
+                    Generated on: ${new Date().toLocaleDateString()}
+                </p>
+
+                <div style="background: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.15);">
+                    <h2 style="font-size: 1.5rem; color: #ec4899; margin-top: 0; text-transform:uppercase;">Mode: ${data.mode}</h2>
+                    <h3 style="font-size: 2rem; font-weight: 900; color: #fff; margin: 10px 0; background: linear-gradient(135deg, #fff, #e9d5ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">${data.archetype}</h3>
                 </div>
-                <div style="font-size:1.4rem; font-weight:800; color:white; margin-bottom:10px;">${spark.archetype}</div>
-                <div style="font-size:0.9rem; color:#cbd5e1;">
-                    <strong style="color:var(--primary);">Advice:</strong> ${spark.advice.substring(0, 100)}...
+
+                <div style="margin-bottom: 30px; padding: 15px; background: rgba(0, 0, 0, 0.2); border-radius: 10px;">
+                    <h4 style="color: #a855f7; margin-bottom: 10px; font-size: 1.2rem;">⚡ Your Digital Mentor's Advice:</h4>
+                    <p style="line-height: 1.6; font-size: 1rem; color: #e2e8f0;">${data.advice}</p>
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(168, 85, 247, 0.15); border-radius: 8px;">
+                        <h5 style="color: #ff99ff; margin-top: 0; margin-bottom: 5px; font-size: 0.9rem;">TINY NEXT STEP:</h5>
+                        <p style="font-size: 1.1rem; font-weight: 700; color: white; margin: 0;">${data.action}</p>
+                    </div>
                 </div>
-                <div style="font-size:0.9rem; color:#cbd5e1; margin-top:5px;">
-                    <strong style="color:#ec4899;">Action:</strong> ${spark.action}
+
+                <h4 style="color: #cbd5e1; margin-bottom: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 5px;">Your Context & Input:</h4>
+        `;
+
+        data.fullContext.forEach((item, index) => {
+            // Sanitize input to prevent breaking HTML
+            const sanitizedAnswer = item.answer.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            
+            htmlContent += `
+                <div style="margin-bottom: 15px; background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px;">
+                    <p style="margin: 0; font-weight: 600; color: #94a3b8; font-size: 0.9rem;">Question ${index + 1}:</p>
+                    <p style="margin-top: 5px; margin-bottom: 10px; color: #fff; font-weight: 700; font-size: 1rem;">${item.question}</p>
+                    <p style="margin: 0; font-weight: 600; color: #94a3b8; font-size: 0.9rem;">Your Answer:</p>
+                    <p style="margin-top: 5px; margin-bottom: 0; color: #e2e8f0; font-style: italic;">"${sanitizedAnswer}"</p>
                 </div>
             `;
-            sparkItem.onclick = () => alertModal(
-                `${modeName}: ${spark.archetype}`, 
-                `<p class="story-text">${spark.advice}</p><p class="story-text" style="margin-top:15px; color:var(--primary); font-weight:700;">Tiny Next Step: ${spark.action}</p>`
-            );
-            listEl.appendChild(sparkItem);
         });
+
+        htmlContent += `
+                <p style="text-align: center; margin-top: 40px; font-size: 0.8rem; color: #94a3b8;">
+                    Creative Pulse is a project by EKOLiTiKA.
+                </p>
+            </div>
+        `;
+        
+        // --- 2. Generate PDF using html2pdf.js ---
+        const worker = html2pdf().set({
+            margin: [10, 10, 10, 10], 
+            filename: `${data.mode}_spark_${new Date().toISOString().substring(0,10)}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, logging: false, dpi: 192, letterRendering: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        });
+
+        worker.from(htmlContent).save();
+
+        alertModal("Download Initiated! 📥", "Your **Creative Pulse Spark Report** is being generated and should download shortly. Check your downloads folder!");
     }
+
 
     // --- Story/Modal Functions ---
 
