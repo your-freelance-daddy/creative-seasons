@@ -167,7 +167,7 @@
             display: inline-block;
             text-decoration: none;
             font-weight: 600;
-            white-space: nowrap;
+            /* FIX: Removed white-space: nowrap to allow text wrapping on mobile */
         }
         .story-btn:hover { 
             opacity: 1; 
@@ -427,7 +427,8 @@
             </div>
         </div>
 
-        <footer class="footer-bar">
+        
+<footer class="footer-bar">
             <button class="story-btn" onclick="openStory()">Read the Origin Story 📖</button>
             
             
@@ -835,29 +836,52 @@
             return;
         }
 
-        // --- 1. Construct the PDF Content HTML with Inline Styles for Theme ---
+        // --- 1. Construct the PDF Content HTML with Robust Internal Styles ---
         let htmlContent = `
-            <div style="padding: 20px; font-family: 'Segoe UI', sans-serif; background: #1e1b4b; color: white; border-radius: 10px; max-width: 750px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
-                <h1 style="color: #a855f7; font-family: 'Caprasimo', cursive; text-align: center; border-bottom: 2px solid #a855f7; padding-bottom: 10px;">Creative Pulse Spark Report</h1>
-                <p style="text-align: center; color: #cbd5e1; font-size: 0.9rem; margin-bottom: 25px;">
+            <div id="pdf-content-wrapper" style="padding: 25px; font-family: 'Segoe UI', sans-serif; background: #1e1b4b; color: white; max-width: 750px; margin: 0 auto;">
+                <style>
+                    /* Minimal, PDF-friendly styles */
+                    .pdf-h1 { color: #a855f7; font-family: 'Caprasimo', cursive; text-align: center; border-bottom: 2px solid #a855f7; padding-bottom: 10px; margin-bottom: 15px; }
+                    .pdf-subtitle { text-align: center; color: #cbd5e1; font-size: 0.9rem; margin-bottom: 25px; }
+                    .pdf-main-card { background: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 12px; margin-bottom: 25px; border: 1px solid rgba(255, 255, 255, 0.15); }
+                    .pdf-mode { font-size: 1.5rem; color: #ec4899; margin-top: 0; text-transform:uppercase; }
+                    .pdf-archetype { font-size: 2rem; font-weight: 900; color: #fff; margin: 10px 0; border-bottom: 3px double #e9d5ff; padding-bottom: 5px; } 
+                    .pdf-advice-box { margin-bottom: 30px; padding: 15px; background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
+                    .pdf-advice-h4 { color: #a855f7; margin-bottom: 10px; font-size: 1.2rem; }
+                    .pdf-advice-p { line-height: 1.6; font-size: 1rem; color: #e2e8f0; }
+                    .pdf-action-step { margin-top: 20px; padding: 15px; background: rgba(168, 85, 247, 0.15); border-radius: 8px; }
+                    .pdf-context-h4 { color: #cbd5e1; margin-bottom: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 5px; }
+                    /* FIX: Added word-break/overflow-wrap to ensure long user answers break inside the box */
+                    .pdf-qa-block { 
+                        margin-bottom: 15px; background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px; 
+                        overflow-wrap: break-word; word-wrap: break-word; -ms-word-break: break-all; word-break: break-word; 
+                    }
+                    .pdf-qa-q { margin: 0; font-weight: 600; color: #94a3b8; font-size: 0.9rem; }
+                    .pdf-qa-q-text { margin-top: 5px; margin-bottom: 10px; color: #fff; font-weight: 700; font-size: 1rem; }
+                    .pdf-qa-a { margin: 0; font-weight: 600; color: #94a3b8; font-size: 0.9rem; }
+                    .pdf-qa-a-text { margin-top: 5px; margin-bottom: 0; color: #e2e8f0; font-style: italic; }
+                </style>
+                
+                <h1 class="pdf-h1">Creative Pulse Spark Report</h1>
+                <p class="pdf-subtitle">
                     Generated on: ${new Date().toLocaleDateString()}
                 </p>
 
-                <div style="background: rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.15);">
-                    <h2 style="font-size: 1.5rem; color: #ec4899; margin-top: 0; text-transform:uppercase;">Mode: ${data.mode}</h2>
-                    <h3 style="font-size: 2rem; font-weight: 900; color: #fff; margin: 10px 0; background: linear-gradient(135deg, #fff, #e9d5ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">${data.archetype}</h3>
+                <div class="pdf-main-card">
+                    <h2 class="pdf-mode">Mode: ${data.mode.toUpperCase()}</h2>
+                    <h3 class="pdf-archetype">${data.archetype}</h3>
                 </div>
 
-                <div style="margin-bottom: 30px; padding: 15px; background: rgba(0, 0, 0, 0.2); border-radius: 10px;">
-                    <h4 style="color: #a855f7; margin-bottom: 10px; font-size: 1.2rem;">⚡ Your Digital Mentor's Advice:</h4>
-                    <p style="line-height: 1.6; font-size: 1rem; color: #e2e8f0;">${data.advice}</p>
-                    <div style="margin-top: 20px; padding: 15px; background: rgba(168, 85, 247, 0.15); border-radius: 8px;">
+                <div class="pdf-advice-box">
+                    <h4 class="pdf-advice-h4">⚡ Your Digital Mentor's Advice:</h4>
+                    <p class="pdf-advice-p">${data.advice}</p>
+                    <div class="pdf-action-step">
                         <h5 style="color: #ff99ff; margin-top: 0; margin-bottom: 5px; font-size: 0.9rem;">TINY NEXT STEP:</h5>
                         <p style="font-size: 1.1rem; font-weight: 700; color: white; margin: 0;">${data.action}</p>
                     </div>
                 </div>
 
-                <h4 style="color: #cbd5e1; margin-bottom: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 5px;">Your Context & Input:</h4>
+                <h4 class="pdf-context-h4">Your Context & Input:</h4>
         `;
 
         data.fullContext.forEach((item, index) => {
@@ -865,11 +889,11 @@
             const sanitizedAnswer = item.answer.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
             
             htmlContent += `
-                <div style="margin-bottom: 15px; background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 8px;">
-                    <p style="margin: 0; font-weight: 600; color: #94a3b8; font-size: 0.9rem;">Question ${index + 1}:</p>
-                    <p style="margin-top: 5px; margin-bottom: 10px; color: #fff; font-weight: 700; font-size: 1rem;">${item.question}</p>
-                    <p style="margin: 0; font-weight: 600; color: #94a3b8; font-size: 0.9rem;">Your Answer:</p>
-                    <p style="margin-top: 5px; margin-bottom: 0; color: #e2e8f0; font-style: italic;">"${sanitizedAnswer}"</p>
+                <div class="pdf-qa-block">
+                    <p class="pdf-qa-q">Question ${index + 1}:</p>
+                    <p class="pdf-qa-q-text">${item.question}</p>
+                    <p class="pdf-qa-a">Your Answer:</p>
+                    <p class="pdf-qa-a-text">"${sanitizedAnswer}"</p>
                 </div>
             `;
         });
@@ -886,7 +910,12 @@
             margin: [10, 10, 10, 10], 
             filename: `${data.mode}_spark_${new Date().toISOString().substring(0,10)}.pdf`,
             image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, logging: false, dpi: 192, letterRendering: true },
+            html2canvas: { 
+                scale: 2, 
+                logging: false, 
+                dpi: 192, 
+                letterRendering: true,
+            },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         });
 
