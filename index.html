@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>Creative Pulse</title>
     <style>
-        /* --- FONTS & VARS --- */
-        @import url('https://fonts.googleapis.com/css2?family=Caprasimo&family=Inter:wght@300;400;600;800&display=swap');
+        /* Import Caprasimo font */
+        @import url('https://fonts.googleapis.com/css2?family=Caprasimo&display=swap');
 
         :root {
             --primary: #a855f7;
@@ -17,16 +17,12 @@
             --glass-border: rgba(255, 255, 255, 0.15);
             --text-main: #ffffff;
             --text-muted: #94a3b8;
-            
-            /* Dynamic Theme Variables */
-            --orb-1-color: #a855f7;
-            --orb-2-color: #ec4899;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: 'Segoe UI', Inter, -apple-system, sans-serif;
             background: #0f172a;
             color: var(--text-main);
             margin: 0;
@@ -35,24 +31,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: background 1s ease;
         }
 
-        /* --- DYNAMIC THEMES (Biofeedback) --- */
-        /* Rest/Comfort Theme (Green/Teal) */
-        body.theme-rest { --orb-1-color: #10b981; --orb-2-color: #0ea5e9; }
-        /* Kick/Hard Truth Theme (Red/Orange) */
-        body.theme-kick { --orb-1-color: #ef4444; --orb-2-color: #f59e0b; }
-        /* Weird/Experiment Theme (Gold/Purple) */
-        body.theme-weird { --orb-1-color: #fbbf24; --orb-2-color: #8b5cf6; }
-
-        /* --- ANIMATED BACKGROUND --- */
+        /* --- Animated Background --- */
         .ambient-light {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -1;
             background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #0f172a 100%);
-            transition: background 1s ease;
         }
         .orb {
             position: absolute;
@@ -60,18 +46,17 @@
             filter: blur(80px);
             opacity: 0.6;
             animation: float 20s infinite ease-in-out;
-            transition: background 1.5s ease; /* Smooth color transition */
         }
-        /* Mobile Fix: Use vw instead of px to prevent overflow */
-        .orb-1 { width: 60vw; height: 60vw; background: var(--orb-1-color); top: -10%; left: -10%; animation-delay: 0s; }
-        .orb-2 { width: 70vw; height: 70vw; background: var(--orb-2-color); bottom: -10%; right: -10%; animation-delay: -5s; }
-        
+        .orb-1 { width: 300px; height: 300px; background: var(--primary); top: -50px; left: -50px; animation-delay: 0s; }
+        .orb-2 { width: 400px; height: 400px; background: var(--secondary); bottom: -100px; right: -50px; animation-delay: -5s; }
+        .orb-3 { width: 200px; height: 200px; background: #6366f1; top: 40%; left: 60%; animation-delay: -10s; }
+
         @keyframes float {
             0%, 100% { transform: translate(0, 0); }
             50% { transform: translate(30px, -30px); }
         }
 
-        /* --- UI LAYOUT --- */
+        /* --- UI Layout --- */
         .container {
             width: 100%;
             max-width: 600px;
@@ -83,34 +68,51 @@
             position: relative;
         }
 
-        /* --- HEADER --- */
+        /* --- Header & Logo --- */
         .header {
             text-align: center;
+            margin-bottom: 10px;
             margin-top: 15px;
-            display: flex; flex-direction: column; align-items: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         
         .logo-img {
-            width: 160px; height: auto;
+            width: 180px;
+            height: auto;
             filter: brightness(1.2); 
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .logo-img:hover { transform: scale(1.05) rotate(-2deg); }
         
+        /* UPDATED: Platform Title Style - Dark Text with Bigger White Glow */
         .platform-title {
             font-family: 'Caprasimo', cursive;
             font-size: 3rem; 
-            font-weight: 800;
-            margin-top: 10px; margin-bottom: 25px;
+            font-weight: 800; /* Max boldness */
+            margin-top: 10px;
+            margin-bottom: 25px;
+            
+            /* Dark purple text color, almost background */
             color: #1e1b4b; 
+            
+            /* Ensure no unwanted background/stroke effects */
+            background: none;
+            -webkit-background-clip: unset;
+            -webkit-text-fill-color: unset;
+            -webkit-text-stroke: none; 
+            
             letter-spacing: 1.5px;
+            
+            /* Bigger, rich white glow */
             text-shadow: 
-                0 0 10px rgba(255, 255, 255, 0.8),
-                0 0 25px rgba(255, 255, 255, 0.6),
-                0 0 45px rgba(255, 255, 255, 0.4);
+                0 0 10px rgba(255, 255, 255, 0.8), /* Inner bright core glow, slightly bigger */
+                0 0 25px rgba(255, 255, 255, 0.6), /* Wider, semi-transparent glow */
+                0 0 45px rgba(255, 255, 255, 0.4); /* Even wider, softer halo */
         }
 
-        /* --- GLASS CARDS --- */
+        /* --- Glass Cards & General Components --- */
         .glass-panel {
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
@@ -120,19 +122,31 @@
             padding: 28px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
             margin-bottom: 20px;
-            transition: transform 0.2s ease;
-            position: relative; overflow: hidden;
+            transition: transform 0.2s ease, opacity 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
+        .glass-panel::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
+            transform: skewX(-25deg); transition: 0.5s; pointer-events: none;
+        }
+        .glass-panel:hover::after { left: 150%; transition: 0.7s; }
 
-        /* --- BUTTONS --- */
+        /* --- Buttons --- */
         .btn {
             background: linear-gradient(135deg, var(--primary), #7c3aed);
-            color: white; border: none;
-            padding: 16px 32px; border-radius: 16px;
-            font-size: 1rem; font-weight: 700;
-            cursor: pointer; width: 100%;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
             transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
             box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+            display: inline-flex; justify-content: center; align-items: center; gap: 8px;
             text-decoration: none;
         }
         .btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 25px rgba(168, 85, 247, 0.5); }
@@ -153,17 +167,48 @@
         }
         .icon-btn:hover { background: rgba(236, 72, 153, 0.2); color: white; border-color: #ec4899; transform: rotate(10deg); }
 
+        /* Existing Story Button Style */
         .story-btn {
             background: rgba(255, 255, 255, 0.15); 
             border: 1px solid var(--glass-border);
-            color: #fff; font-size: 0.85rem; font-weight: 600;
-            cursor: pointer; padding: 10px 15px;
-            border-radius: 12px; transition: all 0.3s;
-            text-decoration: none; display: inline-block; white-space: nowrap;
+            color: #fff;
+            font-size: 0.85rem;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 12px;
+            transition: all 0.3s;
+            display: inline-block;
+            text-decoration: none;
+            font-weight: 600;
+            white-space: nowrap; /* Prevent text wrap for the long footer button */
         }
-        .story-btn:hover { background: rgba(168, 85, 247, 0.2); transform: translateY(-2px); border-color: var(--primary); }
+        .story-btn:hover { 
+            opacity: 1; 
+            color: white; 
+            border-color: var(--primary);
+            background: rgba(168, 85, 247, 0.2);
+            transform: translateY(-2px);
+        }
 
-        /* --- DASHBOARD GRID --- */
+        /* --- Footer Bar --- */
+        .footer-bar {
+            display: flex;
+            justify-content: center; 
+            gap: 20px; 
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            padding: 0 20px;
+            margin-top: auto; /* Push to bottom of container */
+            margin-bottom: 10px;
+        }
+
+
+        /* --- Other Elements --- */
+        .view { display: none; animation: fadeIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        
         .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .mode-card {
             background: linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
@@ -173,9 +218,12 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             min-height: 145px;
+            position: relative;
         }
         .mode-card:hover { 
             background: rgba(255,255,255,0.12); 
@@ -183,20 +231,14 @@
             border-color: var(--primary);
             box-shadow: 0 10px 30px -10px rgba(168, 85, 247, 0.4);
         }
-        /* Special Style for the Jolts Card */
-        .card-jolt { border-color: rgba(236, 72, 153, 0.4); }
-        .card-jolt:hover { box-shadow: 0 10px 30px -10px rgba(236, 72, 153, 0.4); border-color: var(--secondary); }
-
         .mode-emoji { font-size: 2.8rem; margin-bottom: 12px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
         .mode-name { font-weight: 800; color: white; margin-bottom: 5px; font-size: 1.1rem; }
         .mode-desc { font-size: 0.75rem; color: #cbd5e1; line-height: 1.4; max-width: 90%; }
-
-        /* --- WIZARD & INPUTS --- */
+        
         .progress-container { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-bottom: 30px; overflow: hidden; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); border-radius: 10px; width: 0%; transition: width 0.5s; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); border-radius: 10px; width: 0%; transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); box-shadow: 0 0 10px var(--primary); }
         
-        .question-text { font-size: 1.5rem; font-weight: 800; margin-bottom: 25px; line-height: 1.35; color: #fff; }
-        
+        .question-text { font-size: 1.5rem; font-weight: 800; margin-bottom: 25px; line-height: 1.35; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
         .option-btn {
             display: flex; align-items: center; width: 100%; text-align: left;
             background: rgba(255,255,255,0.03);
@@ -207,26 +249,8 @@
             font-size: 1rem; font-weight: 500;
         }
         .option-btn:hover { background: rgba(168, 85, 247, 0.15); border-color: var(--primary); color: white; padding-left: 26px; }
-        .option-btn.selected { background: linear-gradient(90deg, var(--primary), #9333ea); border-color: var(--primary); color: white; font-weight: 700; transform: scale(1.01); }
-
-        input[type="text"], textarea {
-            width: 100%; background: rgba(0,0,0,0.3);
-            border: 1px solid var(--glass-border);
-            padding: 16px; border-radius: 14px;
-            color: white; font-size: 1rem; margin-bottom: 18px;
-            outline: none; transition: 0.2s; font-family: inherit;
-        }
-        input[type="text"]:focus, textarea:focus { border-color: var(--primary); background: rgba(0,0,0,0.5); }
+        .option-btn.selected { background: linear-gradient(90deg, var(--primary), #9333ea); border-color: var(--primary); color: white; font-weight: 700; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4); transform: scale(1.01); }
         
-        /* The "Burn" Animation for Negative Thoughts */
-        @keyframes burn {
-            0% { opacity: 1; transform: scale(1); filter: contrast(1); }
-            50% { opacity: 0.8; transform: scale(1.05) skewX(10deg); filter: contrast(2) brightness(2); color: #fb923c; }
-            100% { opacity: 0; transform: scale(1.1) translateY(-20px); filter: blur(10px); }
-        }
-        .burning { animation: burn 0.8s forwards; pointer-events: none; }
-
-        /* --- RESULTS --- */
         .result-card { border-top: 5px solid var(--primary); }
         .result-header { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; color: var(--secondary); margin-bottom: 15px; font-weight: 800; }
         .result-archetype { font-size: 2rem; font-weight: 900; margin-bottom: 20px; background: linear-gradient(135deg, #fff, #e9d5ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -236,21 +260,7 @@
         @keyframes blink { 50% { opacity: 0; } }
         
         .action-box { background: rgba(168, 85, 247, 0.15); border: 1px solid rgba(168, 85, 247, 0.3); padding: 20px; border-radius: 16px; margin-bottom: 25px; }
-
-        /* --- VIEWS UTILITY --- */
-        .view { display: none; animation: fadeIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .view.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        .hidden { display: none !important; }
-
-        /* --- FOOTER & NAV --- */
-        .footer-bar {
-            display: flex; justify-content: center; gap: 20px; align-items: center;
-            width: 100%; padding: 20px; margin-top: auto;
-        }
-        .top-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; }
-
-        /* --- MODALS --- */
+        
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
@@ -259,37 +269,66 @@
         }
         .modal-overlay.open { opacity: 1; pointer-events: all; }
         .modal-content {
-            background: #1e1b4b; border: 2px solid var(--primary);
+            background: #1e1b4b;
+            border: 2px solid var(--primary);
             width: 90%; max-width: 500px; max-height: 85vh; overflow-y: auto;
             border-radius: 24px; padding: 30px;
             transform: translateY(20px); transition: 0.3s;
             box-shadow: 0 0 40px rgba(168, 85, 247, 0.4);
         }
         .modal-overlay.open .modal-content { transform: translateY(0); }
+        .story-text { font-size: 1rem; line-height: 1.7; color: #cbd5e1; margin-bottom: 15px; }
+        .story-highlight { color: var(--primary); font-weight: 700; }
         
-        /* --- SAVED SPARKS --- */
-        .spark-item { padding: 20px; background: rgba(0,0,0,0.25); border-radius: 16px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.05); transition: 0.2s; cursor: pointer; }
-        .spark-item:hover { border-color: var(--primary-glow); background: rgba(0,0,0,0.4); transform: translateX(5px); }
+        .spark-item { padding: 20px; background: rgba(0,0,0,0.25); border-radius: 16px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.05); transition: 0.2s; }
+        .spark-item:hover { border-color: var(--primary-glow); background: rgba(0,0,0,0.4); }
+        
+        .hidden { display: none; }
+        .top-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; }
+        
+        /* Form elements */
+        input[type="text"], textarea {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
+            padding: 16px;
+            border-radius: 14px;
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 18px;
+            outline: none;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+        input[type="text"]:focus, textarea:focus { border-color: var(--primary); background: rgba(0,0,0,0.5); box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2); }
+        label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; color: #e9d5ff; }
 
     </style>
 </head>
 <body>
 
-    <div class="ambient-light">
+    
+<div class="ambient-light">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
     </div>
 
-    <div class="container">
+    
+<div class="container">
         
-        <header class="header">
-            <a href="https://ekolitika.framer.website/" target="_blank">
+        
+<header class="header">
+            
+<a href="https://ekolitika.framer.website/" target="_blank">
                 <img src="https://framerusercontent.com/images/NhZAoGoxBJzZIPWRIXCzVkkNuDA.png?scale-down-to=512" alt="EKOLITIKA Logo" class="logo-img">
             </a>
-            <div class="platform-title">Creative Pulse</div>
+            
+<div class="platform-title">Creative Pulse</div>
         </header>
 
-        <div id="view-onboarding" class="view active">
+        
+<div id="view-onboarding" class="view active">
             <div class="glass-panel" style="text-align:center;">
                 <h2 style="font-size:1.8rem; margin-bottom:15px; background: linear-gradient(to right, #fff, #cbd5e1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Unstick your mind.</h2>
                 <p style="color:#cbd5e1; margin-bottom:30px; line-height:1.6;">
@@ -297,68 +336,72 @@
                     Diagnose blocks, find inspiration, and get actionable advice.
                 </p>
                 <form id="onboardForm" style="text-align:left;">
-                    <label style="display:block; margin-bottom:8px; font-weight:600; color:#e9d5ff;">Your Name / Nickname</label>
+                    <label>Your Name / Nickname</label>
                     <input type="text" id="userName" placeholder="e.g. Alex, Sam..." required autocomplete="off">
                     
+                    <label>Your Creative Field</label>
+                    <input type="text" id="userField" placeholder="e.g. Design, Education, Music..." required autocomplete="off">
+
                     <button type="submit" class="btn">Start Your Journey 🚀</button>
                 </form>
             </div>
         </div>
 
-        <div id="view-dashboard" class="view">
+        
+<div id="view-dashboard" class="view">
             <div class="top-nav">
                 <div>
                     <div style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Welcome back</div>
                     <div style="font-size:1.4rem; font-weight:700;" id="dashName">Creator</div>
                 </div>
-                <button onclick="app.logout()" class="icon-btn" title="Reset Profile">⏻</button>
+                <button onclick="logout()" class="icon-btn" title="Reset Profile">⏻</button>
             </div>
 
             <div class="glass-panel" style="padding:20px 20px 30px 20px;">
                 <div style="text-align:center; margin-bottom:20px; font-weight:600; color:#e2e8f0;">Choose your mode</div>
                 <div class="mode-grid">
-                    <div class="mode-card" onclick="app.startMode('diagnose')">
+                    <div class="mode-card" onclick="startMode('diagnose')">
                         <div class="mode-emoji">🩺</div>
                         <div class="mode-name">Diagnose</div>
                         <div class="mode-desc">Identify exactly why you are stuck.</div>
                     </div>
-                    <div class="mode-card" onclick="app.startMode('inspire')">
+                    <div class="mode-card" onclick="startMode('inspire')">
                         <div class="mode-emoji">✨</div>
                         <div class="mode-name">Inspire</div>
                         <div class="mode-desc">Refuel your creative energy tank.</div>
                     </div>
-                    <div class="mode-card" onclick="app.startMode('brainstorm')">
+                    <div class="mode-card" onclick="startMode('brainstorm')">
                         <div class="mode-emoji">💡</div>
                         <div class="mode-name">Brainstorm</div>
                         <div class="mode-desc">Break rules and think wild.</div>
                     </div>
-                    <div class="mode-card" onclick="app.startMode('organize')">
+                    <div class="mode-card" onclick="startMode('organize')">
                         <div class="mode-emoji">📦</div>
                         <div class="mode-name">Organize</div>
                         <div class="mode-desc">Turn chaos into tiny steps.</div>
                     </div>
-                    
-                    <div class="mode-card card-jolt" onclick="app.triggerJolt()">
-                        <div class="mode-emoji">⚡</div>
-                        <div class="mode-name">Jolts</div>
-                        <div class="mode-desc">Instant oblique strategies.</div>
+                    <div class="mode-card" onclick="startMode('experiment')">
+                        <div class="mode-emoji">🚀</div>
+                        <div class="mode-name">Experiment</div>
+                        <div class="mode-desc">Test ideas without fear.</div>
                     </div>
-
-                    <div class="mode-card" style="border-style:dashed; opacity:0.8;" onclick="app.showSaved()">
-                        <div class="mode-emoji">📚</div>
-                        <div class="mode-name">Library</div>
-                        <div class="mode-desc">Your saved sparks.</div>
+                    <div class="mode-card" style="border-style:dashed; opacity:0.8;" onclick="showSaved()">
+                        <div class="mode-emoji">⚡</div>
+                        <div class="mode-name">My Sparks</div>
+                        <div class="mode-desc">Library of saved advice.</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="view-wizard" class="view">
+        
+<div id="view-wizard" class="view">
             <div class="top-nav">
-                <button onclick="app.goHome()" class="icon-btn" title="Exit">✕</button>
+                <button onclick="goHome()" class="icon-btn" title="Exit">✕</button>
                 <div style="font-weight:700; color:var(--primary);" id="wizardModeTitle">MODE</div>
                 <div style="width:40px;"></div> 
-            </div>
+
+</div>
 
             <div class="glass-panel">
                 <div class="progress-container"><div class="progress-fill" id="progressBar"></div></div>
@@ -366,21 +409,21 @@
                 <div id="questionContainer">
                     <div id="questionText" class="question-text">Question goes here...</div>
                     <div id="optionsArea"></div>
-                    <div id="textInputContainer"> 
-                        <textarea id="textInput" class="hidden" rows="3" placeholder="Type your thoughts here..."></textarea>
-                    </div>
+                    <textarea id="textInput" class="hidden" rows="3" placeholder="Type your thoughts here..."></textarea>
                 </div>
                 
-                <button id="nextBtn" class="btn" style="margin-top:15px; opacity:0.5; pointer-events:none;" onclick="app.nextStep()">Continue &rarr;</button>
+                <button id="nextBtn" class="btn" style="margin-top:15px; opacity:0.5; pointer-events:none;" onclick="nextStep()">Continue &rarr;</button>
             </div>
         </div>
 
-        <div id="view-result" class="view">
+        
+<div id="view-result" class="view">
             <div class="glass-panel result-card">
                 <div class="result-header">Your Digital Mentor Says:</div>
                 <div class="result-archetype" id="resArchetype">Loading...</div>
                 
-                <div class="typewriter-text" id="resBody"><span class="cursor"></span></div>
+                
+<div class="typewriter-text" id="resBody"><span class="cursor"></span></div>
                 
                 <div class="action-box hidden" id="resActionBox">
                     <strong style="color:var(--primary); display:block; margin-bottom:5px;">⚡ TINY NEXT STEP:</strong>
@@ -388,441 +431,717 @@
                 </div>
                 
                 <div class="hidden" id="resButtons" style="display:flex; flex-direction:column; gap:10px;">
-                    <button class="btn" onclick="app.saveResult()">Save this Spark 💾</button>
-                    <button class="btn btn-secondary" onclick="app.goHome()">Back to Modes</button>
+                    <button class="btn" onclick="saveResult()">Save this Spark 💾</button>
+                    <button class="btn btn-secondary" onclick="goHome()">Back to Modes</button>
                 </div>
             </div>
         </div>
 
-        <div id="view-saved" class="view">
+        
+<div id="view-saved" class="view">
             <div class="top-nav">
-                <button onclick="app.goHome()" class="icon-btn">←</button>
+                <button onclick="goHome()" class="icon-btn">←</button>
                 <h3 style="margin:0;">Your Spark Library</h3>
                 <div style="width:40px;"></div>
             </div>
             <div id="savedList" style="padding-bottom:50px;"></div>
         </div>
 
-        <footer class="footer-bar">
-            <button class="story-btn" onclick="app.openStory()">Read the Origin Story 📖</button>
+        
+<footer class="footer-bar">
+            <button class="story-btn" onclick="openStory()">Read the Origin Story 📖</button>
+            
+            
+<a href="https://ekolitika.framer.website/" target="_blank" class="story-btn">
+                With 💚 for the creative community, made by EKOLiTiKA
+            </a>
         </footer>
 
     </div>
 
-    <div class="modal-overlay" id="genericModal">
+    
+<div class="modal-overlay" id="storyModal">
         <div class="modal-content">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                <h3 id="modalTitle" style="margin:0; font-size:1.5rem; color:var(--primary);">Title</h3>
-                <button onclick="app.closeModal()" class="icon-btn">✕</button>
+                <h3 style="margin:0; font-size:1.5rem; color:var(--primary);">Born from Struggle</h3>
+                <button onclick="closeStory()" class="icon-btn">✕</button>
             </div>
-            <div id="modalBody" style="margin-bottom: 20px;"></div>
-            <button class="btn" onclick="app.closeModal()">Close</button>
+            
+            <div id="storyContent" style="margin-bottom: 20px;">
+                <p class="story-text">
+                    In 2025, a team joined <a href="https://ekolitika.framer.website/project/the-creative-mess" target="_blank" class="story-highlight" style="text-decoration: underline;">The Creative Mess</a>—an Erasmus+ course that proved creativity isn't magic. It's a cycle: brainstorm, organize, rest, inspire, experiment, repeat.
+                </p>
+                <p class="story-text">
+                    The problem? Most tools feed you empty motivation or treat creativity like a factory line. Neither helps when you're actually stuck.
+                </p>
+                <p class="story-text">
+                    So we built <span class="story-highlight">Creative Pulse</span>. A free tool that diagnoses your block, tells you what you actually need, and gives you real feedback—not fluff.
+                </p>
+                <p class="story-text">
+                    From stuck to unstuck. Idea to action. Exhaustion to rhythm.
+                </p>
+            </div>
+            
+            <div style="margin-top:30px; padding-top:20px; border-top:1px solid var(--glass-border); text-align:center; font-size:0.9rem; color:#cbd5e1;">
+                Built by <b>EKOLiTiKA</b> — an NGO learning sustainability from nature and applying circular thinking to creativity.
+            </div>
+            <button class="btn" style="margin-top:20px;" onclick="closeStory()">Got it!</button>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, addDoc, collection, query, orderBy, limit, onSnapshot, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, addDoc, onSnapshot, collection, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // setLogLevel('Debug'); // Uncomment for debugging
+        
+        let app, db, auth;
+        let userId;
 
-        /* --- FIREBASE CONFIGURATION ---
-           To enable Cloud Syncing, paste your config object inside the brackets below.
-           If you leave this empty, the app will work in "Offline Mode" (saving to browser only).
-        */
-        const firebaseConfig = {
-            // Paste your keys here like: apiKey: "AIzaSy...",
-        };
+        // Global environment variables provided by Canvas
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
-        // --- DATA LAYER (Offline First Architecture) ---
-        const DataStore = {
-            db: null,
-            auth: null,
-            userId: null,
-            isOnline: false,
+        const FIREBASE_COLLECTION = 'sparks';
 
-            init: async function() {
-                // 1. Try to connect to Firebase if config exists
-                if (Object.keys(firebaseConfig).length > 0) {
-                    try {
-                        const fbApp = initializeApp(firebaseConfig);
-                        this.db = getFirestore(fbApp);
-                        this.auth = getAuth(fbApp);
-                        
-                        // Try to enable offline persistence for Firestore
-                        try { await enableIndexedDbPersistence(this.db); } catch (err) { console.log("Persistence fallback"); }
+        // Initialize Firebase
+        if (Object.keys(firebaseConfig).length > 0) {
+            app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+        } else {
+            console.error("Firebase configuration is missing. Data persistence will not work.");
+        }
 
-                        // Auth Listener
-                        onAuthStateChanged(this.auth, (user) => {
-                            if (user) {
-                                this.userId = user.uid;
-                                this.isOnline = true;
-                                this.syncSparks(); // Start listening for cloud updates
-                            } else {
-                                signInAnonymously(this.auth).catch(e => console.log("Auth failed, using offline mode"));
-                            }
-                        });
-                    } catch (e) {
-                        console.log("Firebase Init Failed (Offline Mode Active):", e);
+        /**
+         * Authenticates the user and sets up the listener.
+         */
+        async function authenticateAndSetup() {
+            if (!auth) {
+                console.error("Firebase Auth not initialized.");
+                return;
+            }
+
+            try {
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (error) {
+                console.error("Firebase sign-in failed:", error);
+            }
+
+            // Set up Auth State Listener
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    userId = user.uid;
+                    // Check local storage for onboarding status
+                    onboardUser();
+                    // Start listening for saved data
+                    if (db) {
+                        // We no longer call setupSavedDataListener here, 
+                        // as it will be called explicitly by window.showSaved() when the user navigates there.
                     }
                 } else {
-                    console.log("No Config Found. Running in Offline Mode.");
+                    console.log("User signed out or failed to sign in.");
+                    // If sign-in failed, still try to onboard based on localStorage
+                    onboardUser();
                 }
-            },
+            });
+        }
 
-            // Save a spark (Tries Cloud + Local)
-            saveSpark: async function(sparkData) {
-                // 1. Always save to LocalStorage (Instant)
-                const localData = JSON.parse(localStorage.getItem('savedSparks') || '[]');
-                const newSpark = { ...sparkData, id: 'local_' + Date.now(), timestamp: new Date().toISOString() };
-                localData.unshift(newSpark);
-                localStorage.setItem('savedSparks', JSON.stringify(localData));
-
-                // 2. Try Cloud Save (Background)
-                if (this.isOnline && this.userId && this.db) {
-                    try {
-                        await addDoc(collection(this.db, `users/${this.userId}/sparks`), {
-                            ...sparkData,
-                            timestamp: new Date().toISOString()
-                        });
-                    } catch (e) {
-                        console.error("Cloud save failed (data is safe locally)", e);
-                    }
-                }
-                return true; // Always return true because local save succeeded
-            },
-
-            // Get Sparks (Merges Local & Cloud)
-            getSparks: function(callback) {
-                // 1. Load Local Immediately
-                const localData = JSON.parse(localStorage.getItem('savedSparks') || '[]');
-                callback(localData);
-
-                // 2. Listen for Cloud Updates
-                if (this.isOnline && this.userId && this.db) {
-                    const q = query(collection(this.db, `users/${this.userId}/sparks`), orderBy("timestamp", "desc"), limit(20));
-                    onSnapshot(q, (snapshot) => {
-                        const cloudSparks = [];
-                        snapshot.forEach(doc => cloudSparks.push({ id: doc.id, ...doc.data() }));
-                        // Update UI with Cloud Data (it overrides local if successful)
-                        if(cloudSparks.length > 0) callback(cloudSparks);
-                    }, (err) => console.log("Cloud sync error", err));
-                }
+        /**
+         * Gets the correct path for a user's private collection.
+         * @param {string} collectionName
+         * @returns {import("firebase/firestore").CollectionReference}
+         */
+        function getUserCollection(collectionName) {
+            if (!db || !userId) {
+                console.error("Database or User ID not available for collection path.");
+                return null;
             }
-        };
+            // Path: /artifacts/{appId}/users/{userId}/sparks
+            return collection(db, `artifacts/${appId}/users/${userId}/${collectionName}`);
+        }
 
-        // Initialize Data Layer
-        DataStore.init();
+        // --- Data Management Functions (Exports for window object) ---
 
-        /* --- CONTENT & LOGIC --- */
-        const content = {
-            diagnose: {
-                steps: [
-                    { q: "Right now, how does your creative block feel?", type:"choice", opts: ["Foggy & Overwhelming", "Empty & Drained", "Anxious & Fast", "Boring & Repetitive"] },
-                    { q: "What is the story you are telling yourself?", type:"choice", opts: ["'I'm not good enough'", "'I'm out of time'", "'This idea is stupid'", "'I don't know where to start'"] }, // Grammar Fixed
-                    { q: "Describe the specific project or problem in one sentence:", type:"text", burn: true } // Burn enabled
-                ],
-                archetypes: {
-                    "Foggy & Overwhelming": {
-                        archetype: "The Overwhelmed Navigator",
-                        advice: "Your issue is structural. You have too many open loops. You need to narrow your focus and create strict boundaries.",
-                        action: "Pick one (and only one) task to complete today. Ignore the rest.",
-                        theme: "theme-rest"
-                    },
-                    "Empty & Drained": {
-                        archetype: "The Burnt-Out Well",
-                        advice: "Your well is dry. This is not a productivity problem; it's a depletion problem. You need genuine input and rest.",
-                        action: "Schedule 30 minutes of non-productive, non-screen time today.",
-                        theme: "theme-rest"
-                    },
-                    "Anxious & Fast": {
-                        archetype: "The Perfectionist Paralytic",
-                        advice: "The gap between your taste and your ability is causing anxiety. You need to create an ugly first draft, fast.",
-                        action: "Set a 10-minute timer and produce the worst possible version of your work.",
-                        theme: "theme-kick"
-                    },
-                    "Boring & Repetitive": {
-                        archetype: "The Stale Routine",
-                        advice: "Your process has become mechanical. You need to introduce a new constraint or a foreign input to disrupt patterns.",
-                        action: "Change your environment. Work from a different room or cafe for one hour.",
-                        theme: "theme-weird"
-                    }
-                }
-            },
-            inspire: {
-                 steps: [
-                    { q: "What kind of fuel do you need?", type:"choice", opts: ["Soft comfort (Rest)", "Hard truth (Kick)", "New input (Awe)", "Just a distraction"] },
-                    { q: "Who is an artist or creator you are jealous of right now?", type:"text" },
-                    { q: "If you couldn't fail, what would you make today?", type:"text" }
-                ],
-                archetypes: {
-                    "Soft comfort (Rest)": { archetype: "The Compassionate Gardener", advice: "Inspiration thrives in the space *after* effort. Give yourself permission to pause.", action: "Write a note of self-compassion.", theme: "theme-rest" },
-                    "Hard truth (Kick)": { archetype: "The Bold Challenger", advice: "Resistance is the measure of importance. Stop looking for shortcuts and embrace the grind.", action: "Do the hardest task first.", theme: "theme-kick" },
-                    "New input (Awe)": { archetype: "The Curious Alchemist", advice: "Your mind craves cross-pollination. Look at biology, history, or maps.", action: "Read a wikipedia article about a random topic.", theme: "theme-weird" },
-                    "Just a distraction": { archetype: "The Playful Saboteur", advice: "Distraction is the mind processing. Embrace low-stakes fun.", action: "Doodle for 15 minutes.", theme: "theme-weird" }
-                }
+        window.saveResult = async function() {
+            const resultData = JSON.parse(localStorage.getItem('currentResult'));
+            if (!resultData || !userId || !db) {
+                // This is the error seen in the screenshot. The check is correct.
+                alertModal("Error", "Cannot save. Please ensure you are logged in and have a current result.");
+                return;
             }
-            // Add other modes (brainstorm, organize) similarly if needed, abbreviated here for space.
-        };
 
-        // Jolts Content (Oblique Strategies)
-        const jolts = [
-            "Honor thy error as a hidden intention.",
-            "Work at a different speed.",
-            "Discard the most interesting part.",
-            "What would your worst enemy do? Do that.",
-            "Decorate, decorate, decorate.",
-            "Turn it upside down.",
-            "Define an area as 'safe' and use it as an anchor.",
-            "Remove specifics and convert to ambiguities."
-        ];
-
-        /* --- APP STATE & FUNCTIONS --- */
-        const appState = {
-            user: {},
-            mode: null,
-            step: 0,
-            answers: []
-        };
-
-        window.app = {
-            init: function() {
-                const profile = localStorage.getItem('userProfile');
-                if (profile) {
-                    appState.user = JSON.parse(profile);
-                    document.getElementById('dashName').textContent = appState.user.name;
-                    this.setView('dashboard');
-                } else {
-                    this.setView('onboarding');
-                }
-
-                // Handle Onboarding Submit
-                document.getElementById('onboardForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const name = document.getElementById('userName').value.trim();
-                    if(name) {
-                        appState.user = { name: name };
-                        localStorage.setItem('userProfile', JSON.stringify(appState.user));
-                        document.getElementById('dashName').textContent = name;
-                        this.setView('dashboard');
-                    }
+            try {
+                const collectionRef = getUserCollection(FIREBASE_COLLECTION);
+                await addDoc(collectionRef, {
+                    mode: resultData.mode,
+                    archetype: resultData.archetype,
+                    advice: resultData.advice,
+                    action: resultData.action,
+                    timestamp: new Date().toISOString()
                 });
-            },
+                alertModal("Saved!", `Your spark, '${resultData.archetype}', has been saved to your library.`);
+            } catch (e) {
+                console.error("Error adding document: ", e);
+                alertModal("Error", "Failed to save the spark. Check console for details.");
+            }
+        }
 
-            setView: function(id) {
-                document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-                document.getElementById(`view-${id}`).classList.add('active');
-            },
+        let unsubscribeSavedData = null;
 
-            goHome: function() {
-                // Reset Theme
-                document.body.className = ''; 
-                this.setView('dashboard');
-            },
+        /**
+         * Sets up real-time listener for the user's saved sparks.
+         */
+        function setupSavedDataListener() {
+            if (unsubscribeSavedData) {
+                unsubscribeSavedData(); // Detach previous listener
+            }
+            
+            // Check if user is authenticated before creating a reference
+            if (!userId) {
+                document.getElementById('savedList').innerHTML = '<p style="color:#f87171; text-align:center; padding: 20px;">Please log in or wait for authentication to load your sparks.</p>';
+                return;
+            }
+            
+            const collectionRef = getUserCollection(FIREBASE_COLLECTION);
+            if (!collectionRef) return;
 
-            logout: function() {
-                localStorage.removeItem('userProfile');
-                localStorage.removeItem('savedSparks');
-                location.reload();
-            },
+            // Query to fetch up to 20 latest sparks
+            const q = query(collectionRef, orderBy("timestamp", "desc"), limit(20));
 
-            /* --- WIZARD LOGIC --- */
-            startMode: function(mode) {
-                if(!content[mode]) {
-                    this.alert("Coming Soon", "This mode is under construction.");
-                    return;
+            unsubscribeSavedData = onSnapshot(q, (snapshot) => {
+                const savedSparks = [];
+                snapshot.forEach((doc) => {
+                    savedSparks.push({ id: doc.id, ...doc.data() });
+                });
+                // Update the global state/DOM here
+                window.displaySavedSparks(savedSparks); 
+            }, (error) => {
+                console.error("Error listening to saved sparks:", error);
+                // If there's a permission error, it usually means the user is not authenticated according to rules.
+                if (error.code === 'permission-denied') {
+                     document.getElementById('savedList').innerHTML = '<p style="color:#f87171; text-align:center; padding: 20px;">Could not load sparks: Authentication or permissions issue.</p>';
                 }
-                appState.mode = mode;
-                appState.step = 0;
-                appState.answers = [];
-                document.getElementById('wizardModeTitle').textContent = mode.toUpperCase();
-                this.loadStep();
-                this.setView('wizard');
-            },
+            });
+        }
+        
+        // Ensure the unsubscribe function is available globally on window cleanup
+        window.unsubscribeSavedData = () => {
+             if (unsubscribeSavedData) {
+                unsubscribeSavedData();
+                unsubscribeSavedData = null;
+            }
+        };
 
-            loadStep: function() {
-                const modeData = content[appState.mode];
-                const stepData = modeData.steps[appState.step];
-                const total = modeData.steps.length;
-                
-                // Progress
-                document.getElementById('progressBar').style.width = `${((appState.step+1)/total)*100}%`;
-                document.getElementById('questionText').textContent = stepData.q;
-                
-                const optsArea = document.getElementById('optionsArea');
-                const textInput = document.getElementById('textInput');
-                const nextBtn = document.getElementById('nextBtn');
-                const textContainer = document.getElementById('textInputContainer');
+        // Initialize on load
+        window.onload = authenticateAndSetup;
 
-                optsArea.innerHTML = '';
-                textInput.value = '';
-                textInput.classList.add('hidden');
-                textContainer.classList.remove('burning'); // Reset animation
-                nextBtn.style.opacity = 0.5; nextBtn.style.pointerEvents = 'none';
+        // Export the display function for the listener
+        window.displaySavedSparks = function(sparks) {
+            const listEl = document.getElementById('savedList');
+            listEl.innerHTML = ''; // Clear previous content
 
-                if(stepData.type === 'choice') {
-                    stepData.opts.forEach(opt => {
-                        const btn = document.createElement('div');
-                        btn.className = 'option-btn';
-                        btn.textContent = opt;
-                        btn.onclick = () => {
-                            document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
-                            btn.classList.add('selected');
-                            appState.answers[appState.step] = opt;
-                            nextBtn.style.opacity = 1; nextBtn.style.pointerEvents = 'auto';
-                        };
-                        optsArea.appendChild(btn);
-                    });
-                } else {
-                    textInput.classList.remove('hidden');
-                    textInput.oninput = () => {
-                        if(textInput.value.length > 3) {
-                            nextBtn.style.opacity = 1; nextBtn.style.pointerEvents = 'auto';
-                        }
-                    };
-                }
-            },
+            if (sparks.length === 0) {
+                listEl.innerHTML = `
+                    <div class="glass-panel" style="text-align:center; opacity:0.7;">
+                        <div style="font-size:3rem; margin-bottom:15px;">🧐</div>
+                        <p style="color:#cbd5e1;">Your Spark Library is empty. Go through a mode (Diagnose, Inspire, etc.) and click 'Save this Spark' to add something here!</p>
+                    </div>
+                `;
+                return;
+            }
 
-            nextStep: function() {
-                const modeData = content[appState.mode];
-                const currentStepData = modeData.steps[appState.step];
-
-                // Logic for Text Input "Burn" effect
-                if(currentStepData.type === 'text') {
-                    const textVal = document.getElementById('textInput').value;
-                    appState.answers[appState.step] = textVal;
-                    
-                    if(currentStepData.burn) {
-                        const container = document.getElementById('textInputContainer');
-                        container.classList.add('burning');
-                        // Wait for animation
-                        setTimeout(() => this.advance(), 800);
-                        return; 
-                    }
-                }
-
-                this.advance();
-            },
-
-            advance: function() {
-                appState.step++;
-                if(appState.step < content[appState.mode].steps.length) {
-                    this.loadStep();
-                } else {
-                    this.generateResult();
-                }
-            },
-
-            /* --- RESULT LOGIC --- */
-            generateResult: function() {
-                this.setView('result');
-                const modeData = content[appState.mode];
-                const keyAnswer = appState.answers[0];
-                let result = modeData.archetypes[keyAnswer] || {
-                    archetype: "The Insight Generator",
-                    advice: "Based on your inputs, reduce complexity and prioritize rest.",
-                    action: "Write down 3 wins from last week.",
-                    theme: "theme-rest"
-                };
-
-                // Apply Theme (Biofeedback)
-                document.body.className = result.theme || '';
-
-                // Populate UI
-                document.getElementById('resArchetype').textContent = result.archetype;
-                document.getElementById('resAction').textContent = result.action;
-                document.getElementById('resActionBox').classList.remove('hidden');
-                document.getElementById('resButtons').classList.remove('hidden');
-
-                // Save temp for saving
-                appState.currentResult = { 
-                    mode: appState.mode, 
-                    archetype: result.archetype, 
-                    advice: result.advice, 
-                    action: result.action 
-                };
-
-                // Typewriter
-                const el = document.getElementById('resBody');
-                el.textContent = '';
-                let i = 0;
-                const type = () => {
-                    if(i < result.advice.length) {
-                        el.innerHTML = result.advice.substring(0, i+1) + '<span class="cursor"></span>';
-                        i++; setTimeout(type, 20);
-                    } else { el.innerHTML = result.advice; }
-                };
-                type();
-            },
-
-            /* --- JOLTS LOGIC --- */
-            triggerJolt: function() {
-                const randomJolt = jolts[Math.floor(Math.random() * jolts.length)];
-                document.body.className = 'theme-weird'; // Jolts get weird theme
-                this.alert("⚡ Creative Jolt", 
-                    `<div style="font-size:1.5rem; font-weight:800; text-align:center; margin:20px 0;">"${randomJolt}"</div>
-                     <p style="text-align:center; color:#cbd5e1;">Apply this rule to your work immediately.</p>`
+            sparks.forEach(spark => {
+                const date = new Date(spark.timestamp).toLocaleDateString();
+                const modeName = spark.mode.charAt(0).toUpperCase() + spark.mode.slice(1);
+                const sparkItem = document.createElement('div');
+                sparkItem.className = 'spark-item';
+                sparkItem.innerHTML = `
+                    <div style="font-size:0.8rem; color:var(--secondary); font-weight:700; display:flex; justify-content:space-between; margin-bottom:5px;">
+                        <span>${modeName} Result</span> 
+                        <span>${date}</span>
+                    </div>
+                    <div style="font-size:1.4rem; font-weight:800; color:white; margin-bottom:10px;">${spark.archetype}</div>
+                    <div style="font-size:0.9rem; color:#cbd5e1;">
+                        <strong style="color:var(--primary);">Advice:</strong> ${spark.advice.substring(0, 100)}...
+                    </div>
+                    <div style="font-size:0.9rem; color:#cbd5e1; margin-top:5px;">
+                        <strong style="color:#ec4899;">Action:</strong> ${spark.action}
+                    </div>
+                `;
+                sparkItem.onclick = () => alertModal(
+                    `${modeName}: ${spark.archetype}`, 
+                    `<p class="story-text">${spark.advice}</p><p class="story-text" style="margin-top:15px; color:var(--primary); font-weight:700;">Tiny Next Step: ${spark.action}</p>`
                 );
-            },
+                listEl.appendChild(sparkItem);
+            });
+        }
+        
+        // FIX: Export setupSavedDataListener to the global window object.
+        // This is necessary because the showSaved function (defined outside this module) 
+        // needs to access it to start the data fetch.
+        window.setupSavedDataListener = setupSavedDataListener;
 
-            /* --- SAVING --- */
-            saveResult: function() {
-                if(!appState.currentResult) return;
-                
-                DataStore.saveSpark(appState.currentResult).then(() => {
-                    this.alert("Saved! 💾", "Your spark is safe in your library.");
-                });
-            },
-
-            showSaved: function() {
-                this.setView('saved');
-                const list = document.getElementById('savedList');
-                list.innerHTML = '<div style="text-align:center; color:#94a3b8;">Loading...</div>';
-
-                DataStore.getSparks((sparks) => {
-                    list.innerHTML = '';
-                    if(sparks.length === 0) {
-                        list.innerHTML = '<div style="text-align:center; padding:20px; color:#cbd5e1;">No sparks yet. Go explore a mode!</div>';
-                        return;
-                    }
-                    
-                    sparks.forEach(s => {
-                        const el = document.createElement('div');
-                        el.className = 'spark-item';
-                        el.innerHTML = `
-                             <div style="font-size:0.8rem; color:var(--secondary); font-weight:700; display:flex; justify-content:space-between; margin-bottom:5px;">
-                                <span>${s.mode.toUpperCase()}</span> 
-                                <span>${new Date(s.timestamp).toLocaleDateString()}</span>
-                            </div>
-                            <div style="font-size:1.2rem; font-weight:800; color:white; margin-bottom:5px;">${s.archetype}</div>
-                            <div style="font-size:0.9rem; color:#cbd5e1;">${s.action}</div>
-                        `;
-                        el.onclick = () => this.alert(s.archetype, `<p>${s.advice}</p><strong style="color:var(--primary)">Action: ${s.action}</strong>`);
-                        list.appendChild(el);
-                    });
-                });
-            },
-
-            /* --- MODAL UTILS --- */
-            alert: function(title, html) {
-                const m = document.getElementById('genericModal');
-                document.getElementById('modalTitle').textContent = title;
-                document.getElementById('modalBody').innerHTML = html;
-                m.classList.add('open');
-            },
-            closeModal: function() {
-                document.getElementById('genericModal').classList.remove('open');
-            },
-            openStory: function() {
-                this.alert("Born from Struggle", `
-                    <p class="story-text">In 2025, a team joined <a href="#" style="color:#ec4899">The Creative Mess</a>. We realized creativity isn't magic; it's a cycle.</p>
-                    <p class="story-text">Creative Pulse diagnoses your block and offers specific feedback. No fluff.</p>
-                    <div style="margin-top:20px; font-size:0.9rem; color:#cbd5e1; text-align:center;">Built by <b>EKOLiTiKA</b></div>
-                `);
-            }
-        };
-
-        // Start App
-        window.app.init();
     </script>
+
+<script>
+    /* --- DATA & CONTENT --- */
+    const content = {
+        diagnose: {
+            steps: [
+                { q: "Right now, how does your creative block feel?", type:"choice", opts: ["Foggy & Overwhelming", "Empty & Drained", "Anxious & Fast", "Boring & Repetitive"] },
+                { q: "What is the story you are telling yourself?", type:"choice", opts: ["'I'm not good enough'", "'I'm out of time'", "'This idea is stupid'", "'I'm don't know where to start'"] },
+                { q: "Describe the specific project or problem in one sentence:", type:"text" }
+            ],
+            archetypes: {
+                "Foggy & Overwhelming": {
+                    archetype: "The Overwhelmed Navigator",
+                    advice: "Your issue is likely structural—too many paths open, no clear destination. You need to narrow your focus and create strict boundaries to reduce cognitive load. Stop starting new things.",
+                    action: "Pick one (and only one) task to complete today. Break that task down into 3-5 sub-steps."
+                },
+                "Empty & Drained": {
+                    archetype: "The Burnt-Out Well",
+                    advice: "Your well is dry. This is not a productivity problem; it's a depletion problem. The cure is not more work, but genuine rest, input, and zero expectation play. You must detach your identity from output.",
+                    action: "Schedule 30 minutes of non-productive, non-screen time today (e.g., listening to music, sketching a random object, walking outside)."
+                },
+                "Anxious & Fast": {
+                    archetype: "The Perfectionist Paralytic",
+                    advice: "You are stuck because the gap between your aspiration and your current output feels immense. This anxiety leads to procrastination. You need to create an ugly first draft, fast. Perfectionism is a fear of vulnerability.",
+                    action: "Set a 10-minute timer and produce the worst possible version of your work. Do not edit, judge, or stop until the timer ends."
+                },
+                "Boring & Repetitive": {
+                    archetype: "The Stale Routine",
+                    advice: "Your process has become mechanical, and your work reflects it. You've solved the same problem too many times. The solution is to introduce novelty, a new constraint, or a completely foreign input to disrupt your pattern recognition.",
+                    action: "Find one piece of art/music/design outside your usual genre and try to identify three core principles you could steal."
+                }
+            }
+        },
+        inspire: {
+            steps: [
+                { q: "What kind of fuel do you need?", type:"choice", opts: ["Soft comfort (Rest)", "Hard truth (Kick)", "New input (Awe)", "Just a distraction"] },
+                { q: "Who is an artist or creator you are jealous of right now?", type:"text" },
+                { q: "If you couldn't fail, what would you make today?", type:"text" }
+            ],
+            archetypes: {
+                "Soft comfort (Rest)": {
+                    archetype: "The Compassionate Gardener",
+                    advice: "You don't need inspiration; you need validation. Give yourself permission to pause. Inspiration thrives in the space *after* the effort, not during it. Treat yourself like your best client.",
+                    action: "Write a short note of self-compassion, acknowledging your current effort, then close your work for 30 minutes without guilt."
+                },
+                "Hard truth (Kick)": {
+                    archetype: "The Bold Challenger",
+                    advice: "You know what needs to be done, but you're avoiding the difficult choice or task. The hard truth is that resistance is the measure of the importance of your task. Stop looking for shortcuts and embrace the grind.",
+                    action: "Identify the one task you dread most. Tell one person you'll complete it by the end of the day."
+                },
+                "New input (Awe)": {
+                    archetype: "The Curious Alchemist",
+                    advice: "Your mind is craving cross-pollination. Break out of your usual sources. Find inspiration in a completely unrelated field—science, history, nature—and try to map its principles to your creative challenge.",
+                    action: "Search for 'oldest living thing' or 'most complex natural structure' and spend 15 minutes thinking about how it operates. Apply its rules to your project."
+                },
+                "Just a distraction": {
+                    archetype: "The Playful Saboteur",
+                    advice: "Distraction isn't avoidance; it's often the mind's way of processing. Embrace the 'distraction' that is low-stakes and fun. This is where serendipity hides. Don't fight it, integrate it.",
+                    action: "Spend 20 minutes doing something completely unrelated to your project that you enjoy, but set a firm timer."
+                }
+            }
+        },
+        brainstorm: {
+             steps: [
+                { q: "Pick a constraint to force creativity:", type:"choice", opts: ["Explain it to a 5-year-old", "Do it with $0 budget", "Make the 'evil' version", "Finish it in 15 minutes"] },
+                { q: "What is the core problem you want to solve?", type:"text" },
+                { q: "Write down 3 terrible, silly, or illegal ideas. Go.", type:"text" }
+            ],
+            archetypes: {
+                "Explain it to a 5-year-old": {
+                    archetype: "The Clarity Simplifier",
+                    advice: "The best ideas are often the clearest. By simplifying, you strip away layers of complexity that hide the core value. You must find the single, universal truth in your work.",
+                    action: "Write a one-sentence, non-jargon explanation of your project. If you can't, you haven't simplified enough."
+                },
+                "Do it with $0 budget": {
+                    archetype: "The Resourceful Inventor",
+                    advice: "Budget constraints force innovation and prioritize concept over polish. This reveals the project's true essence. You are learning to substitute cost with cleverness.",
+                    action: "List the three most expensive/resource-intensive elements of your idea. Now, find three completely free alternatives for each."
+                },
+                "Make the 'evil' version": {
+                    archetype: "The Shadow Artist",
+                    advice: "Exploring the opposite perspective (the 'evil' or destructive version) highlights the purpose and integrity of the original idea. This negative space often reveals powerful, hidden solutions.",
+                    action: "Imagine your project was designed to fail its audience. Write down the first three steps you would take to achieve that failure."
+                },
+                "Finish it in 15 minutes": {
+                    archetype: "The Speed Curator",
+                    advice: "Extreme time constraints prioritize execution over deliberation. You are fighting the urge to overthink. This rapid prototyping generates raw, unjudged material you can refine later.",
+                    action: "Do a 15-minute 'stream of consciousness' brain dump about your topic. Do not lift your pen/fingers. Quantity over quality."
+                }
+            }
+        },
+        organize: {
+             steps: [
+                { q: "How many tabs/tasks are open in your brain?", type:"choice", opts: ["1-3 (Clean)", "4-10 (Cluttered)", "10+ (Disaster)", "System overload"] },
+                { q: "Which single task is making you feeling guilty?", type:"text" },
+                { q: "What is the absolute smallest first step?", type:"text" }
+            ],
+            archetypes: {
+                "1-3 (Clean)": {
+                    archetype: "The Focused Builder",
+                    advice: "Your structure is generally sound, but you might be over-optimizing. You need to inject momentum. The focus is now on disciplined, incremental execution.",
+                    action: "Commit to working on your project for 25 minutes (Pomodoro technique) right now, ignoring all other notifications."
+                },
+                "4-10 (Cluttered)": {
+                    archetype: "The Prioritizing Architect",
+                    advice: "The problem isn't complexity, it's poor prioritization. You must ruthlessly identify the 20% of tasks that will deliver 80% of the value. Stop multi-tasking and sequence your work.",
+                    action: "List your 10 open tasks. Erase 5 of them immediately (they were never important). Sequence the remaining 5."
+                },
+                "10+ (Disaster)": {
+                    archetype: "The Chaos Commander",
+                    advice: "You are overwhelmed by quantity. Your first project is not the creative one, but the organizational one. You need an 'information triage' to sort, discard, and contain the sprawl.",
+                    action: "Spend 20 minutes creating only *one* list (in a notebook, or app) of every single project/idea/task you feel obligated to do. Do not do any of them yet."
+                },
+                "System overload": {
+                    archetype: "The Mental Detox",
+                    advice: "Your brain is exhausted from holding too much information. You are burning energy on remembering, not creating. Externalize everything to a trusted system, then step away.",
+                    action: "Clear your desk/screen completely. Then, capture the first 3 things that come to mind related to your project and immediately stop."
+                }
+            }
+        },
+        experiment: {
+             steps: [
+                { q: "How risky does this feel?", type:"choice", opts: ["Terrifying", "Uncomfortable", "Exciting", "Safe"] },
+                { q: "What is the worst REALISTIC outcome?", type:"text" },
+                { q: "What is the smallest thing you can test or change right now?", type:"text" }
+            ],
+            archetypes: {
+                "Terrifying": {
+                    archetype: "The Calculated Leaper",
+                    advice: "The risk feels high because you've attached too much weight to the single outcome. De-risk by designing micro-experiments that fail small, fast, and cheaply. The goal is learning, not success.",
+                    action: "Design a test that takes less than an hour, the results of which you will ignore if they're negative. (Example: a single social media post, a 5-minute prototype)."
+                },
+                "Uncomfortable": {
+                    archetype: "The Edge Walker",
+                    advice: "You are in the optimal zone—just past comfortable, but not paralyzing. Lean into this friction. Friction generates heat, and heat forges innovation. Increase the intensity slightly.",
+                    action: "Identify the element of your project you are most unsure about. Immediately start working on *that* element for 15 minutes."
+                },
+                "Exciting": {
+                    archetype: "The High-Velocity Prototyper",
+                    advice: "Energy is high, but risk management is needed. Channel this excitement into disciplined, fast-paced execution. Avoid over-scoping. Focus on a Minimum Viable Test (MVT).",
+                    action: "Before you start, clearly define the single metric of success for your next hour of work (e.g., 'finish chapter 1 outline', 'get 5 feedback responses')."
+                },
+                "Safe": {
+                    archetype: "The Iterative Improver",
+                    advice: "You are likely refining something that is already good, but not great. To find the next leap, you must intentionally break something. Introduce an element that feels wrong or awkward.",
+                    action: "Choose a design/process principle you live by (e.g., 'always minimalist'). For 30 minutes, violate that principle ruthlessly and see what happens."
+                }
+            }
+        }
+    };
+
+    let userProfile = {};
+    let currentMode = null;
+    let currentStep = 0;
+    let answers = [];
+
+    // --- Helper Functions ---
+
+    /**
+     * Switches the currently active view based on the ID.
+     * @param {string} viewId The base ID (e.g., 'dashboard', 'onboarding').
+     */
+    function setView(viewId) {
+        document.querySelectorAll('.view').forEach(view => {
+            view.classList.remove('active');
+        });
+        const targetView = document.getElementById(`view-${viewId}`);
+        if (targetView) {
+            targetView.classList.add('active');
+        } else {
+             console.error(`Error: View element with ID "view-${viewId}" not found in the DOM.`);
+        }
+    }
+
+    /**
+     * Shows a custom modal/alert message.
+     * @param {string} title 
+     * @param {string} bodyHTML 
+     */
+    function alertModal(title, bodyHTML) {
+        const modal = document.getElementById('storyModal');
+        modal.querySelector('h3').textContent = title;
+        // Target the new container
+        modal.querySelector('#storyContent').innerHTML = bodyHTML; 
+        modal.querySelector('.btn').textContent = "Close";
+        modal.querySelector('.btn').onclick = closeStory; // Use closeStory logic
+        modal.classList.add('open');
+    }
+
+    // --- Onboarding & Profile Management ---
+
+    function loadProfile() {
+        const profile = localStorage.getItem('userProfile');
+        if (profile) {
+            userProfile = JSON.parse(profile);
+        } else {
+            userProfile = {};
+        }
+    }
+
+    function saveProfile() {
+        localStorage.setItem('userProfile', JSON.stringify(userProfile));
+    }
+
+    function onboardUser() {
+        loadProfile();
+        const initialView = userProfile.name ? 'dashboard' : 'onboarding';
+        
+        // FIX: Use the correct prefixed IDs when setting the view
+        if (initialView === 'dashboard') {
+            document.getElementById('dashName').textContent = userProfile.name;
+            setView('dashboard');
+        } else {
+            setView('onboarding');
+        }
+    }
+
+    window.goHome = function() {
+        currentMode = null;
+        currentStep = 0;
+        answers = [];
+        setView('dashboard');
+        // If coming from saved sparks view, ensure the listener is not running unnecessarily
+        if (window.unsubscribeSavedData) {
+            window.unsubscribeSavedData();
+        }
+    }
+
+    window.logout = function() {
+        localStorage.removeItem('userProfile');
+        localStorage.removeItem('savedSparks'); // Clear local data on logout for a clean start
+        userProfile = {};
+        goHome(); // This will automatically transition to the onboarding view
+    }
+
+    document.getElementById('onboardForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        userProfile.name = document.getElementById('userName').value.trim();
+        userProfile.field = document.getElementById('userField').value.trim();
+        saveProfile();
+        onboardUser();
+    });
+
+    // --- Mode & Wizard Flow ---
+
+    window.startMode = function(mode) {
+        currentMode = mode;
+        currentStep = 0;
+        answers = [];
+        document.getElementById('wizardModeTitle').textContent = mode.toUpperCase();
+        loadStep(currentStep);
+        setView('wizard');
+    }
+
+    function loadStep(stepIndex) {
+        const modeData = content[currentMode];
+        if (!modeData) return;
+
+        const totalSteps = modeData.steps.length;
+        const step = modeData.steps[stepIndex];
+
+        // Update progress bar
+        const progress = ((stepIndex + 1) / totalSteps) * 100;
+        document.getElementById('progressBar').style.width = `${progress}%`;
+
+        // Update question
+        document.getElementById('questionText').textContent = step.q;
+        
+        const nextBtn = document.getElementById('nextBtn');
+        const optionsArea = document.getElementById('optionsArea');
+        const textInput = document.getElementById('textInput');
+        
+        // Reset inputs
+        optionsArea.innerHTML = '';
+        textInput.value = '';
+        textInput.classList.add('hidden');
+        nextBtn.style.opacity = 0.5;
+        nextBtn.style.pointerEvents = 'none';
+
+        if (step.type === 'choice') {
+            optionsArea.style.display = 'block';
+            step.opts.forEach(option => {
+                const btn = document.createElement('div');
+                btn.className = 'option-btn';
+                btn.textContent = option;
+                btn.onclick = () => selectOption(option, btn);
+                optionsArea.appendChild(btn);
+            });
+            // If a choice question, enable next button immediately (selection is the answer)
+            // NOTE: The original code enabled next button on selection, but this block 
+            // set it to 1/auto on load. Reverting to original intent where selection enables it.
+            // Keeping the style changes as they are for now, assuming selectOption handles the enable logic.
+            // Oh wait, selectOption only stores the answer, not enables the button.
+            // The next button needs to be enabled once *any* selection is made, which happens inside selectOption.
+            // We can leave nextBtn at 0.5/none and let selectOption handle it.
+            nextBtn.style.opacity = 0.5;
+            nextBtn.style.pointerEvents = 'none';
+
+        } else if (step.type === 'text') {
+            optionsArea.style.display = 'none';
+            textInput.classList.remove('hidden');
+            // Check for input to enable next button
+            textInput.oninput = () => {
+                if (textInput.value.trim().length > 5) {
+                    nextBtn.style.opacity = 1;
+                    nextBtn.style.pointerEvents = 'auto';
+                } else {
+                    nextBtn.style.opacity = 0.5;
+                    nextBtn.style.pointerEvents = 'none';
+                }
+            };
+        }
+    }
+
+    function selectOption(option, selectedBtn) {
+        // Clear previous selections
+        document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
+        // Select the new one
+        selectedBtn.classList.add('selected');
+        // Store the answer temporarily
+        answers[currentStep] = option;
+        
+        // Enable the next button on selection for choice questions
+        const nextBtn = document.getElementById('nextBtn');
+        nextBtn.style.opacity = 1;
+        nextBtn.style.pointerEvents = 'auto';
+    }
+
+    window.nextStep = function() {
+        const step = content[currentMode].steps[currentStep];
+        let answer;
+
+        if (step.type === 'choice') {
+            answer = answers[currentStep];
+        } else if (step.type === 'text') {
+            answer = document.getElementById('textInput').value.trim();
+        }
+
+        if (!answer) {
+            alertModal("Hold On!", "Please provide an answer before continuing.");
+            return;
+        }
+
+        answers[currentStep] = answer;
+        currentStep++;
+
+        if (currentStep < content[currentMode].steps.length) {
+            loadStep(currentStep);
+        } else {
+            generateResult();
+        }
+    }
+    
+    // --- Result Generation ---
+
+    const TYPING_SPEED = 20; // ms per character
+
+    function generateResult() {
+        setView('result');
+        const modeData = content[currentMode];
+        
+        // Logic to determine Archetype (Using the answer from the first step)
+        const keyAnswer = answers[0];
+        let result = modeData.archetypes[keyAnswer] || {
+            archetype: "The Insight Generator",
+            advice: "Based on your unique inputs, we see a blend of challenges. The core advice is to reduce complexity and prioritize radical self-care. Your biggest hurdle is internal expectation.",
+            action: "Write down three things you accomplished last week (no matter how small) to counteract the voice of self-doubt."
+        };
+        
+        // Append user's last input for context in the advice (optional)
+        const lastInput = answers[answers.length - 1];
+        result.advice += ` (Context: ${lastInput})`;
+        
+        // Save result locally to be ready for saving to Firestore
+        const currentResult = {
+            mode: currentMode,
+            archetype: result.archetype,
+            advice: result.advice,
+            action: result.action
+        };
+        localStorage.setItem('currentResult', JSON.stringify(currentResult));
+
+        // Update DOM
+        document.getElementById('resArchetype').textContent = result.archetype;
+        document.getElementById('resAction').textContent = result.action;
+        document.getElementById('resActionBox').classList.remove('hidden');
+        document.getElementById('resButtons').classList.remove('hidden');
+
+        // Typewriter effect
+        const resBodyEl = document.getElementById('resBody');
+        resBodyEl.textContent = ''; // Clear content
+        typewriter(resBodyEl, result.advice);
+    }
+
+    function typewriter(element, text, i = 0) {
+        if (i < text.length) {
+            element.innerHTML = text.substring(0, i + 1) + '<span class="cursor"></span>';
+            setTimeout(() => typewriter(element, text, i + 1), TYPING_SPEED);
+        } else {
+            element.innerHTML = text; // Final text without cursor
+        }
+    }
+
+    // --- Story/Modal Functions ---
+    window.openStory = function() {
+        const modal = document.getElementById('storyModal');
+        // Reset to story content
+        modal.querySelector('h3').textContent = "Born from Struggle";
+        
+        // Inject the full, correct story into the dedicated content area
+        modal.querySelector('#storyContent').innerHTML = `
+            <p class="story-text">
+                In 2025, a team joined <a href="https://ekolitika.framer.website/project/the-creative-mess" target="_blank" class="story-highlight" style="text-decoration: underline;">The Creative Mess</a>—an Erasmus+ course that proved creativity isn't magic. It's a cycle: brainstorm, organize, rest, inspire, experiment, repeat.
+            </p>
+            <p class="story-text">
+                The problem? Most tools feed you empty motivation or treat creativity like a factory line. Neither helps when you're actually stuck.
+            </p>
+            <p class="story-text">
+                So we built <span class="story-highlight">Creative Pulse</span>. A free tool that diagnoses your block, tells you what you actually need, and gives you real feedback—not fluff.
+            </p>
+            <p class="story-text">
+                From stuck to unstuck. Idea to action. Exhaustion to rhythm.
+            </p>
+        `;
+        
+        modal.querySelector('.btn').textContent = "Got it!";
+        modal.querySelector('.btn').onclick = closeStory;
+        modal.classList.add('open');
+    }
+
+    window.closeStory = function() {
+        document.getElementById('storyModal').classList.remove('open');
+    }
+    
+    // --- Saved Sparks View ---
+    window.showSaved = function() {
+        // The real-time listener is set up in authenticateAndSetup and calls displaySavedSparks()
+        // We just need to ensure we switch to the view.
+        
+        // FIX: Now that setupSavedDataListener is explicitly exposed to window 
+        // by the module script, this check should work, resolving the "Database features are unavailable" error.
+        if (typeof window.setupSavedDataListener === 'function') {
+            window.setupSavedDataListener();
+        } else {
+            // Fallback for extreme cases where the module fails to load entirely
+            document.getElementById('savedList').innerHTML = '<p style="color:#f87171; text-align:center; padding: 20px;">Database features are unavailable. Please check the console.</p>';
+        }
+        setView('saved');
+    }
+
+
+</script>
+
 </body>
 </html>
