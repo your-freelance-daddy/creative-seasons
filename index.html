@@ -387,7 +387,7 @@
         
 <div id="view-wizard" class="view">
             <div class="top-nav">
-                <!-- FIXED: the escape button now returns to the start (onboarding) -->
+                <!-- FIXED: the escape button now returns to the onboarding/start screen -->
                 <button onclick="exitToStart()" class="icon-btn" title="Exit">✕</button>
                 <div style="font-weight:700; color:var(--primary);" id="wizardModeTitle">MODE</div>
                 <div style="width:40px;"></div> 
@@ -418,8 +418,8 @@
 <div class="typewriter-text" id="resBody"><span class="cursor"></span></div>
                 
                 <div class="action-box hidden" id="resActionBox">
-                    <strong style="color:var(--primary); display:block; margin-bottom:5px;">⚡ TINY NEXT STEP:</strong>
-                    <span id="resAction" style="font-size:1.1rem; font-weight:600; color:white;">Action...</span>
+                    <strong style="color:var(--primary); display:block; margin-bottom:5px;">⚡ TINY NEXT STEPS:</strong>
+                    <div id="resActionsList" style="font-size:1.05rem; color:white; line-height:1.4;"></div>
                 </div>
                 
                 <div class="hidden" id="resButtons" style="display:flex; flex-direction:column; gap:10px;">
@@ -431,7 +431,7 @@
 
         
 <footer class="footer-bar">
-            <button class="story-btn" onclick="openStory()">Read the Origin Story 📖</button>
+            <button class="story-btn" onclick="openOriginStory()">Read the Origin Story 📖</button>
             
             
 <a href="https://ekolitika.framer.website/" target="_blank" class="story-btn">
@@ -445,7 +445,7 @@
 <div class="modal-overlay" id="storyModal">
         <div class="modal-content">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                <h3 style="margin:0; font-size:1.5rem; color:var(--primary);">Born from Struggle</h3>
+                <h3 id="storyModalTitle" style="margin:0; font-size:1.5rem; color:var(--primary);">Born from Struggle</h3>
                 <button onclick="closeStory()" class="icon-btn">✕</button>
             </div>
             
@@ -462,7 +462,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <script>
-    
+    /* ========= Core data ========== */
     const content = {
         diagnose: {
             steps: [
@@ -501,143 +501,139 @@
         }
     };
 
+    /* ========= App state ========= */
     let userProfile = {};
     let currentMode = null;
     let currentStep = 0;
     let answers = [];
-    const TYPING_SPEED = 20;
+    const TYPING_SPEED = 18;
 
-    // --- Helper Functions ---
-
+    /* ========= Helpers ========= */
     function setView(viewId) {
-        document.querySelectorAll('.view').forEach(view => {
-            view.classList.remove('active');
-        });
+        document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
         const targetView = document.getElementById(`view-${viewId}`);
         if (targetView) {
             targetView.classList.add('active');
         } else {
-             console.error(`Error: View element with ID "view-${viewId}" not found in the DOM.`);
+            console.error(`Missing view: view-${viewId}`);
         }
     }
-
-    // NEW: exitToStart() - returns user to the onboarding/start screen (preserves onboarding as the 'start')
-    window.exitToStart = function() {
-        currentMode = null;
-        currentStep = 0;
-        answers = [];
-        // clear any partial answers for safety
-        document.getElementById('optionsArea') && (document.getElementById('optionsArea').innerHTML = '');
-        document.getElementById('textInput') && (document.getElementById('textInput').value = '');
-        setView('onboarding');
-    }
-
-    window.alertModal = function(title, bodyHTML) {
-        const modal = document.getElementById('storyModal');
-        // Put title and body in a controlled way
-        modal.querySelector('h3').textContent = title;
-        modal.querySelector('#storyContent').innerHTML = bodyHTML; 
-        modal.querySelector('.btn').textContent = "Close";
-        modal.querySelector('.btn').onclick = window.closeStory; 
-        modal.classList.add('open');
-    }
-
-    // --- Onboarding & Profile Management ---
 
     function loadProfile() {
         const profile = localStorage.getItem('userProfile');
         userProfile = profile ? JSON.parse(profile) : {};
     }
-
     function saveProfile() {
         localStorage.setItem('userProfile', JSON.stringify(userProfile));
     }
 
-    window.onboardUser = function() {
+    /* ========= Onboarding ========= */
+    document.getElementById('onboardForm').addEventListener('submit', function(e){
+        e.preventDefault();
+        userProfile.name = document.getElementById('userName').value.trim();
+        userProfile.field = document.getElementById('userField').value.trim();
+        saveProfile();
+        document.getElementById('dashName').textContent = userProfile.name || 'Creator';
+        setView('dashboard');
+    });
+
+    window.onboardUser = function(){
         loadProfile();
-        const initialView = userProfile.name ? 'dashboard' : 'onboarding';
-        
-        if (initialView === 'dashboard') {
+        if (userProfile.name) {
             document.getElementById('dashName').textContent = userProfile.name;
             setView('dashboard');
         } else {
             setView('onboarding');
         }
-    }
+    };
+    window.addEventListener('load', onboardUser);
 
     window.goHome = function() {
         currentMode = null;
         currentStep = 0;
         answers = [];
         setView('dashboard');
-    }
+    };
 
-    window.logout = function() {
+    window.logout = function(){
         localStorage.removeItem('userProfile');
-        localStorage.removeItem('currentResult'); 
+        localStorage.removeItem('currentResult');
         userProfile = {};
         goHome();
-    }
+    };
 
-    document.getElementById('onboardForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        userProfile.name = document.getElementById('userName').value.trim();
-        userProfile.field = document.getElementById('userField').value.trim();
-        saveProfile();
-        window.onboardUser();
-    });
+    /* ========= FIXED escape: exit to onboarding (explicit) ========= */
+    window.exitToStart = function() {
+        // Clear partial state
+        currentMode = null;
+        currentStep = 0;
+        answers = [];
+        const optionsArea = document.getElementById('optionsArea');
+        if (optionsArea) optionsArea.innerHTML = '';
+        const txt = document.getElementById('textInput');
+        if (txt) { txt.value = ''; txt.classList.add('hidden'); }
+        setView('onboarding');
+    };
 
-    // Initialize on page load
-    window.addEventListener('load', () => window.onboardUser());
-
-
-    // --- Mode & Wizard Flow ---
-
+    /* ========= Mode flow and wizard ========= */
     window.startMode = function(mode) {
+        if (!content[mode]) {
+            console.error('Unknown mode', mode);
+            return;
+        }
         currentMode = mode;
         currentStep = 0;
         answers = [];
         document.getElementById('wizardModeTitle').textContent = mode.toUpperCase();
-        loadStep(currentStep);
+        loadStep(0);
         setView('wizard');
-    }
+    };
 
-    function loadStep(stepIndex) {
+    function loadStep(idx) {
         const modeData = content[currentMode];
         if (!modeData) return;
-
-        const totalSteps = modeData.steps.length;
-        const step = modeData.steps[stepIndex];
-
-        const progress = ((stepIndex + 1) / totalSteps) * 100;
+        const step = modeData.steps[idx];
+        const total = modeData.steps.length;
+        // progress
+        const progress = ((idx) / total) * 100;
         document.getElementById('progressBar').style.width = `${progress}%`;
 
+        // question
         document.getElementById('questionText').textContent = step.q;
-        
-        const nextBtn = document.getElementById('nextBtn');
+
+        // reset UI
         const optionsArea = document.getElementById('optionsArea');
         const textInput = document.getElementById('textInput');
-        
         optionsArea.innerHTML = '';
         textInput.value = '';
         textInput.classList.add('hidden');
+        const nextBtn = document.getElementById('nextBtn');
         nextBtn.style.opacity = 0.5;
         nextBtn.style.pointerEvents = 'none';
 
         if (step.type === 'choice') {
             optionsArea.style.display = 'block';
-            step.opts.forEach(option => {
-                const btn = document.createElement('div');
-                btn.className = 'option-btn';
-                btn.textContent = option;
-                btn.onclick = () => selectOption(option, btn);
-                optionsArea.appendChild(btn);
+            step.opts.forEach(opt => {
+                const d = document.createElement('div');
+                d.className = 'option-btn';
+                d.textContent = opt;
+                d.onclick = () => {
+                    // mark selected
+                    document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+                    d.classList.add('selected');
+                    answers[currentStep] = opt;
+                    nextBtn.style.opacity = 1;
+                    nextBtn.style.pointerEvents = 'auto';
+                };
+                optionsArea.appendChild(d);
             });
         } else if (step.type === 'text') {
             optionsArea.style.display = 'none';
             textInput.classList.remove('hidden');
+            textInput.focus();
             textInput.oninput = () => {
-                if (textInput.value.trim().length > 5) {
+                const val = textInput.value.trim();
+                if (val.length > 3) {
                     nextBtn.style.opacity = 1;
                     nextBtn.style.pointerEvents = 'auto';
                 } else {
@@ -648,262 +644,303 @@
         }
     }
 
-    function selectOption(option, selectedBtn) {
-        document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
-        selectedBtn.classList.add('selected');
-        answers[currentStep] = option;
-        
-        const nextBtn = document.getElementById('nextBtn');
-        nextBtn.style.opacity = 1;
-        nextBtn.style.pointerEvents = 'auto';
-    }
-
     window.nextStep = function() {
-        const step = content[currentMode].steps[currentStep];
-        let answer;
-
+        if (!currentMode) return;
+        const modeData = content[currentMode];
+        const step = modeData.steps[currentStep];
+        let answer = '';
         if (step.type === 'choice') {
-            answer = answers[currentStep];
+            answer = answers[currentStep] || '';
         } else if (step.type === 'text') {
             answer = document.getElementById('textInput').value.trim();
         }
-
         if (!answer) {
-            alertModal("Hold On!", "Please provide an answer before continuing.");
+            alertModal('Hold on!', 'Please provide an answer before continuing.');
             return;
         }
-
         answers[currentStep] = answer;
         currentStep++;
-
-        if (currentStep < content[currentMode].steps.length) {
+        if (currentStep < modeData.steps.length) {
             loadStep(currentStep);
         } else {
+            // finalize
             generateResult();
         }
-    }
-    
-    // --- NEW: Personalized Feedback Builder (no archetypes) ---
-    function buildKeyInsight(answers, mode) {
-        // Heuristic rules to create a punchy single-line insight
-        const a0 = (answers[0] || '').toLowerCase();
-        if (/foggy|overwhelming|confused/.test(a0)) return "You're not uninspired — you're overwhelmed.";
-        if (/empty|drained|burnt/.test(a0)) return "You're not failing — you're depleted.";
-        if (/anxious|fast|frustrated|perfectionist/.test(a0)) return "Perfectionism is hiding behind your anxiety.";
-        if (/boring|repetitive|stale/.test(a0)) return "Your process is stale — novelty will shock your creativity awake.";
-        if (/terrifying|uncomfortable/.test(a0)) return "Risk is present because you're aiming for something meaningful.";
-        // fallback
-        return "This feels personal because it is — let's make your next step small and true.";
+    };
+
+    /* ========= Personalized feedback generation (no archetypes) ========= */
+
+    // helper: safer lower-case check
+    function includesWord(ans, words) {
+        if (!ans) return false;
+        const s = ans.toLowerCase();
+        return words.some(w => s.indexOf(w) !== -1);
     }
 
-    function buildReflection(userName, userField, answers, mode) {
-        const name = userName || 'Creator';
-        const field = userField ? ` (${userField})` : '';
-        const keyParts = answers.map(a => a || '').filter(Boolean);
-        const combined = keyParts.join(' • ');
-        const opening = `${name}${field}, I read what you told me: ${combined || 'no answers captured'}.`;
-        const insight = buildKeyInsight(answers, mode);
-        // Expand reflection
-        let reflection = `${opening} ${insight} `;
-        // Provide specific reasoning sentence(s) based on answers
-        if (answers[0]) {
-            reflection += `From your first answer I can tell the immediate feeling: "${answers[0]}". `;
-        }
-        if (answers[1]) {
-            reflection += `You mentioned: "${answers[1]}", which shows where attention is getting stuck. `;
-        }
-        if (answers[2]) {
-            reflection += `Your concrete note: "${answers[2]}". That gives us something real to act on. `;
-        }
-        reflection += `This feedback is not a label — it's a clear read of how your current pattern is affecting output and meaning.`;
-        return { opening, insight, reflection };
+    function buildKeyInsight(allAnswers, mode) {
+        const a0 = allAnswers[0] || '';
+        if (includesWord(a0, ['foggy', 'overwhelming', 'confused'])) return "You're not uninspired — you're overwhelmed.";
+        if (includesWord(a0, ['empty', 'drained', 'burnt'])) return "You're not failing — you're depleted.";
+        if (includesWord(a0, ['anxious', 'fast', 'anxiety'])) return "Perfectionism and anxiety are stealing your momentum.";
+        if (includesWord(a0, ['boring', 'repetitive', 'stale'])) return "Your process is predictable — novelty will unlock you.";
+        // fallback checks across answers
+        if (allAnswers.some(a => includesWord(a, ['time', 'out of time']))) return "You feel rushed — not blocked.";
+        if (allAnswers.some(a => includesWord(a, ['don't know', 'where to start']))) return "You need a tiny entry point — not a plan overhaul.";
+        // default
+        return "This is personal — and solvable with one small, brave step.";
     }
 
-    function buildImmediateAction(mode, answers) {
-        // Mode-aware short action
-        const a0 = (answers[0] || '').toLowerCase();
+    function buildReflection(name, field, allAnswers, mode) {
+        const n = name || 'Creator';
+        const f = field ? ` (${field})` : '';
+        const answersText = allAnswers.map((a,i) => `${i+1}. ${a || '(no answer)'}`).join('  ');
+        const insight = buildKeyInsight(allAnswers, mode);
+        // Compose reflection sentences using all answers
+        let reflection = `${n}${f}, I read your answers: ${answersText}. ${insight} `;
+        // Add reasoning grounded in answers
+        if (allAnswers[0]) reflection += `You told me how it feels: "${allAnswers[0]}". `;
+        if (allAnswers[1]) reflection += `You described your inner story: "${allAnswers[1]}". `;
+        if (allAnswers[2]) reflection += `You gave a concrete detail: "${allAnswers[2]}". `;
+        reflection += `Together these show a pattern: emotion + story + one real thing to act on. We'll use that.`;
+        return { insight, reflection };
+    }
+
+    function buildTinyNextSteps(mode, allAnswers) {
+        // return an array of 3 tiny steps tailored by mode and answers
+        const steps = [];
+        const a0 = (allAnswers[0] || '').toLowerCase();
+
+        // base suggestions by mode
         if (mode === 'diagnose') {
-            if (/overwhelmed|confused/.test(a0)) return "Pick the single smallest task you can finish in 20 minutes, and finish it now.";
-            if (/drained|empty/.test(a0)) return "Give yourself a strict 30-minute rest: no screens, no pressure. Then return with curiosity.";
-            return "Write a one-sentence plan: what is the one next physical step? Do it in 10 minutes.";
+            steps.push("Pick 1 task that takes ≤20 minutes and finish it — no edits, just finish.");
+            steps.push("Write down 3 micro-constraints (time/place/tools) to limit decision friction.");
+            steps.push("Set a 10-minute timer and create a *very ugly* first step — then stop.");
+        } else if (mode === 'inspire') {
+            steps.push("Consume one piece of input outside your field for 15 minutes; jot 3 'steals'.");
+            steps.push("Take a 30-minute unexpected walk with no devices; mentally collect ideas.");
+            steps.push("Create one tiny remix of an existing idea — low time, high surprise.");
+        } else if (mode === 'brainstorm') {
+            steps.push("Do a 10-minute crazy-idea sprint — write relentlessly without judging.");
+            steps.push("Pick the silliest idea and make a 1-minute mockup or sketch.");
+            steps.push("Share 1 idea with someone and ask for one brutally honest reaction.");
+        } else if (mode === 'organize') {
+            steps.push("Write down every open task for 15 minutes, then immediately delete 50%.");
+            steps.push("Choose the single highest-impact task and break it into 3 sequential steps.");
+            steps.push("Schedule 25 minutes in your calendar for focused work on the top task.");
+        } else if (mode === 'experiment') {
+            steps.push("Design a micro-experiment that takes <60 minutes and can fail cheaply; run it.");
+            steps.push("Define one measurable outcome you'll capture after the experiment.");
+            steps.push("Share the experiment idea with one peer to increase accountability.");
+        } else {
+            steps.push("Do one very small, visible step in the next 20 minutes.");
+            steps.push("Write down why this matters for you personally.");
+            steps.push("Tell one person you will do it and when.");
         }
-        if (mode === 'inspire') {
-            return "Expose yourself to one wildly different input for 15 minutes (a song, a short essay). Note 3 ideas to steal.";
+
+        // mild personalization: if user said 'empty' or 'drained' suggest rest-first.
+        if (includesWord(a0, ['empty', 'drained', 'burnt'])) {
+            steps.unshift("Take 30 minutes of phone-free rest first — your creativity needs refueling.");
+            // keep only 3 => take the most relevant 3 with rest prioritized
+            return steps.slice(0,3);
         }
-        if (mode === 'brainstorm') {
-            return "Do a 10-minute crazy-ideas dump: write without editing. Pick one idea and make its first sketch.";
-        }
-        if (mode === 'organize') {
-            return "Make one list: everything you feel responsible for. Erase 50% immediately. Schedule the remaining top item.";
-        }
-        if (mode === 'experiment') {
-            return "Design a micro-experiment that takes less than 60 minutes and fails cheaply. Run it today.";
-        }
-        return "Do one small thing now that moves you forward — not perfect, just forward.";
+
+        return steps.slice(0,3);
     }
 
-    // --- Result Generation & Typewriter (reworked to be personal) ---
+    /* ========= Result generation & UI update ========= */
 
     function generateResult() {
         setView('result');
-        const modeData = content[currentMode];
-        const context = modeData ? modeData.steps.map((s, i) => ({ question: s.q, answer: answers[i] || '' })) : [];
 
-        // Build personalized feedback (no archetype)
+        // Build context
+        const modeData = content[currentMode];
+        const context = (modeData ? modeData.steps.map((s,i) => ({ question: s.q, answer: answers[i] || '' })) : []);
+
+        // Build personalized text
         loadProfile();
         const name = userProfile.name || '';
         const field = userProfile.field || '';
-        const { opening, insight, reflection } = buildReflection(name, field, answers, currentMode);
-        const immediate = buildImmediateAction(currentMode, answers);
+        const { insight, reflection } = buildReflection(name, field, answers, currentMode);
+        const tinySteps = buildTinyNextSteps(currentMode, answers);
 
-        // Save result locally
+        // Save result for PDF, modal, persistence
         const currentResult = {
             mode: currentMode,
-            opening: opening,
+            opening: name ? `Hey ${name}` : 'Hello Creator',
             keyInsight: insight,
-            advice: reflection,
-            action: immediate,
+            reflection: reflection,
+            tinySteps: tinySteps,
             fullContext: context
         };
         localStorage.setItem('currentResult', JSON.stringify(currentResult));
 
-        // Update DOM with stronger personalization
+        // Update DOM
         const titleEl = document.getElementById('resArchetype');
-        if (name) {
-            titleEl.textContent = `Hey ${name}, here's your read`;
-        } else {
-            titleEl.textContent = `Here's your read`;
-        }
+        titleEl.textContent = name ? `Hey ${name}, here's your read` : `Here's your read`;
 
-        // Typewriter for the full reflection (advice)
-        const resBodyEl = document.getElementById('resBody');
-        resBodyEl.innerHTML = ''; 
-        // We will render: bold Key Insight first line, then reflection
-        const fullText = `**${insight}**\n\n${reflection}`;
-        // Render progressive typing but keep bold markup by converting **text** to <strong>
-        const htmlToType = fullText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
-        typewriterHtml(resBodyEl, htmlToType);
+        // Typewriter: show Key Insight bold immediately then type reflection
+        const bodyEl = document.getElementById('resBody');
+        bodyEl.innerHTML = ''; // clear
+        // render key insight as bold instantly
+        bodyEl.innerHTML = `<strong>${escapeHtml(insight)}</strong><br><br>`;
+        // then type the reflection after 450ms
+        setTimeout(() => typewriterHtmlAppend(bodyEl, escapeHtml(reflection)), 450);
 
-        // Immediate action box and buttons
-        document.getElementById('resAction').textContent = immediate;
-        document.getElementById('resActionBox').classList.remove('hidden');
+        // Show tiny steps list
+        const actionsBox = document.getElementById('resActionBox');
+        const actionsList = document.getElementById('resActionsList');
+        actionsList.innerHTML = '';
+        tinySteps.forEach((s, i) => {
+            const el = document.createElement('div');
+            el.style.marginBottom = '8px';
+            el.innerHTML = `<strong>${i+1}.</strong> ${escapeHtml(s)}`;
+            actionsList.appendChild(el);
+        });
+        actionsBox.classList.remove('hidden');
         document.getElementById('resButtons').classList.remove('hidden');
     }
 
-    // Typewriter variant which types HTML progressively (keeps tags intact)
-    function typewriterHtml(element, html, i = 0) {
-        // naive approach: reveal char-by-char of HTML string
-        // Since html contains tags like <strong> and <br>, they will show progressively — acceptable visually
-        let j = 0;
-        element.innerHTML = '';
+    // Appends typed HTML (escaped) into element progressively (simple char-based)
+    function typewriterHtmlAppend(element, text, speed = TYPING_SPEED) {
+        let i = 0;
+        const existing = element.innerHTML;
         function step() {
-            if (j < html.length) {
-                element.innerHTML = html.substring(0, j + 1) + '<span class="cursor"></span>';
-                j++;
-                setTimeout(step, TYPING_SPEED);
+            if (i < text.length) {
+                element.innerHTML = existing + text.substring(0, i+1) + '<span class="cursor"></span>';
+                i++;
+                setTimeout(step, speed);
             } else {
-                element.innerHTML = html; // finalize
+                element.innerHTML = existing + text;
             }
         }
         step();
     }
 
-    // --- PDF Download Functionality (updated to include personalized sections) ---
-    
+    function escapeHtml(s) {
+        if (!s) return '';
+        return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    /* ========= PDF Generation (restore + corrected) ========= */
+
     window.downloadSparkPDF = function() {
-        const data = JSON.parse(localStorage.getItem('currentResult'));
-        if (!data || !data.fullContext) {
-            alertModal("Error", "No complete result found to download. Please run a creative mode first.");
+        const raw = localStorage.getItem('currentResult');
+        if (!raw) {
+            alertModal('Error', 'No result to download — run a mode first.');
             return;
         }
-
-        // Build PDF HTML
-        let htmlContent = `
-            <div id="pdf-content-wrapper" style="padding: 25px; font-family: 'Segoe UI', sans-serif; background: #1e1b4b; color: white; max-width: 750px; margin: 0 auto;">
-                <style>
-                    .pdf-h1 { color: #a855f7; font-family: 'Caprasimo', cursive; text-align: center; border-bottom: 2px solid #a855f7; padding-bottom: 10px; margin-bottom: 15px; }
-                    .pdf-subtitle { text-align: center; color: #cbd5e1; font-size: 0.9rem; margin-bottom: 25px; }
-                    .pdf-card { background: rgba(255,255,255,0.05); padding: 18px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.08); }
-                    .pdf-key { font-size: 1.1rem; font-weight: 800; color: #fff; margin-bottom: 10px; }
-                    .pdf-reflection { color:#e2e8f0; line-height:1.6; }
-                    .pdf-action { margin-top: 12px; padding: 12px; border-radius: 8px; background: rgba(168,85,247,0.12); font-weight:700; color:white; }
-                    .pdf-qa-block { margin-bottom: 12px; background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; }
-                    .pdf-qa-q { color:#94a3b8; font-weight:700; margin:0; }
-                    .pdf-qa-a { color:#e2e8f0; margin-top:6px; font-style:italic; }
-                </style>
-
-                <h1 class="pdf-h1">Creative Pulse Spark Report</h1>
-                <p class="pdf-subtitle">Generated on: ${new Date().toLocaleDateString()}</p>
-
-                <div class="pdf-card">
-                    <div class="pdf-key">Key Insight</div>
-                    <div class="pdf-reflection">${escapeHtml(data.keyInsight)}</div>
-                </div>
-
-                <div class="pdf-card">
-                    <div class="pdf-key">Deep Read</div>
-                    <div class="pdf-reflection">${escapeHtml(data.advice)}</div>
-                    <div class="pdf-action">Immediate Action: ${escapeHtml(data.action)}</div>
-                </div>
-
-                <h4 style="color:#cbd5e1;">Your Context & Input</h4>
-        `;
-
-        data.fullContext.forEach((item, index) => {
-            const sanitized = escapeHtml(item.answer || '');
-            htmlContent += `
-                <div class="pdf-qa-block">
-                    <div class="pdf-qa-q">Q${index + 1}: ${escapeHtml(item.question)}</div>
-                    <div class="pdf-qa-a">Answer: "${sanitized}"</div>
-                </div>
-            `;
-        });
-
-        htmlContent += `
-                <p style="text-align: center; margin-top: 30px; font-size: 0.85rem; color: #94a3b8;">Creative Pulse — made by EKOLiTiKA</p>
+        const data = JSON.parse(raw);
+        // Build container element for html2pdf
+        const wrapper = document.createElement('div');
+        wrapper.style.padding = '20px';
+        wrapper.style.fontFamily = 'Segoe UI, sans-serif';
+        wrapper.style.background = '#1e1b4b';
+        wrapper.style.color = 'white';
+        wrapper.style.maxWidth = '800px';
+        wrapper.innerHTML = `
+            <h1 style="color:#a855f7;font-family:Caprasimo,cursive;text-align:center;">Creative Pulse Spark Report</h1>
+            <p style="color:#cbd5e1;text-align:center;margin-top:-6px;">Generated: ${new Date().toLocaleString()}</p>
+            <div style="margin-top:14px;padding:14px;border-radius:10px;background:rgba(255,255,255,0.03);">
+                <h3 style="margin:6px 0 8px 0;color:#fff;">Key Insight</h3>
+                <p style="margin:0 0 8px 0;font-weight:700;">${escapeHtml(data.keyInsight)}</p>
             </div>
+            <div style="margin-top:12px;padding:14px;border-radius:10px;background:rgba(255,255,255,0.03);">
+                <h3 style="margin:6px 0 8px 0;color:#fff;">Deep Reflection</h3>
+                <p style="margin:0 0 10px 0;">${escapeHtml(data.reflection)}</p>
+                <h4 style="margin-top:10px;color:#e9d5ff;">Immediate Tiny Steps</h4>
+                <ol style="margin-top:6px;">
+                    ${data.tinySteps.map(s => `<li style="margin-bottom:6px;">${escapeHtml(s)}</li>`).join('')}
+                </ol>
+            </div>
+            <div style="margin-top:16px;">
+                <h4 style="color:#cbd5e1;">Context & Answers</h4>
+                ${ (data.fullContext && data.fullContext.length) ? data.fullContext.map((q, idx) => `
+                    <div style="margin-bottom:10px;padding:10px;border-radius:8px;background:rgba(255,255,255,0.02);">
+                        <div style="color:#94a3b8;font-weight:700;margin-bottom:6px;">Q${idx+1}: ${escapeHtml(q.question)}</div>
+                        <div style="color:#e2e8f0;font-style:italic;">${escapeHtml(q.answer)}</div>
+                    </div>
+                `).join('') : '<p style="color:#cbd5e1;">No context saved.</p>' }
+            </div>
+            <p style="text-align:center;margin-top:20px;color:#94a3b8;font-size:0.9rem;">Creative Pulse — made by EKOLiTiKA</p>
         `;
+        const filename = `${(data.mode || 'spark')}_spark_${new Date().toISOString().slice(0,10)}.pdf`;
+        html2pdf().set({
+            margin:[10,10,10,10],
+            filename: filename,
+            image:{type:'jpeg',quality:0.98},
+            html2canvas:{scale:2, logging:false, dpi:192, letterRendering:true},
+            jsPDF:{unit:'mm', format:'a4', orientation:'portrait'}
+        }).from(wrapper).save();
+    };
 
-        const worker = html2pdf().set({
-            margin: [10,10,10,10],
-            filename: `${(data.mode||'spark')}_spark_${new Date().toISOString().substring(0,10)}.pdf`,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, logging: false, dpi: 192, letterRendering: true },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        });
+    /* ========= Story modal: restore origin story and also user story view ========= */
 
-        worker.from(htmlContent).save();
-        alertModal("Download Initiated! 📥", "Your Creative Pulse Spark Report is being generated and should download shortly.");
-    }
+    // Original origin story content (restored)
+    const ORIGIN_HTML = `
+        <p class="story-text">
+            In 2025, a team joined <a href="https://ekolitika.framer.website/project/the-creative-mess" target="_blank" class="story-highlight" style="text-decoration: underline; color:var(--primary);">The Creative Mess</a> — an Erasmus+ course that proved creativity isn't magic. It's a cycle: brainstorm, organize, rest, inspire, experiment, repeat.
+        </p>
+        <p class="story-text">
+            The problem? Most tools feed you empty motivation or treat creativity like a factory line. Neither helps when you're actually stuck.
+        </p>
+        <p class="story-text">
+            So we built <span class="story-highlight">Creative Pulse</span>. A free tool that diagnoses your block, tells you what you actually need, and gives you real feedback — not fluff.
+        </p>
+        <p class="story-text">
+            From stuck to unstuck. Idea to action. Exhaustion to rhythm.
+        </p>
+    `;
 
-    function escapeHtml(str) {
-        if (!str) return '';
-        return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    }
-
-    // --- Story/Modal Functions (Story now shows the full question/answer context) ---
-
-    window.openStory = function() {
+    function openOriginStory() {
         const modal = document.getElementById('storyModal');
-        modal.querySelector('h3').textContent = "Your Spark Story";
-        const saved = JSON.parse(localStorage.getItem('currentResult') || '{}');
-        let inner = '';
-        if (saved.fullContext && saved.fullContext.length) {
-            saved.fullContext.forEach((item, idx) => {
-                inner += `<div class="story-text"><strong>Q${idx+1}:</strong> ${escapeHtml(item.question)}<br><em>Answer:</em> ${escapeHtml(item.answer)}</div>`;
-            });
-        } else {
-            inner = `<p class="story-text">No story yet — run a mode first to create your Spark.</p>`;
-        }
-        modal.querySelector('#storyContent').innerHTML = inner;
-        modal.querySelector('.btn').textContent = "Got it!";
-        modal.querySelector('.btn').onclick = window.closeStory;
+        modal.querySelector('#storyModalTitle').textContent = 'Born from Struggle';
+        modal.querySelector('#storyContent').innerHTML = ORIGIN_HTML;
+        modal.querySelector('.btn').textContent = 'Got it!';
+        modal.querySelector('.btn').onclick = closeStory;
         modal.classList.add('open');
     }
 
-    window.closeStory = function() {
+    function openUserStory() {
+        const modal = document.getElementById('storyModal');
+        modal.querySelector('#storyModalTitle').textContent = 'Your Spark Story';
+        const data = JSON.parse(localStorage.getItem('currentResult') || '{}');
+        if (data && data.fullContext && data.fullContext.length) {
+            const htmlParts = data.fullContext.map((q, idx) => `
+                <div class="story-text"><strong>Q${idx+1}:</strong> ${escapeHtml(q.question)}<br><em>Answer:</em> ${escapeHtml(q.answer)}</div>
+            `).join('');
+            modal.querySelector('#storyContent').innerHTML = htmlParts;
+        } else {
+            modal.querySelector('#storyContent').innerHTML = '<p class="story-text">No Spark created yet — run a mode to generate your story.</p>';
+        }
+        modal.querySelector('.btn').textContent = 'Got it!';
+        modal.querySelector('.btn').onclick = closeStory;
+        modal.classList.add('open');
+    }
+
+    window.openOriginStory = openOriginStory; // expose for footer button
+    window.openUserStory = openUserStory;
+
+    function closeStory() {
         document.getElementById('storyModal').classList.remove('open');
     }
+
+    /* ========= alertModal utility (keeps behavior) ========= */
+    window.alertModal = function(title, bodyHTML) {
+        const modal = document.getElementById('storyModal');
+        modal.querySelector('#storyModalTitle').textContent = title;
+        modal.querySelector('#storyContent').innerHTML = `<div class="story-text">${bodyHTML}</div>`;
+        modal.querySelector('.btn').textContent = 'Close';
+        modal.querySelector('.btn').onclick = closeStory;
+        modal.classList.add('open');
+    };
+
+    /* ========= Initialize small usability: show stored profile if exists ========= */
+    window.addEventListener('load', () => {
+        loadProfile();
+        if (userProfile.name) {
+            document.getElementById('dashName').textContent = userProfile.name;
+        }
+    });
 
 </script>
 
